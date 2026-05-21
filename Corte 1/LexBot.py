@@ -64,7 +64,7 @@ t_TkDiv = r'/'
 
 t_ignore = ' \t'
 
-
+# una funcion rapidita para obtener la columna
 def find_column(content, token):
     last_newline = content.rfind('\n', 0, token.lexpos)
 
@@ -73,6 +73,8 @@ def find_column(content, token):
 
     return token.lexpos - last_newline
 
+# todas las funciones con el prefijo t_ sirven para que el lexer entienda:
+# los comentarios, los caracteres solitos, las palabras redervadas y los numeros
 
 def t_COMMENT(t):
     r'\$-(.|\n)*?-\$'
@@ -87,7 +89,7 @@ def t_TkCaracter(t):
 
 
 def t_IDENTIFICATOR(t):
-    r'[A-Za-z_]*'
+    r'[A-Za-z]+'
     t.type = reserved.get(t.value, 'TkIdent')
     return t
 
@@ -98,11 +100,7 @@ def t_NUM(t):
     t.type = 'TkNum'
     return t
 
-
-def t_newline(t):
-    r'\n+'
-    t.lexer.lineno += len(t.value)
-
+# despues esta la funcion de deteccion de errores del lexer 
 
 def t_error(t):
     global errors
@@ -112,10 +110,17 @@ def t_error(t):
     )
     t.lexer.skip(1)
 
+# y por ultimo este cosito que a veces el lexer lo hace solo y otras veces no
+
+def t_newline(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)
 
 lexer = lex.lex()
 
-
+# la funcion parser extrae los tokens de un archivo de texto
+# proximamente solo de los .bot
+# devuelve todos los tokens en el formato que imagino sera provisional
 def Parser():
     global errors
     errors = []
