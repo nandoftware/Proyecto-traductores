@@ -87,7 +87,7 @@ def t_TkCaracter(t):
 
 
 def t_IDENTIFICATOR(t):
-    r'[A-Za-z_][A-Za-z_0-9]*'
+    r'[A-Za-z_]*'
     t.type = reserved.get(t.value, 'TkIdent')
     return t
 
