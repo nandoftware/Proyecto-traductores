@@ -39,7 +39,8 @@ Grammar
 Rule 0     S' -> EXE
 Rule 1     EXE -> TkExecute SECUENCIACION TkEnd
 Rule 2     empty -> <empty>
-Rule 3     SECUENCIACION -> TkActivate TkIdent TkPunto
+Rule 3     SECUENCIACION -> TkActivate TkIdent TkPunto SECUENCIACION
+Rule 4     SECUENCIACION -> empty
 
 Terminals, with rules where they appear
 
@@ -84,8 +85,8 @@ error                :
 Nonterminals, with rules where they appear
 
 EXE                  : 0
-SECUENCIACION        : 1
-empty                : 
+SECUENCIACION        : 1 3
+empty                : 4
 
 Parsing method: LALR
 
@@ -107,43 +108,67 @@ state 1
 state 2
 
     (1) EXE -> TkExecute . SECUENCIACION TkEnd
-    (3) SECUENCIACION -> . TkActivate TkIdent TkPunto
+    (3) SECUENCIACION -> . TkActivate TkIdent TkPunto SECUENCIACION
+    (4) SECUENCIACION -> . empty
+    (2) empty -> .
 
     TkActivate      shift and go to state 4
+    TkEnd           reduce using rule 2 (empty -> .)
 
     SECUENCIACION                  shift and go to state 3
+    empty                          shift and go to state 5
 
 state 3
 
     (1) EXE -> TkExecute SECUENCIACION . TkEnd
 
-    TkEnd           shift and go to state 5
+    TkEnd           shift and go to state 6
 
 
 state 4
 
-    (3) SECUENCIACION -> TkActivate . TkIdent TkPunto
+    (3) SECUENCIACION -> TkActivate . TkIdent TkPunto SECUENCIACION
 
-    TkIdent         shift and go to state 6
+    TkIdent         shift and go to state 7
 
 
 state 5
+
+    (4) SECUENCIACION -> empty .
+
+    TkEnd           reduce using rule 4 (SECUENCIACION -> empty .)
+
+
+state 6
 
     (1) EXE -> TkExecute SECUENCIACION TkEnd .
 
     $end            reduce using rule 1 (EXE -> TkExecute SECUENCIACION TkEnd .)
 
 
-state 6
-
-    (3) SECUENCIACION -> TkActivate TkIdent . TkPunto
-
-    TkPunto         shift and go to state 7
-
-
 state 7
 
-    (3) SECUENCIACION -> TkActivate TkIdent TkPunto .
+    (3) SECUENCIACION -> TkActivate TkIdent . TkPunto SECUENCIACION
 
-    TkEnd           reduce using rule 3 (SECUENCIACION -> TkActivate TkIdent TkPunto .)
+    TkPunto         shift and go to state 8
+
+
+state 8
+
+    (3) SECUENCIACION -> TkActivate TkIdent TkPunto . SECUENCIACION
+    (3) SECUENCIACION -> . TkActivate TkIdent TkPunto SECUENCIACION
+    (4) SECUENCIACION -> . empty
+    (2) empty -> .
+
+    TkActivate      shift and go to state 4
+    TkEnd           reduce using rule 2 (empty -> .)
+
+    SECUENCIACION                  shift and go to state 9
+    empty                          shift and go to state 5
+
+state 9
+
+    (3) SECUENCIACION -> TkActivate TkIdent TkPunto SECUENCIACION .
+
+    TkEnd           reduce using rule 3 (SECUENCIACION -> TkActivate TkIdent TkPunto SECUENCIACION .)
 

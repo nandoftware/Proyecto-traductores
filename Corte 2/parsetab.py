@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'TkActivate TkActivation TkBool TkBot TkCaracter TkComa TkConjuncion TkCreate TkDisyuncion TkDiv TkDosPuntos TkEnd TkExecute TkFalse TkIdent TkIf TkIgual TkInt TkMayor TkMayorIgual TkMenor TkMenorIgual TkMod TkMult TkNegacion TkNoIgual TkNum TkOn TkParAbre TkParCierra TkPunto TkResta TkStore TkSuma TkTrue TkWhileEXE : TkExecute SECUENCIACION TkEndempty :SECUENCIACION : TkActivate TkIdent TkPunto'
+_lr_signature = 'TkActivate TkActivation TkBool TkBot TkCaracter TkComa TkConjuncion TkCreate TkDisyuncion TkDiv TkDosPuntos TkEnd TkExecute TkFalse TkIdent TkIf TkIgual TkInt TkMayor TkMayorIgual TkMenor TkMenorIgual TkMod TkMult TkNegacion TkNoIgual TkNum TkOn TkParAbre TkParCierra TkPunto TkResta TkStore TkSuma TkTrue TkWhileEXE : TkExecute SECUENCIACION TkEndempty :SECUENCIACION : TkActivate TkIdent TkPunto SECUENCIACIONSECUENCIACION : empty'
     
-_lr_action_items = {'TkExecute':([0,],[2,]),'$end':([1,5,],[0,-1,]),'TkActivate':([2,],[4,]),'TkEnd':([3,7,],[5,-3,]),'TkIdent':([4,],[6,]),'TkPunto':([6,],[7,]),}
+_lr_action_items = {'TkExecute':([0,],[2,]),'$end':([1,6,],[0,-1,]),'TkActivate':([2,8,],[4,4,]),'TkEnd':([2,3,5,8,9,],[-2,6,-4,-2,-3,]),'TkIdent':([4,],[7,]),'TkPunto':([7,],[8,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'EXE':([0,],[1,]),'SECUENCIACION':([2,],[3,]),}
+_lr_goto_items = {'EXE':([0,],[1,]),'SECUENCIACION':([2,8,],[3,9,]),'empty':([2,8,],[5,5,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -29,5 +29,6 @@ _lr_productions = [
   ("S' -> EXE","S'",1,None,None,None),
   ('EXE -> TkExecute SECUENCIACION TkEnd','EXE',3,'p_execute','LexBot.py',174),
   ('empty -> <empty>','empty',0,'p_empty','LexBot.py',178),
-  ('SECUENCIACION -> TkActivate TkIdent TkPunto','SECUENCIACION',3,'p_secuenciacion','LexBot.py',182),
+  ('SECUENCIACION -> TkActivate TkIdent TkPunto SECUENCIACION','SECUENCIACION',4,'p_secuenciacion1','LexBot.py',182),
+  ('SECUENCIACION -> empty','SECUENCIACION',1,'p_secuenciacion2','LexBot.py',186),
 ]

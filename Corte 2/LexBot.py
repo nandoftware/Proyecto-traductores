@@ -178,11 +178,12 @@ def p_empty(p):
     'empty :'
     pass
 
-def p_secuenciacion(p):
-    'SECUENCIACION : TkActivate TkIdent TkPunto'
+def p_secuenciacion1(p):
+    'SECUENCIACION : TkActivate TkIdent TkPunto SECUENCIACION'
     p[0] = ('secuenciacion', p[1], p[2])
 
-
+def p_secuenciacion2(p):
+    'SECUENCIACION : empty'
     
 
 def p_error(p):
