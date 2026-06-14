@@ -1,5 +1,6 @@
 import sys
 import ply.lex as lex
+import ply.yacc as yacc
 
 
 if len(sys.argv) < 2:
@@ -141,41 +142,67 @@ def Parser():
     lexer.lineno = 1
     lexer.input(content)
 
-    minitokens = []
+    minitokens = ""
 
     for tok in lexer:
-        colum = find_column(content, tok)
-        mini = ""
+        minitokens += tok.value + " "
+        # colum = find_column(content, tok)
+        # mini = ""
 
-        if tok.type == 'TkIdent':
-            mini += f'{str(tok.type)}("{tok.value}") {str(tok.lineno)} {str(colum)}'
-            minitokens.append(mini)
+        # if tok.type == 'TkIdent':
+        #     mini += f'{str(tok.type)}("{tok.value}") {str(tok.lineno)} {str(colum)}'
+        #     minitokens.append(mini)
 
-        elif tok.type == 'TkNum':
-            mini += f'{str(tok.type)}({tok.value}) {str(tok.lineno)} {str(colum)}'
-            minitokens.append(mini)
+        # elif tok.type == 'TkNum':
+        #     mini += f'{str(tok.type)}({tok.value}) {str(tok.lineno)} {str(colum)}'
+        #     minitokens.append(mini)
 
-        elif tok.type == 'TkCaracter':
-            mini += f"{str(tok.type)}('{tok.value}') {str(tok.lineno)} {str(colum)}"
-            minitokens.append(mini)
+        # elif tok.type == 'TkCaracter':
+        #     mini += f"{str(tok.type)}('{tok.value}') {str(tok.lineno)} {str(colum)}"
+        #     minitokens.append(mini)
 
-        else:
-            mini += f"{str(tok.type)} {str(tok.lineno)} {str(colum)}"
-            minitokens.append(mini)
+        # else:
+        #     mini += f"{str(tok.type)} {str(tok.lineno)} {str(colum)}"
+        #     minitokens.append(mini)
 
     return minitokens
 
 
 
 
+def p_execute(p):
+    'EXE : TkExecute SECUENCIACION TkEnd'
+    p[0] = ('execute-block', p[2])
+
+def p_empty(p):
+    'empty :'
+    pass
+
+def p_secuenciacion(p):
+    'SECUENCIACION : TkActivate TkIdent TkPunto'
+    p[0] = ('secuenciacion', p[1], p[2])
 
 
+    
+
+def p_error(p):
+    print("syntax error")
+    print()
 
 if __name__ == '__main__':
     resultado = Parser()
+
+    yc = yacc.yacc()
+
+
 
     if errors:
         for error in errors:
             print(error)
     else:
-        print(', '.join(resultado))
+        # print(', '.join(resultado))
+        print(resultado)
+
+
+    AST = yc.parse(resultado)
+    print(AST)
