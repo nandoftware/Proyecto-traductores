@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import sys
 import ply.lex as lex
 import ply.yacc as yacc
@@ -7,12 +8,32 @@ if len(sys.argv) < 2:
     print("uso: ./LexBot <ruta del archivo>")
     sys.exit(1)
 
-file_name: str = sys.argv[1]
+# Encapsulamiento de la lectura del archivo .bot
+def ReadBotFile(file_name: str):
+    content: str
+
+    try:
+        # with cierra el archivo automaticamente
+        with open(file_name, 'r', encoding='utf-8') as file:
+            content = file.read()
+
+    except FileNotFoundError:
+        print(f"no se pudo encontrar '{file_name}'")
+        sys.exit(1)
+    except Exception as e:
+        print(f"{e}")
+        sys.exit(1)
+
+    return content
+
+###############################################################################################
+## -------------- tokens y funciones t_ usadas por el analizador lexicografico-------------- ##
+###############################################################################################
 
 errors = []
 tokens = [
     'TkCreate', 'TkWhile', 'TkBool', 'TkIf', 'TkInt', 'TkBot',
-    'TkOn', 'TkActivation', 'TkStore', 'TkEnd', 'TkExecute',
+    'TkOn', 'TkActivation', 'TkDefault', 'TkStore', 'TkEnd', 'TkExecute',
     'TkActivate', 'TkTrue', 'TkFalse',
 
     'TkIdent', 'TkNum', 'TkCaracter',
@@ -35,6 +56,7 @@ reserved = {
     'bot': 'TkBot',
     'on': 'TkOn',
     'activation': 'TkActivation',
+    'default' : 'TkDefault',
     'store': 'TkStore',
     'end': 'TkEnd',
     'execute': 'TkExecute',
@@ -82,18 +104,15 @@ def t_COMMENT(t):
     t.lexer.lineno += t.value.count('\n')
     pass
 
-
 def t_TkCaracter(t):
     r"'[^'\n]'"
     t.value = t.value[1:-1]
     return t
 
-
 def t_IDENTIFICATOR(t):
     r'[A-Za-z]+'
     t.type = reserved.get(t.value, 'TkIdent')
     return t
-
 
 def t_NUM(t):
     r'[0-9]+'
@@ -117,27 +136,14 @@ def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
-lexer = lex.lex()
+
 
 # la funcion parser extrae los tokens de un archivo de texto
 # proximamente solo de los .bot
 # devuelve todos los tokens en el formato que imagino sera provisional
-def Parser():
-    global errors
-    errors = []
-    content: str
-
-    try:
-        # with cierra el archivo automaticamente
-        with open(file_name, 'r', encoding='utf-8') as file:
-            content = file.read()
-
-    except FileNotFoundError:
-        print(f"no se pudo encontrar '{file_name}'")
-        sys.exit(1)
-    except Exception as e:
-        print(f"{e}")
-        sys.exit(1)
+def Tokenaizer():
+    
+    content = ReadBotFile(sys.argv[1])
 
     lexer.lineno = 1
     lexer.input(content)
@@ -169,69 +175,113 @@ def Parser():
 
 
 
+###################################################################################################
+## ------------------------------- producciones de la gramatica -------------------------------- ##
+###################################################################################################
+
+##############################
+##  BOT -> CREATE EXECUTE   ##
+##       | lambda           ##
+##############################
 def p_bot(p):
     'BOT : CREATE EXECUTE'
     p[0] = (p[1],p[2])
     
-def p_empty_bot(p):
+def p_bot_empty(p):
     'BOT : empty'
 
+
+######################################
+##  CREATE -> TkCreate DEFINITION   ##
+##          | lambda                ##
+######################################
 def p_create(p):
     'CREATE : TkCreate DEFINITION'
-    p[0] = ('create-block',p[2])
+    p[0] = (p[1],p[2])
 
-def p_create2(p):
+def p_create_empty(p):
     'CREATE : empty'
     
-def p_int(p):
-    'DEFINITION : TkInt TkBot TkIdent DECLARATION TkEnd'
-    p[0] = ('int', p[3])
 
-def p_int2(p):
+############################################################
+##  DEFINITION -> TkInt TkBot TkIdent DECLARATION TkEnd   ##
+##              | lambda                                  ##
+############################################################
+def p_definition_int(p):
+    'DEFINITION : TkInt TkBot TkIdent DECLARATION TkEnd'
+    p[0] = (p[1], p[3], p[4])
+
+def p_definition_empty(p):
     'DEFINITION : empty'
     
 
+#######################################################################
+##  DECLARATION -> TkOn TkActivation TkDosPuntos INSTRUCTION TkEnd   ##
+##               | TkOn TkDefault TkDosPuntos INSTRUCTION TkEnd      ##
+##               | lambda                                            ##
+#######################################################################
+def p_declaration_activation(p):
+    'DECLARATION : TkOn TkActivation TkDosPuntos INSTRUCTION TkEnd'
+    p[0] = (p[2], p[4])
 
-def p_declaration(p):
-    'DECLARATION : TkOn TkActivation TkDosPuntos TkStore TkNum TkPunto TkEnd'
-    p[0] = ('activation', p[5])
+def p_declaration_default(p):
+    'DECLARATION : TkOn TkDefault TkDosPuntos INSTRUCTION TkEnd'
+    p[0] = (p[2], p[4])
+
+def p_declaration_empty(p):
+    'DECLARATION : empty'
 
 
+#####################################################
+##  INSTRUCTION -> TkStore TkNum TkPunto           ##
+##               | TkActivate TkIdent TkPunto      ##
+#####################################################
+def p_instruction_store(p):
+    'INSTRUCTION : TkStore TkNum TkPunto INSTRUCTION'
+    p[0] = (p[1], p[2])
 
+def p_instruction_activate(p):
+    'INSTRUCTION : TkActivate TkIdent TkPunto INSTRUCTION'
+    p[0] = (p[1], p[2])
+
+def p_instruction_if(p):
+    'INSTRUCTION : TkActivate TkIdent TkPunto INSTRUCTION'
+
+
+##############################################
+##  EXECUTE -> TkExecute INSTRUCTION TkEnd  ##
+##############################################
 def p_execute(p):
-    'EXECUTE : TkExecute SECUENCIACION TkEnd'
-    p[0] = ('execute-block', p[2])
+    'EXECUTE : TkExecute INSTRUCTION TkEnd'
+    p[0] = (p[1], p[2])
 
+
+#######################
+##  empty production ##
+#######################
 def p_empty(p):
     'empty :'
     pass
 
-def p_secuenciacion1(p):
-    'SECUENCIACION : TkActivate TkIdent TkPunto SECUENCIACION'
-    p[0] = ('secuenciacion', p[1], p[2])
 
-def p_secuenciacion2(p):
-    'SECUENCIACION : empty'
-    
-
+# y la de los errores que es temporal asi
 def p_error(p):
     print("syntax error")
     print(p)
     
 
 if __name__ == '__main__':
-    resultado = Parser()
+    lexer = lex.lex()
+    resultado = Tokenaizer()
 
     yc = yacc.yacc()
-
-
 
     if errors:
         for error in errors:
             print(error)
-    else:
+    # else:
         # print(', '.join(resultado))
-        print(resultado)
+        # print(resultado)
 
 
     AST = yc.parse(resultado)

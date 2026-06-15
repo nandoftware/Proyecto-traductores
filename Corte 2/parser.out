@@ -35,15 +35,17 @@ Rule 3     CREATE -> TkCreate DEFINITION
 Rule 4     CREATE -> empty
 Rule 5     DEFINITION -> TkInt TkBot TkIdent DECLARATION TkEnd
 Rule 6     DEFINITION -> empty
-Rule 7     DECLARATION -> TkOn TkActivation TkDosPuntos TkStore TkNum TkPunto TkEnd
-Rule 8     EXECUTE -> TkExecute SECUENCIACION TkEnd
-Rule 9     empty -> <empty>
-Rule 10    SECUENCIACION -> TkActivate TkIdent TkPunto SECUENCIACION
-Rule 11    SECUENCIACION -> empty
+Rule 7     DECLARATION -> TkOn TkActivation TkDosPuntos INSTRUCTION TkEnd
+Rule 8     DECLARATION -> TkOn TkDefault TkDosPuntos INSTRUCTION TkEnd
+Rule 9     DECLARATION -> empty
+Rule 10    INSTRUCTION -> TkStore TkNum TkPunto
+Rule 11    INSTRUCTION -> TkActivate TkIdent TkPunto
+Rule 12    EXECUTE -> TkExecute INSTRUCTION TkEnd
+Rule 13    empty -> <empty>
 
 Terminals, with rules where they appear
 
-TkActivate           : 10
+TkActivate           : 11
 TkActivation         : 7
 TkBool               : 
 TkBot                : 5
@@ -51,13 +53,14 @@ TkCaracter           :
 TkComa               : 
 TkConjuncion         : 
 TkCreate             : 3
+TkDefault            : 8
 TkDisyuncion         : 
 TkDiv                : 
-TkDosPuntos          : 7
-TkEnd                : 5 7 8
-TkExecute            : 8
+TkDosPuntos          : 7 8
+TkEnd                : 5 7 8 12
+TkExecute            : 12
 TkFalse              : 
-TkIdent              : 5 10
+TkIdent              : 5 11
 TkIf                 : 
 TkIgual              : 
 TkInt                : 5
@@ -69,13 +72,13 @@ TkMod                :
 TkMult               : 
 TkNegacion           : 
 TkNoIgual            : 
-TkNum                : 7
-TkOn                 : 7
+TkNum                : 10
+TkOn                 : 7 8
 TkParAbre            : 
 TkParCierra          : 
-TkPunto              : 7 10
+TkPunto              : 10 11
 TkResta              : 
-TkStore              : 7
+TkStore              : 10
 TkSuma               : 
 TkTrue               : 
 TkWhile              : 
@@ -88,8 +91,8 @@ CREATE               : 1
 DECLARATION          : 5
 DEFINITION           : 3
 EXECUTE              : 1
-SECUENCIACION        : 8 10
-empty                : 2 4 6 11
+INSTRUCTION          : 7 8 12
+empty                : 2 4 6 9
 
 Parsing method: LALR
 
@@ -100,11 +103,11 @@ state 0
     (2) BOT -> . empty
     (3) CREATE -> . TkCreate DEFINITION
     (4) CREATE -> . empty
-    (9) empty -> .
+    (13) empty -> .
 
     TkCreate        shift and go to state 4
-    $end            reduce using rule 9 (empty -> .)
-    TkExecute       reduce using rule 9 (empty -> .)
+    $end            reduce using rule 13 (empty -> .)
+    TkExecute       reduce using rule 13 (empty -> .)
 
     BOT                            shift and go to state 1
     CREATE                         shift and go to state 2
@@ -119,7 +122,7 @@ state 1
 state 2
 
     (1) BOT -> CREATE . EXECUTE
-    (8) EXECUTE -> . TkExecute SECUENCIACION TkEnd
+    (12) EXECUTE -> . TkExecute INSTRUCTION TkEnd
 
     TkExecute       shift and go to state 6
 
@@ -139,10 +142,10 @@ state 4
     (3) CREATE -> TkCreate . DEFINITION
     (5) DEFINITION -> . TkInt TkBot TkIdent DECLARATION TkEnd
     (6) DEFINITION -> . empty
-    (9) empty -> .
+    (13) empty -> .
 
     TkInt           shift and go to state 8
-    TkExecute       reduce using rule 9 (empty -> .)
+    TkExecute       reduce using rule 13 (empty -> .)
 
     DEFINITION                     shift and go to state 7
     empty                          shift and go to state 9
@@ -156,16 +159,14 @@ state 5
 
 state 6
 
-    (8) EXECUTE -> TkExecute . SECUENCIACION TkEnd
-    (10) SECUENCIACION -> . TkActivate TkIdent TkPunto SECUENCIACION
-    (11) SECUENCIACION -> . empty
-    (9) empty -> .
+    (12) EXECUTE -> TkExecute . INSTRUCTION TkEnd
+    (10) INSTRUCTION -> . TkStore TkNum TkPunto
+    (11) INSTRUCTION -> . TkActivate TkIdent TkPunto
 
-    TkActivate      shift and go to state 11
-    TkEnd           reduce using rule 9 (empty -> .)
+    TkStore         shift and go to state 11
+    TkActivate      shift and go to state 12
 
-    SECUENCIACION                  shift and go to state 10
-    empty                          shift and go to state 12
+    INSTRUCTION                    shift and go to state 10
 
 state 7
 
@@ -190,134 +191,171 @@ state 9
 
 state 10
 
-    (8) EXECUTE -> TkExecute SECUENCIACION . TkEnd
+    (12) EXECUTE -> TkExecute INSTRUCTION . TkEnd
 
     TkEnd           shift and go to state 14
 
 
 state 11
 
-    (10) SECUENCIACION -> TkActivate . TkIdent TkPunto SECUENCIACION
+    (10) INSTRUCTION -> TkStore . TkNum TkPunto
 
-    TkIdent         shift and go to state 15
+    TkNum           shift and go to state 15
 
 
 state 12
 
-    (11) SECUENCIACION -> empty .
+    (11) INSTRUCTION -> TkActivate . TkIdent TkPunto
 
-    TkEnd           reduce using rule 11 (SECUENCIACION -> empty .)
+    TkIdent         shift and go to state 16
 
 
 state 13
 
     (5) DEFINITION -> TkInt TkBot . TkIdent DECLARATION TkEnd
 
-    TkIdent         shift and go to state 16
+    TkIdent         shift and go to state 17
 
 
 state 14
 
-    (8) EXECUTE -> TkExecute SECUENCIACION TkEnd .
+    (12) EXECUTE -> TkExecute INSTRUCTION TkEnd .
 
-    $end            reduce using rule 8 (EXECUTE -> TkExecute SECUENCIACION TkEnd .)
+    $end            reduce using rule 12 (EXECUTE -> TkExecute INSTRUCTION TkEnd .)
 
 
 state 15
 
-    (10) SECUENCIACION -> TkActivate TkIdent . TkPunto SECUENCIACION
+    (10) INSTRUCTION -> TkStore TkNum . TkPunto
 
-    TkPunto         shift and go to state 17
+    TkPunto         shift and go to state 18
 
 
 state 16
 
-    (5) DEFINITION -> TkInt TkBot TkIdent . DECLARATION TkEnd
-    (7) DECLARATION -> . TkOn TkActivation TkDosPuntos TkStore TkNum TkPunto TkEnd
+    (11) INSTRUCTION -> TkActivate TkIdent . TkPunto
 
-    TkOn            shift and go to state 19
+    TkPunto         shift and go to state 19
 
-    DECLARATION                    shift and go to state 18
 
 state 17
 
-    (10) SECUENCIACION -> TkActivate TkIdent TkPunto . SECUENCIACION
-    (10) SECUENCIACION -> . TkActivate TkIdent TkPunto SECUENCIACION
-    (11) SECUENCIACION -> . empty
-    (9) empty -> .
+    (5) DEFINITION -> TkInt TkBot TkIdent . DECLARATION TkEnd
+    (7) DECLARATION -> . TkOn TkActivation TkDosPuntos INSTRUCTION TkEnd
+    (8) DECLARATION -> . TkOn TkDefault TkDosPuntos INSTRUCTION TkEnd
+    (9) DECLARATION -> . empty
+    (13) empty -> .
 
-    TkActivate      shift and go to state 11
-    TkEnd           reduce using rule 9 (empty -> .)
+    TkOn            shift and go to state 21
+    TkEnd           reduce using rule 13 (empty -> .)
 
-    SECUENCIACION                  shift and go to state 20
-    empty                          shift and go to state 12
+    DECLARATION                    shift and go to state 20
+    empty                          shift and go to state 22
 
 state 18
 
-    (5) DEFINITION -> TkInt TkBot TkIdent DECLARATION . TkEnd
+    (10) INSTRUCTION -> TkStore TkNum TkPunto .
 
-    TkEnd           shift and go to state 21
+    TkEnd           reduce using rule 10 (INSTRUCTION -> TkStore TkNum TkPunto .)
 
 
 state 19
 
-    (7) DECLARATION -> TkOn . TkActivation TkDosPuntos TkStore TkNum TkPunto TkEnd
+    (11) INSTRUCTION -> TkActivate TkIdent TkPunto .
 
-    TkActivation    shift and go to state 22
+    TkEnd           reduce using rule 11 (INSTRUCTION -> TkActivate TkIdent TkPunto .)
 
 
 state 20
 
-    (10) SECUENCIACION -> TkActivate TkIdent TkPunto SECUENCIACION .
+    (5) DEFINITION -> TkInt TkBot TkIdent DECLARATION . TkEnd
 
-    TkEnd           reduce using rule 10 (SECUENCIACION -> TkActivate TkIdent TkPunto SECUENCIACION .)
+    TkEnd           shift and go to state 23
 
 
 state 21
+
+    (7) DECLARATION -> TkOn . TkActivation TkDosPuntos INSTRUCTION TkEnd
+    (8) DECLARATION -> TkOn . TkDefault TkDosPuntos INSTRUCTION TkEnd
+
+    TkActivation    shift and go to state 24
+    TkDefault       shift and go to state 25
+
+
+state 22
+
+    (9) DECLARATION -> empty .
+
+    TkEnd           reduce using rule 9 (DECLARATION -> empty .)
+
+
+state 23
 
     (5) DEFINITION -> TkInt TkBot TkIdent DECLARATION TkEnd .
 
     TkExecute       reduce using rule 5 (DEFINITION -> TkInt TkBot TkIdent DECLARATION TkEnd .)
 
 
-state 22
-
-    (7) DECLARATION -> TkOn TkActivation . TkDosPuntos TkStore TkNum TkPunto TkEnd
-
-    TkDosPuntos     shift and go to state 23
-
-
-state 23
-
-    (7) DECLARATION -> TkOn TkActivation TkDosPuntos . TkStore TkNum TkPunto TkEnd
-
-    TkStore         shift and go to state 24
-
-
 state 24
 
-    (7) DECLARATION -> TkOn TkActivation TkDosPuntos TkStore . TkNum TkPunto TkEnd
+    (7) DECLARATION -> TkOn TkActivation . TkDosPuntos INSTRUCTION TkEnd
 
-    TkNum           shift and go to state 25
+    TkDosPuntos     shift and go to state 26
 
 
 state 25
 
-    (7) DECLARATION -> TkOn TkActivation TkDosPuntos TkStore TkNum . TkPunto TkEnd
+    (8) DECLARATION -> TkOn TkDefault . TkDosPuntos INSTRUCTION TkEnd
 
-    TkPunto         shift and go to state 26
+    TkDosPuntos     shift and go to state 27
 
 
 state 26
 
-    (7) DECLARATION -> TkOn TkActivation TkDosPuntos TkStore TkNum TkPunto . TkEnd
+    (7) DECLARATION -> TkOn TkActivation TkDosPuntos . INSTRUCTION TkEnd
+    (10) INSTRUCTION -> . TkStore TkNum TkPunto
+    (11) INSTRUCTION -> . TkActivate TkIdent TkPunto
 
-    TkEnd           shift and go to state 27
+    TkStore         shift and go to state 11
+    TkActivate      shift and go to state 12
 
+    INSTRUCTION                    shift and go to state 28
 
 state 27
 
-    (7) DECLARATION -> TkOn TkActivation TkDosPuntos TkStore TkNum TkPunto TkEnd .
+    (8) DECLARATION -> TkOn TkDefault TkDosPuntos . INSTRUCTION TkEnd
+    (10) INSTRUCTION -> . TkStore TkNum TkPunto
+    (11) INSTRUCTION -> . TkActivate TkIdent TkPunto
 
-    TkEnd           reduce using rule 7 (DECLARATION -> TkOn TkActivation TkDosPuntos TkStore TkNum TkPunto TkEnd .)
+    TkStore         shift and go to state 11
+    TkActivate      shift and go to state 12
+
+    INSTRUCTION                    shift and go to state 29
+
+state 28
+
+    (7) DECLARATION -> TkOn TkActivation TkDosPuntos INSTRUCTION . TkEnd
+
+    TkEnd           shift and go to state 30
+
+
+state 29
+
+    (8) DECLARATION -> TkOn TkDefault TkDosPuntos INSTRUCTION . TkEnd
+
+    TkEnd           shift and go to state 31
+
+
+state 30
+
+    (7) DECLARATION -> TkOn TkActivation TkDosPuntos INSTRUCTION TkEnd .
+
+    TkEnd           reduce using rule 7 (DECLARATION -> TkOn TkActivation TkDosPuntos INSTRUCTION TkEnd .)
+
+
+state 31
+
+    (8) DECLARATION -> TkOn TkDefault TkDosPuntos INSTRUCTION TkEnd .
+
+    TkEnd           reduce using rule 8 (DECLARATION -> TkOn TkDefault TkDosPuntos INSTRUCTION TkEnd .)
 

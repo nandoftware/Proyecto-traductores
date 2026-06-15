@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'TkActivate TkActivation TkBool TkBot TkCaracter TkComa TkConjuncion TkCreate TkDisyuncion TkDiv TkDosPuntos TkEnd TkExecute TkFalse TkIdent TkIf TkIgual TkInt TkMayor TkMayorIgual TkMenor TkMenorIgual TkMod TkMult TkNegacion TkNoIgual TkNum TkOn TkParAbre TkParCierra TkPunto TkResta TkStore TkSuma TkTrue TkWhileBOT : CREATE EXECUTEBOT : emptyCREATE : TkCreate DEFINITIONCREATE : emptyDEFINITION : TkInt TkBot TkIdent DECLARATION TkEndDEFINITION : emptyDECLARATION : TkOn TkActivation TkDosPuntos TkStore TkNum TkPunto TkEndEXECUTE : TkExecute SECUENCIACION TkEndempty :SECUENCIACION : TkActivate TkIdent TkPunto SECUENCIACIONSECUENCIACION : empty'
+_lr_signature = 'TkActivate TkActivation TkBool TkBot TkCaracter TkComa TkConjuncion TkCreate TkDefault TkDisyuncion TkDiv TkDosPuntos TkEnd TkExecute TkFalse TkIdent TkIf TkIgual TkInt TkMayor TkMayorIgual TkMenor TkMenorIgual TkMod TkMult TkNegacion TkNoIgual TkNum TkOn TkParAbre TkParCierra TkPunto TkResta TkStore TkSuma TkTrue TkWhileBOT : CREATE EXECUTEBOT : emptyCREATE : TkCreate DEFINITIONCREATE : emptyDEFINITION : TkInt TkBot TkIdent DECLARATION TkEndDEFINITION : emptyDECLARATION : TkOn TkActivation TkDosPuntos INSTRUCTION TkEndDECLARATION : TkOn TkDefault TkDosPuntos INSTRUCTION TkEndDECLARATION : emptyINSTRUCTION : TkStore TkNum TkPuntoINSTRUCTION : TkActivate TkIdent TkPuntoEXECUTE : TkExecute INSTRUCTION TkEndempty :'
     
-_lr_action_items = {'TkCreate':([0,],[4,]),'$end':([0,1,3,5,14,],[-9,0,-2,-1,-8,]),'TkExecute':([0,2,3,4,7,9,21,],[-9,6,-4,-9,-3,-6,-5,]),'TkInt':([4,],[8,]),'TkActivate':([6,17,],[11,11,]),'TkEnd':([6,10,12,17,18,20,26,27,],[-9,14,-11,-9,21,-10,27,-7,]),'TkBot':([8,],[13,]),'TkIdent':([11,13,],[15,16,]),'TkPunto':([15,25,],[17,26,]),'TkOn':([16,],[19,]),'TkActivation':([19,],[22,]),'TkDosPuntos':([22,],[23,]),'TkStore':([23,],[24,]),'TkNum':([24,],[25,]),}
+_lr_action_items = {'TkCreate':([0,],[4,]),'$end':([0,1,3,5,14,],[-13,0,-2,-1,-12,]),'TkExecute':([0,2,3,4,7,9,23,],[-13,6,-4,-13,-3,-6,-5,]),'TkInt':([4,],[8,]),'TkStore':([6,26,27,],[11,11,11,]),'TkActivate':([6,26,27,],[12,12,12,]),'TkBot':([8,],[13,]),'TkEnd':([10,17,18,19,20,22,28,29,30,31,],[14,-13,-10,-11,23,-9,30,31,-7,-8,]),'TkNum':([11,],[15,]),'TkIdent':([12,13,],[16,17,]),'TkPunto':([15,16,],[18,19,]),'TkOn':([17,],[21,]),'TkActivation':([21,],[24,]),'TkDefault':([21,],[25,]),'TkDosPuntos':([24,25,],[26,27,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'BOT':([0,],[1,]),'CREATE':([0,],[2,]),'empty':([0,4,6,17,],[3,9,12,12,]),'EXECUTE':([2,],[5,]),'DEFINITION':([4,],[7,]),'SECUENCIACION':([6,17,],[10,20,]),'DECLARATION':([16,],[18,]),}
+_lr_goto_items = {'BOT':([0,],[1,]),'CREATE':([0,],[2,]),'empty':([0,4,17,],[3,9,22,]),'EXECUTE':([2,],[5,]),'DEFINITION':([4,],[7,]),'INSTRUCTION':([6,26,27,],[10,28,29,]),'DECLARATION':([17,],[20,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,15 +27,17 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> BOT","S'",1,None,None,None),
-  ('BOT -> CREATE EXECUTE','BOT',2,'p_bot','LexBot.py',173),
-  ('BOT -> empty','BOT',1,'p_empty_bot','LexBot.py',177),
-  ('CREATE -> TkCreate DEFINITION','CREATE',2,'p_create','LexBot.py',180),
-  ('CREATE -> empty','CREATE',1,'p_create2','LexBot.py',184),
-  ('DEFINITION -> TkInt TkBot TkIdent DECLARATION TkEnd','DEFINITION',5,'p_int','LexBot.py',187),
-  ('DEFINITION -> empty','DEFINITION',1,'p_int2','LexBot.py',191),
-  ('DECLARATION -> TkOn TkActivation TkDosPuntos TkStore TkNum TkPunto TkEnd','DECLARATION',7,'p_declaration','LexBot.py',196),
-  ('EXECUTE -> TkExecute SECUENCIACION TkEnd','EXECUTE',3,'p_execute','LexBot.py',202),
-  ('empty -> <empty>','empty',0,'p_empty','LexBot.py',206),
-  ('SECUENCIACION -> TkActivate TkIdent TkPunto SECUENCIACION','SECUENCIACION',4,'p_secuenciacion1','LexBot.py',210),
-  ('SECUENCIACION -> empty','SECUENCIACION',1,'p_secuenciacion2','LexBot.py',214),
+  ('BOT -> CREATE EXECUTE','BOT',2,'p_bot','LexBot.py',187),
+  ('BOT -> empty','BOT',1,'p_bot_empty','LexBot.py',191),
+  ('CREATE -> TkCreate DEFINITION','CREATE',2,'p_create','LexBot.py',199),
+  ('CREATE -> empty','CREATE',1,'p_create_empty','LexBot.py',203),
+  ('DEFINITION -> TkInt TkBot TkIdent DECLARATION TkEnd','DEFINITION',5,'p_definition_int','LexBot.py',211),
+  ('DEFINITION -> empty','DEFINITION',1,'p_definition_empty','LexBot.py',215),
+  ('DECLARATION -> TkOn TkActivation TkDosPuntos INSTRUCTION TkEnd','DECLARATION',5,'p_declaration_activation','LexBot.py',219),
+  ('DECLARATION -> TkOn TkDefault TkDosPuntos INSTRUCTION TkEnd','DECLARATION',5,'p_declaration_default','LexBot.py',223),
+  ('DECLARATION -> empty','DECLARATION',1,'p_declaration_empty','LexBot.py',227),
+  ('INSTRUCTION -> TkStore TkNum TkPunto','INSTRUCTION',3,'p_instruction_store','LexBot.py',230),
+  ('INSTRUCTION -> TkActivate TkIdent TkPunto','INSTRUCTION',3,'p_instruction_activate','LexBot.py',234),
+  ('EXECUTE -> TkExecute INSTRUCTION TkEnd','EXECUTE',3,'p_execute','LexBot.py',238),
+  ('empty -> <empty>','empty',0,'p_empty','LexBot.py',245),
 ]
