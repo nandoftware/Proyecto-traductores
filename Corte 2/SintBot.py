@@ -6,4 +6,4 @@ import scipy.stats as stats
 #     sys.exit(1)
 
 print("hola")
-print(stats.f.ppf(1 - 0.025, 565, 463))
+print(stats.f.ppf(1 - 0.025, 604, 434))

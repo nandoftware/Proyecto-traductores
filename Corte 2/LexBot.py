@@ -171,24 +171,24 @@ def Parser():
 
 def p_bot(p):
     'BOT : CREATE EXECUTE'
-    p[0] = ('Create',p[1],'execute',p[2])
+    p[0] = (p[1],p[2])
     
 def p_empty_bot(p):
-    'BOT : '
+    'BOT : empty'
 
 def p_create(p):
     'CREATE : TkCreate DEFINITION'
-    p[0] = p[2]
+    p[0] = ('create-block',p[2])
 
-def p_create(p):
-    'CREATE : '
-
+def p_create2(p):
+    'CREATE : empty'
+    
 def p_int(p):
     'DEFINITION : TkInt TkBot TkIdent DECLARATION TkEnd'
     p[0] = ('int', p[3])
 
-def p_int(p):
-    'DEFINITION : '
+def p_int2(p):
+    'DEFINITION : empty'
     
 
 
@@ -216,7 +216,8 @@ def p_secuenciacion2(p):
 
 def p_error(p):
     print("syntax error")
-    print()
+    print(p)
+    
 
 if __name__ == '__main__':
     resultado = Parser()

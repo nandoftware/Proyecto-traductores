@@ -3,17 +3,14 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Unused terminals:
 
     TkBool
-    TkBot
     TkCaracter
     TkComa
     TkConjuncion
-    TkCreate
     TkDisyuncion
     TkDiv
     TkFalse
     TkIf
     TkIgual
-    TkInt
     TkMayor
     TkMayorIgual
     TkMenor
@@ -33,35 +30,37 @@ Grammar
 
 Rule 0     S' -> BOT
 Rule 1     BOT -> CREATE EXECUTE
-Rule 2     BOT -> <empty>
-Rule 3     CREATE -> <empty>
-Rule 4     DEFINITION -> <empty>
-Rule 5     DECLARATION -> TkOn TkActivation TkDosPuntos TkStore TkNum TkPunto TkEnd
-Rule 6     EXECUTE -> TkExecute SECUENCIACION TkEnd
-Rule 7     empty -> <empty>
-Rule 8     SECUENCIACION -> TkActivate TkIdent TkPunto SECUENCIACION
-Rule 9     SECUENCIACION -> empty
+Rule 2     BOT -> empty
+Rule 3     CREATE -> TkCreate DEFINITION
+Rule 4     CREATE -> empty
+Rule 5     DEFINITION -> TkInt TkBot TkIdent DECLARATION TkEnd
+Rule 6     DEFINITION -> empty
+Rule 7     DECLARATION -> TkOn TkActivation TkDosPuntos TkStore TkNum TkPunto TkEnd
+Rule 8     EXECUTE -> TkExecute SECUENCIACION TkEnd
+Rule 9     empty -> <empty>
+Rule 10    SECUENCIACION -> TkActivate TkIdent TkPunto SECUENCIACION
+Rule 11    SECUENCIACION -> empty
 
 Terminals, with rules where they appear
 
-TkActivate           : 8
-TkActivation         : 5
+TkActivate           : 10
+TkActivation         : 7
 TkBool               : 
-TkBot                : 
+TkBot                : 5
 TkCaracter           : 
 TkComa               : 
 TkConjuncion         : 
-TkCreate             : 
+TkCreate             : 3
 TkDisyuncion         : 
 TkDiv                : 
-TkDosPuntos          : 5
-TkEnd                : 5 6
-TkExecute            : 6
+TkDosPuntos          : 7
+TkEnd                : 5 7 8
+TkExecute            : 8
 TkFalse              : 
-TkIdent              : 8
+TkIdent              : 5 10
 TkIf                 : 
 TkIgual              : 
-TkInt                : 
+TkInt                : 5
 TkMayor              : 
 TkMayorIgual         : 
 TkMenor              : 
@@ -70,13 +69,13 @@ TkMod                :
 TkMult               : 
 TkNegacion           : 
 TkNoIgual            : 
-TkNum                : 5
-TkOn                 : 5
+TkNum                : 7
+TkOn                 : 7
 TkParAbre            : 
 TkParCierra          : 
-TkPunto              : 5 8
+TkPunto              : 7 10
 TkResta              : 
-TkStore              : 5
+TkStore              : 7
 TkSuma               : 
 TkTrue               : 
 TkWhile              : 
@@ -86,11 +85,11 @@ Nonterminals, with rules where they appear
 
 BOT                  : 0
 CREATE               : 1
-DECLARATION          : 
-DEFINITION           : 
+DECLARATION          : 5
+DEFINITION           : 3
 EXECUTE              : 1
-SECUENCIACION        : 6 8
-empty                : 9
+SECUENCIACION        : 8 10
+empty                : 2 4 6 11
 
 Parsing method: LALR
 
@@ -98,14 +97,18 @@ state 0
 
     (0) S' -> . BOT
     (1) BOT -> . CREATE EXECUTE
-    (2) BOT -> .
-    (3) CREATE -> .
+    (2) BOT -> . empty
+    (3) CREATE -> . TkCreate DEFINITION
+    (4) CREATE -> . empty
+    (9) empty -> .
 
-    $end            reduce using rule 2 (BOT -> .)
-    TkExecute       reduce using rule 3 (CREATE -> .)
+    TkCreate        shift and go to state 4
+    $end            reduce using rule 9 (empty -> .)
+    TkExecute       reduce using rule 9 (empty -> .)
 
     BOT                            shift and go to state 1
     CREATE                         shift and go to state 2
+    empty                          shift and go to state 3
 
 state 1
 
@@ -116,83 +119,205 @@ state 1
 state 2
 
     (1) BOT -> CREATE . EXECUTE
-    (6) EXECUTE -> . TkExecute SECUENCIACION TkEnd
+    (8) EXECUTE -> . TkExecute SECUENCIACION TkEnd
 
-    TkExecute       shift and go to state 4
+    TkExecute       shift and go to state 6
 
-    EXECUTE                        shift and go to state 3
+    EXECUTE                        shift and go to state 5
 
 state 3
+
+    (2) BOT -> empty .
+    (4) CREATE -> empty .
+
+    $end            reduce using rule 2 (BOT -> empty .)
+    TkExecute       reduce using rule 4 (CREATE -> empty .)
+
+
+state 4
+
+    (3) CREATE -> TkCreate . DEFINITION
+    (5) DEFINITION -> . TkInt TkBot TkIdent DECLARATION TkEnd
+    (6) DEFINITION -> . empty
+    (9) empty -> .
+
+    TkInt           shift and go to state 8
+    TkExecute       reduce using rule 9 (empty -> .)
+
+    DEFINITION                     shift and go to state 7
+    empty                          shift and go to state 9
+
+state 5
 
     (1) BOT -> CREATE EXECUTE .
 
     $end            reduce using rule 1 (BOT -> CREATE EXECUTE .)
 
 
-state 4
-
-    (6) EXECUTE -> TkExecute . SECUENCIACION TkEnd
-    (8) SECUENCIACION -> . TkActivate TkIdent TkPunto SECUENCIACION
-    (9) SECUENCIACION -> . empty
-    (7) empty -> .
-
-    TkActivate      shift and go to state 6
-    TkEnd           reduce using rule 7 (empty -> .)
-
-    SECUENCIACION                  shift and go to state 5
-    empty                          shift and go to state 7
-
-state 5
-
-    (6) EXECUTE -> TkExecute SECUENCIACION . TkEnd
-
-    TkEnd           shift and go to state 8
-
-
 state 6
 
-    (8) SECUENCIACION -> TkActivate . TkIdent TkPunto SECUENCIACION
+    (8) EXECUTE -> TkExecute . SECUENCIACION TkEnd
+    (10) SECUENCIACION -> . TkActivate TkIdent TkPunto SECUENCIACION
+    (11) SECUENCIACION -> . empty
+    (9) empty -> .
 
-    TkIdent         shift and go to state 9
+    TkActivate      shift and go to state 11
+    TkEnd           reduce using rule 9 (empty -> .)
 
+    SECUENCIACION                  shift and go to state 10
+    empty                          shift and go to state 12
 
 state 7
 
-    (9) SECUENCIACION -> empty .
+    (3) CREATE -> TkCreate DEFINITION .
 
-    TkEnd           reduce using rule 9 (SECUENCIACION -> empty .)
+    TkExecute       reduce using rule 3 (CREATE -> TkCreate DEFINITION .)
 
 
 state 8
 
-    (6) EXECUTE -> TkExecute SECUENCIACION TkEnd .
+    (5) DEFINITION -> TkInt . TkBot TkIdent DECLARATION TkEnd
 
-    $end            reduce using rule 6 (EXECUTE -> TkExecute SECUENCIACION TkEnd .)
+    TkBot           shift and go to state 13
 
 
 state 9
 
-    (8) SECUENCIACION -> TkActivate TkIdent . TkPunto SECUENCIACION
+    (6) DEFINITION -> empty .
 
-    TkPunto         shift and go to state 10
+    TkExecute       reduce using rule 6 (DEFINITION -> empty .)
 
 
 state 10
 
-    (8) SECUENCIACION -> TkActivate TkIdent TkPunto . SECUENCIACION
-    (8) SECUENCIACION -> . TkActivate TkIdent TkPunto SECUENCIACION
-    (9) SECUENCIACION -> . empty
-    (7) empty -> .
+    (8) EXECUTE -> TkExecute SECUENCIACION . TkEnd
 
-    TkActivate      shift and go to state 6
-    TkEnd           reduce using rule 7 (empty -> .)
+    TkEnd           shift and go to state 14
 
-    SECUENCIACION                  shift and go to state 11
-    empty                          shift and go to state 7
 
 state 11
 
-    (8) SECUENCIACION -> TkActivate TkIdent TkPunto SECUENCIACION .
+    (10) SECUENCIACION -> TkActivate . TkIdent TkPunto SECUENCIACION
 
-    TkEnd           reduce using rule 8 (SECUENCIACION -> TkActivate TkIdent TkPunto SECUENCIACION .)
+    TkIdent         shift and go to state 15
+
+
+state 12
+
+    (11) SECUENCIACION -> empty .
+
+    TkEnd           reduce using rule 11 (SECUENCIACION -> empty .)
+
+
+state 13
+
+    (5) DEFINITION -> TkInt TkBot . TkIdent DECLARATION TkEnd
+
+    TkIdent         shift and go to state 16
+
+
+state 14
+
+    (8) EXECUTE -> TkExecute SECUENCIACION TkEnd .
+
+    $end            reduce using rule 8 (EXECUTE -> TkExecute SECUENCIACION TkEnd .)
+
+
+state 15
+
+    (10) SECUENCIACION -> TkActivate TkIdent . TkPunto SECUENCIACION
+
+    TkPunto         shift and go to state 17
+
+
+state 16
+
+    (5) DEFINITION -> TkInt TkBot TkIdent . DECLARATION TkEnd
+    (7) DECLARATION -> . TkOn TkActivation TkDosPuntos TkStore TkNum TkPunto TkEnd
+
+    TkOn            shift and go to state 19
+
+    DECLARATION                    shift and go to state 18
+
+state 17
+
+    (10) SECUENCIACION -> TkActivate TkIdent TkPunto . SECUENCIACION
+    (10) SECUENCIACION -> . TkActivate TkIdent TkPunto SECUENCIACION
+    (11) SECUENCIACION -> . empty
+    (9) empty -> .
+
+    TkActivate      shift and go to state 11
+    TkEnd           reduce using rule 9 (empty -> .)
+
+    SECUENCIACION                  shift and go to state 20
+    empty                          shift and go to state 12
+
+state 18
+
+    (5) DEFINITION -> TkInt TkBot TkIdent DECLARATION . TkEnd
+
+    TkEnd           shift and go to state 21
+
+
+state 19
+
+    (7) DECLARATION -> TkOn . TkActivation TkDosPuntos TkStore TkNum TkPunto TkEnd
+
+    TkActivation    shift and go to state 22
+
+
+state 20
+
+    (10) SECUENCIACION -> TkActivate TkIdent TkPunto SECUENCIACION .
+
+    TkEnd           reduce using rule 10 (SECUENCIACION -> TkActivate TkIdent TkPunto SECUENCIACION .)
+
+
+state 21
+
+    (5) DEFINITION -> TkInt TkBot TkIdent DECLARATION TkEnd .
+
+    TkExecute       reduce using rule 5 (DEFINITION -> TkInt TkBot TkIdent DECLARATION TkEnd .)
+
+
+state 22
+
+    (7) DECLARATION -> TkOn TkActivation . TkDosPuntos TkStore TkNum TkPunto TkEnd
+
+    TkDosPuntos     shift and go to state 23
+
+
+state 23
+
+    (7) DECLARATION -> TkOn TkActivation TkDosPuntos . TkStore TkNum TkPunto TkEnd
+
+    TkStore         shift and go to state 24
+
+
+state 24
+
+    (7) DECLARATION -> TkOn TkActivation TkDosPuntos TkStore . TkNum TkPunto TkEnd
+
+    TkNum           shift and go to state 25
+
+
+state 25
+
+    (7) DECLARATION -> TkOn TkActivation TkDosPuntos TkStore TkNum . TkPunto TkEnd
+
+    TkPunto         shift and go to state 26
+
+
+state 26
+
+    (7) DECLARATION -> TkOn TkActivation TkDosPuntos TkStore TkNum TkPunto . TkEnd
+
+    TkEnd           shift and go to state 27
+
+
+state 27
+
+    (7) DECLARATION -> TkOn TkActivation TkDosPuntos TkStore TkNum TkPunto TkEnd .
+
+    TkEnd           reduce using rule 7 (DECLARATION -> TkOn TkActivation TkDosPuntos TkStore TkNum TkPunto TkEnd .)
 
