@@ -145,7 +145,7 @@ def Parser():
     minitokens = ""
 
     for tok in lexer:
-        minitokens += tok.value + " "
+        minitokens += str(tok.value) + " "
         # colum = find_column(content, tok)
         # mini = ""
 
@@ -169,9 +169,37 @@ def Parser():
 
 
 
+def p_bot(p):
+    'BOT : CREATE EXECUTE'
+    p[0] = ('Create',p[1],'execute',p[2])
+    
+def p_empty_bot(p):
+    'BOT : '
+
+def p_create(p):
+    'CREATE : TkCreate DEFINITION'
+    p[0] = p[2]
+
+def p_create(p):
+    'CREATE : '
+
+def p_int(p):
+    'DEFINITION : TkInt TkBot TkIdent DECLARATION TkEnd'
+    p[0] = ('int', p[3])
+
+def p_int(p):
+    'DEFINITION : '
+    
+
+
+def p_declaration(p):
+    'DECLARATION : TkOn TkActivation TkDosPuntos TkStore TkNum TkPunto TkEnd'
+    p[0] = ('activation', p[5])
+
+
 
 def p_execute(p):
-    'EXE : TkExecute SECUENCIACION TkEnd'
+    'EXECUTE : TkExecute SECUENCIACION TkEnd'
     p[0] = ('execute-block', p[2])
 
 def p_empty(p):

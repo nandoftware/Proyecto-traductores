@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'TkActivate TkActivation TkBool TkBot TkCaracter TkComa TkConjuncion TkCreate TkDisyuncion TkDiv TkDosPuntos TkEnd TkExecute TkFalse TkIdent TkIf TkIgual TkInt TkMayor TkMayorIgual TkMenor TkMenorIgual TkMod TkMult TkNegacion TkNoIgual TkNum TkOn TkParAbre TkParCierra TkPunto TkResta TkStore TkSuma TkTrue TkWhileEXE : TkExecute SECUENCIACION TkEndempty :SECUENCIACION : TkActivate TkIdent TkPunto SECUENCIACIONSECUENCIACION : empty'
+_lr_signature = 'TkActivate TkActivation TkBool TkBot TkCaracter TkComa TkConjuncion TkCreate TkDisyuncion TkDiv TkDosPuntos TkEnd TkExecute TkFalse TkIdent TkIf TkIgual TkInt TkMayor TkMayorIgual TkMenor TkMenorIgual TkMod TkMult TkNegacion TkNoIgual TkNum TkOn TkParAbre TkParCierra TkPunto TkResta TkStore TkSuma TkTrue TkWhileBOT : CREATE EXECUTEBOT : CREATE : DEFINITION : DECLARATION : TkOn TkActivation TkDosPuntos TkStore TkNum TkPunto TkEndEXECUTE : TkExecute SECUENCIACION TkEndempty :SECUENCIACION : TkActivate TkIdent TkPunto SECUENCIACIONSECUENCIACION : empty'
     
-_lr_action_items = {'TkExecute':([0,],[2,]),'$end':([1,6,],[0,-1,]),'TkActivate':([2,8,],[4,4,]),'TkEnd':([2,3,5,8,9,],[-2,6,-4,-2,-3,]),'TkIdent':([4,],[7,]),'TkPunto':([7,],[8,]),}
+_lr_action_items = {'$end':([0,1,3,8,],[-2,0,-1,-6,]),'TkExecute':([0,2,],[-3,4,]),'TkActivate':([4,10,],[6,6,]),'TkEnd':([4,5,7,10,11,],[-7,8,-9,-7,-8,]),'TkIdent':([6,],[9,]),'TkPunto':([9,],[10,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'EXE':([0,],[1,]),'SECUENCIACION':([2,8,],[3,9,]),'empty':([2,8,],[5,5,]),}
+_lr_goto_items = {'BOT':([0,],[1,]),'CREATE':([0,],[2,]),'EXECUTE':([2,],[3,]),'SECUENCIACION':([4,10,],[5,11,]),'empty':([4,10,],[7,7,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,9 +26,14 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> EXE","S'",1,None,None,None),
-  ('EXE -> TkExecute SECUENCIACION TkEnd','EXE',3,'p_execute','LexBot.py',174),
-  ('empty -> <empty>','empty',0,'p_empty','LexBot.py',178),
-  ('SECUENCIACION -> TkActivate TkIdent TkPunto SECUENCIACION','SECUENCIACION',4,'p_secuenciacion1','LexBot.py',182),
-  ('SECUENCIACION -> empty','SECUENCIACION',1,'p_secuenciacion2','LexBot.py',186),
+  ("S' -> BOT","S'",1,None,None,None),
+  ('BOT -> CREATE EXECUTE','BOT',2,'p_bot','LexBot.py',173),
+  ('BOT -> <empty>','BOT',0,'p_empty_bot','LexBot.py',177),
+  ('CREATE -> <empty>','CREATE',0,'p_create','LexBot.py',184),
+  ('DEFINITION -> <empty>','DEFINITION',0,'p_int','LexBot.py',191),
+  ('DECLARATION -> TkOn TkActivation TkDosPuntos TkStore TkNum TkPunto TkEnd','DECLARATION',7,'p_declaration','LexBot.py',196),
+  ('EXECUTE -> TkExecute SECUENCIACION TkEnd','EXECUTE',3,'p_execute','LexBot.py',202),
+  ('empty -> <empty>','empty',0,'p_empty','LexBot.py',206),
+  ('SECUENCIACION -> TkActivate TkIdent TkPunto SECUENCIACION','SECUENCIACION',4,'p_secuenciacion1','LexBot.py',210),
+  ('SECUENCIACION -> empty','SECUENCIACION',1,'p_secuenciacion2','LexBot.py',214),
 ]
