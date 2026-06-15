@@ -187,6 +187,8 @@ def p_bot(p):
     'BOT : CREATE EXECUTE'
     p[0] = (p[1],p[2])
     
+    
+    
 def p_bot_empty(p):
     'BOT : empty'
 
@@ -198,6 +200,7 @@ def p_bot_empty(p):
 def p_create(p):
     'CREATE : TkCreate DEFINITION'
     p[0] = (p[1],p[2])
+    
 
 def p_create_empty(p):
     'CREATE : empty'
@@ -210,6 +213,7 @@ def p_create_empty(p):
 def p_definition_int(p):
     'DEFINITION : TkInt TkBot TkIdent DECLARATION TkEnd'
     p[0] = (p[1], p[3], p[4])
+    
 
 def p_definition_empty(p):
     'DEFINITION : empty'
@@ -223,10 +227,12 @@ def p_definition_empty(p):
 def p_declaration_activation(p):
     'DECLARATION : TkOn TkActivation TkDosPuntos INSTRUCTION TkEnd'
     p[0] = (p[2], p[4])
+    
 
 def p_declaration_default(p):
     'DECLARATION : TkOn TkDefault TkDosPuntos INSTRUCTION TkEnd'
     p[0] = (p[2], p[4])
+    
 
 def p_declaration_empty(p):
     'DECLARATION : empty'
@@ -239,13 +245,101 @@ def p_declaration_empty(p):
 def p_instruction_store(p):
     'INSTRUCTION : TkStore TkNum TkPunto INSTRUCTION'
     p[0] = (p[1], p[2])
+    
 
 def p_instruction_activate(p):
     'INSTRUCTION : TkActivate TkIdent TkPunto INSTRUCTION'
     p[0] = (p[1], p[2])
 
+
 def p_instruction_if(p):
-    'INSTRUCTION : TkActivate TkIdent TkPunto INSTRUCTION'
+    'INSTRUCTION : Tkif EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd'
+    p[0] = (p[1], p[2], p[4])
+
+
+def p_instruction_while(p):
+    'INSTRUCTION : TkWhile EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd'
+    p[0] = (p[1], p[2], p[4])
+
+
+def p_exp_binaria_suma(p):
+    'EXP_BINARIA : EXP_BINARIA TkSuma EXP_BINARIA'
+    p[0] = p[1] + p[3]
+
+def p_exp_binaria_resta(p):
+    'EXP_BINARIA : EXP_BINARIA TkResta EXP_BINARIA'
+    p[0] = p[1] - p[3]
+
+def p_exp_binaria_mult(p):
+    'EXP_BINARIA : EXP_BINARIA TkMult EXP_BINARIA'
+    p[0] = p[1] * p[3]
+    
+def p_exp_binaria_div(p):
+    'EXP_BINARIA : EXP_BINARIA TkDiv EXP_BINARIA'
+    p[0] = p[1] / p[3]
+
+
+def p_exp_binaria_mod(p):
+    'EXP_BINARIA : EXP_BINARIA TkMod EXP_BINARIA'
+    p[0] = p[1] % p[3]
+
+
+def p_exp_binaria_conj(p):
+    'EXP_BINARIA : EXP_BINARIA TkConjuncion EXP_BINARIA'
+    p[0] = p[1] and p[3]
+
+
+def p_exp_binaria_disj(p):
+    'EXP_BINARIA : EXP_BINARIA TkDisyuncion EXP_BINARIA'
+    p[0] = p[1] or p[3]
+
+    
+def p_exp_binaria_igual(p):
+    'EXP_BINARIA : EXP_BINARIA TkIgual EXP_BINARIA'
+    p[0] = p[1] == p[3]
+
+def p_exp_binaria_menorI(p):
+    'EXP_BINARIA : EXP_BINARIA TkMenorIgual EXP_BINARIA'
+    p[0] = p[1] <= p[3]
+
+def p_exp_binaria_mayorI(p):
+    'EXP_BINARIA : EXP_BINARIA TkMayorIgual EXP_BINARIA'
+    p[0] = p[1] >= p[3]
+
+def p_exp_binaria_menor(p):
+    'EXP_BINARIA : EXP_BINARIA TkMenor EXP_BINARIA'
+    p[0] = p[1] < p[3]
+
+def p_exp_binaria_mayor(p):
+    'EXP_BINARIA : EXP_BINARIA TkMayor EXP_BINARIA'
+    p[0] = p[1] > p[3]
+
+def p_exp_binaria_paren(p):
+    'EXP_BINARIA : TkParAbre EXP_BINARI TkParCierra'
+    p[0] = p[2]
+
+def p_exp_binaria_num(p):
+    'EXP_BINARIA : TkNum'
+    p[0] = p[1]
+
+def p_exp_binaria_boolt(p):
+    'EXP_BINARIA : TkTrue'
+    p[0] = p[1]
+
+def p_exp_binaria_boolf(p):
+    'EXP_BINARIA : TkFalse'
+    p[0] = p[1]
+
+def p_exp_binaria_var(p):
+    'EXP_BINARIA : TkIdent'
+    p[0] = p[1]
+
+def p_exp_unaria(p):
+    'EXP_UNARI : TkNegacion EXP_BINARIA'
+    p[0] = not p[2]
+
+def p_instruction_empty(p):
+    'INSTRUCTION : empty'
 
 
 ##############################################
@@ -254,6 +348,7 @@ def p_instruction_if(p):
 def p_execute(p):
     'EXECUTE : TkExecute INSTRUCTION TkEnd'
     p[0] = (p[1], p[2])
+    
 
 
 #######################
@@ -268,6 +363,26 @@ def p_empty(p):
 def p_error(p):
     print("syntax error")
     print(p)
+
+
+class node():
+    def __init__(self, father, children):
+        self.father = father
+        self.children = children
+
+    def __str__(self):
+        return f"padre: {self.father}, hijos: {self.children}"
+
+class instrutions(node):
+    def __init__(self,  father, children, nomIns, var, ):
+        self.father = father
+        self.children = children
+        self.nomIns = nomIns
+        self.var = var
+
+    def __str__(self):
+        return f"{self.nomIns}\n\t var: {self.var}\n"
+        
     
 
 if __name__ == '__main__':
@@ -285,4 +400,5 @@ if __name__ == '__main__':
 
 
     AST = yc.parse(resultado)
+    
     print(AST)
