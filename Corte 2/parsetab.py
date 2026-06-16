@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'TkActivate TkActivation TkBool TkBot TkCaracter TkComa TkConjuncion TkCreate TkDefault TkDisyuncion TkDiv TkDosPuntos TkEnd TkExecute TkFalse TkIdent TkIf TkIgual TkInt TkMayor TkMayorIgual TkMenor TkMenorIgual TkMod TkMult TkNegacion TkNoIgual TkNum TkOn TkParAbre TkParCierra TkPunto TkResta TkStore TkSuma TkTrue TkWhileBOT : CREATE EXECUTEBOT : emptyCREATE : TkCreate DEFINITIONCREATE : emptyDEFINITION : TkInt TkBot TkIdent DECLARATION TkEndDEFINITION : emptyDECLARATION : TkOn TkActivation TkDosPuntos INSTRUCTION TkEndDECLARATION : TkOn TkDefault TkDosPuntos INSTRUCTION TkEndDECLARATION : emptyINSTRUCTION : TkStore TkNum TkPunto INSTRUCTIONINSTRUCTION : TkActivate TkIdent TkPunto INSTRUCTIONINSTRUCTION : emptyEXECUTE : TkExecute INSTRUCTION TkEndempty :'
+_lr_signature = 'leftTkDisyuncionleftTkConjuncionrightTkNegacionnonassocTkIgualTkNoIgualTkMenorTkMenorIgualTkMayorTkMayorIgualleftTkSumaTkRestaleftTkMultTkDivTkModTkActivate TkActivation TkAdvance TkBool TkBot TkCaracter TkComa TkConjuncion TkCreate TkDefault TkDisyuncion TkDiv TkDosPuntos TkEnd TkExecute TkFalse TkIdent TkIf TkIgual TkInt TkMayor TkMayorIgual TkMenor TkMenorIgual TkMod TkMult TkNegacion TkNoIgual TkNum TkOn TkParAbre TkParCierra TkPunto TkResta TkStore TkSuma TkTrue TkWhileBOT : CREATE EXECUTECREATE : TkCreate DEFINITIONDEFINITION : DEFINITION TYPE TkBot TkIdent DECLARATION TkEndDEFINITION : emptyTYPE : TkInt\n| TkBoolDECLARATION : DECLARATION EVENTDECLARATION : EVENTDECLARATION : emptyEVENT : TkOn TkActivation TkDosPuntos INSTRUCTION TkEndEVENT : TkOn TkDefault TkDosPuntos INSTRUCTION TkEndINSTRUCTION : INSTRUCTION SIMPLE_INSTRUCTIONINSTRUCTION : SIMPLE_INSTRUCTIONINSTRUCTION : emptySIMPLE_INSTRUCTION : TkStore EXP_BINARIA TkPuntoSIMPLE_INSTRUCTION : TkActivate TkIdent TkPuntoSIMPLE_INSTRUCTION : TkAdvance TkIdent TkPuntoSIMPLE_INSTRUCTION : TkIf EXP_BINARIA TkDosPuntos INSTRUCTION TkEndSIMPLE_INSTRUCTION : TkWhile EXP_BINARIA TkDosPuntos INSTRUCTION TkEndEXECUTE : TkExecute INSTRUCTION TkEndEXP_BINARIA : EXP_BINARIA TkSuma EXP_BINARIA\n| EXP_BINARIA TkResta EXP_BINARIA\n| EXP_BINARIA TkMult EXP_BINARIA\n| EXP_BINARIA TkDiv EXP_BINARIA\n| EXP_BINARIA TkMod EXP_BINARIA\n| EXP_BINARIA TkConjuncion EXP_BINARIA\n| EXP_BINARIA TkDisyuncion EXP_BINARIA\n| EXP_BINARIA TkIgual EXP_BINARIA\n| EXP_BINARIA TkNoIgual EXP_BINARIA\n| EXP_BINARIA TkMenorIgual EXP_BINARIA\n| EXP_BINARIA TkMayorIgual EXP_BINARIA\n| EXP_BINARIA TkMenor EXP_BINARIA\n| EXP_BINARIA TkMayor EXP_BINARIAEXP_BINARIA : TkParAbre EXP_BINARIA TkParCierraEXP_BINARIA : TkNegacion EXP_BINARIAEXP_BINARIA : TkNumEXP_BINARIA : TkTrueEXP_BINARIA : TkFalseEXP_BINARIA : TkIdentEXP_BINARIA : TkCaracterempty :'
     
-_lr_action_items = {'TkCreate':([0,],[4,]),'$end':([0,1,3,5,15,],[-14,0,-2,-1,-13,]),'TkExecute':([0,2,3,4,7,9,26,],[-14,6,-4,-14,-3,-6,-5,]),'TkInt':([4,],[8,]),'TkStore':([6,19,20,29,30,],[11,11,11,11,11,]),'TkActivate':([6,19,20,29,30,],[12,12,12,12,12,]),'TkEnd':([6,10,13,18,19,20,21,23,24,25,29,30,31,32,33,34,],[-14,15,-12,-14,-14,-14,26,-9,-10,-11,-14,-14,33,34,-7,-8,]),'TkBot':([8,],[14,]),'TkNum':([11,],[16,]),'TkIdent':([12,14,],[17,18,]),'TkPunto':([16,17,],[19,20,]),'TkOn':([18,],[22,]),'TkActivation':([22,],[27,]),'TkDefault':([22,],[28,]),'TkDosPuntos':([27,28,],[29,30,]),}
+_lr_action_items = {'TkCreate':([0,],[3,]),'$end':([1,4,19,],[0,-1,-20,]),'TkExecute':([2,3,6,7,77,],[5,-41,-2,-4,-3,]),'TkInt':([3,6,7,77,],[-41,17,-4,-3,]),'TkBool':([3,6,7,77,],[-41,18,-4,-3,]),'TkStore':([5,8,9,10,20,34,50,51,52,53,69,70,75,76,81,82,83,84,],[11,11,-13,-14,-12,-15,-16,-17,11,11,11,11,-18,-19,11,11,11,11,]),'TkActivate':([5,8,9,10,20,34,50,51,52,53,69,70,75,76,81,82,83,84,],[12,12,-13,-14,-12,-15,-16,-17,12,12,12,12,-18,-19,12,12,12,12,]),'TkAdvance':([5,8,9,10,20,34,50,51,52,53,69,70,75,76,81,82,83,84,],[13,13,-13,-14,-12,-15,-16,-17,13,13,13,13,-18,-19,13,13,13,13,]),'TkIf':([5,8,9,10,20,34,50,51,52,53,69,70,75,76,81,82,83,84,],[14,14,-13,-14,-12,-15,-16,-17,14,14,14,14,-18,-19,14,14,14,14,]),'TkWhile':([5,8,9,10,20,34,50,51,52,53,69,70,75,76,81,82,83,84,],[15,15,-13,-14,-12,-15,-16,-17,15,15,15,15,-18,-19,15,15,15,15,]),'TkEnd':([5,8,9,10,20,34,50,51,52,53,54,69,70,71,72,73,75,76,78,81,82,83,84,85,86,],[-41,19,-13,-14,-12,-15,-16,-17,-41,-41,-41,75,76,77,-8,-9,-18,-19,-7,-41,-41,85,86,-10,-11,]),'TkParAbre':([11,14,15,22,23,35,36,37,38,39,40,41,42,43,44,45,46,47,],[22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,]),'TkNegacion':([11,14,15,22,23,35,36,37,38,39,40,41,42,43,44,45,46,47,],[23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,]),'TkNum':([11,14,15,22,23,35,36,37,38,39,40,41,42,43,44,45,46,47,],[24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,]),'TkTrue':([11,14,15,22,23,35,36,37,38,39,40,41,42,43,44,45,46,47,],[25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,]),'TkFalse':([11,14,15,22,23,35,36,37,38,39,40,41,42,43,44,45,46,47,],[26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,]),'TkIdent':([11,12,13,14,15,22,23,33,35,36,37,38,39,40,41,42,43,44,45,46,47,],[27,29,30,27,27,27,27,54,27,27,27,27,27,27,27,27,27,27,27,27,27,]),'TkCaracter':([11,14,15,22,23,35,36,37,38,39,40,41,42,43,44,45,46,47,],[28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,]),'TkBot':([16,17,18,],[33,-5,-6,]),'TkPunto':([21,24,25,26,27,28,29,30,49,55,56,57,58,59,60,61,62,63,64,65,66,67,68,],[34,-36,-37,-38,-39,-40,50,51,-35,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,]),'TkSuma':([21,24,25,26,27,28,31,32,48,49,55,56,57,58,59,60,61,62,63,64,65,66,67,68,],[35,-36,-37,-38,-39,-40,35,35,35,35,-21,-22,-23,-24,-25,35,35,35,35,35,35,35,35,-34,]),'TkResta':([21,24,25,26,27,28,31,32,48,49,55,56,57,58,59,60,61,62,63,64,65,66,67,68,],[36,-36,-37,-38,-39,-40,36,36,36,36,-21,-22,-23,-24,-25,36,36,36,36,36,36,36,36,-34,]),'TkMult':([21,24,25,26,27,28,31,32,48,49,55,56,57,58,59,60,61,62,63,64,65,66,67,68,],[37,-36,-37,-38,-39,-40,37,37,37,37,37,37,-23,-24,-25,37,37,37,37,37,37,37,37,-34,]),'TkDiv':([21,24,25,26,27,28,31,32,48,49,55,56,57,58,59,60,61,62,63,64,65,66,67,68,],[38,-36,-37,-38,-39,-40,38,38,38,38,38,38,-23,-24,-25,38,38,38,38,38,38,38,38,-34,]),'TkMod':([21,24,25,26,27,28,31,32,48,49,55,56,57,58,59,60,61,62,63,64,65,66,67,68,],[39,-36,-37,-38,-39,-40,39,39,39,39,39,39,-23,-24,-25,39,39,39,39,39,39,39,39,-34,]),'TkConjuncion':([21,24,25,26,27,28,31,32,48,49,55,56,57,58,59,60,61,62,63,64,65,66,67,68,],[40,-36,-37,-38,-39,-40,40,40,40,-35,-21,-22,-23,-24,-25,-26,40,-28,-29,-30,-31,-32,-33,-34,]),'TkDisyuncion':([21,24,25,26,27,28,31,32,48,49,55,56,57,58,59,60,61,62,63,64,65,66,67,68,],[41,-36,-37,-38,-39,-40,41,41,41,-35,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,]),'TkIgual':([21,24,25,26,27,28,31,32,48,49,55,56,57,58,59,60,61,62,63,64,65,66,67,68,],[42,-36,-37,-38,-39,-40,42,42,42,42,-21,-22,-23,-24,-25,42,42,None,None,None,None,None,None,-34,]),'TkNoIgual':([21,24,25,26,27,28,31,32,48,49,55,56,57,58,59,60,61,62,63,64,65,66,67,68,],[43,-36,-37,-38,-39,-40,43,43,43,43,-21,-22,-23,-24,-25,43,43,None,None,None,None,None,None,-34,]),'TkMenorIgual':([21,24,25,26,27,28,31,32,48,49,55,56,57,58,59,60,61,62,63,64,65,66,67,68,],[44,-36,-37,-38,-39,-40,44,44,44,44,-21,-22,-23,-24,-25,44,44,None,None,None,None,None,None,-34,]),'TkMayorIgual':([21,24,25,26,27,28,31,32,48,49,55,56,57,58,59,60,61,62,63,64,65,66,67,68,],[45,-36,-37,-38,-39,-40,45,45,45,45,-21,-22,-23,-24,-25,45,45,None,None,None,None,None,None,-34,]),'TkMenor':([21,24,25,26,27,28,31,32,48,49,55,56,57,58,59,60,61,62,63,64,65,66,67,68,],[46,-36,-37,-38,-39,-40,46,46,46,46,-21,-22,-23,-24,-25,46,46,None,None,None,None,None,None,-34,]),'TkMayor':([21,24,25,26,27,28,31,32,48,49,55,56,57,58,59,60,61,62,63,64,65,66,67,68,],[47,-36,-37,-38,-39,-40,47,47,47,47,-21,-22,-23,-24,-25,47,47,None,None,None,None,None,None,-34,]),'TkDosPuntos':([24,25,26,27,28,31,32,49,55,56,57,58,59,60,61,62,63,64,65,66,67,68,79,80,],[-36,-37,-38,-39,-40,52,53,-35,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,81,82,]),'TkParCierra':([24,25,26,27,28,48,49,55,56,57,58,59,60,61,62,63,64,65,66,67,68,],[-36,-37,-38,-39,-40,68,-35,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,]),'TkOn':([54,71,72,73,78,85,86,],[74,74,-8,-9,-7,-10,-11,]),'TkActivation':([74,],[79,]),'TkDefault':([74,],[80,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'BOT':([0,],[1,]),'CREATE':([0,],[2,]),'empty':([0,4,6,18,19,20,29,30,],[3,9,13,23,13,13,13,13,]),'EXECUTE':([2,],[5,]),'DEFINITION':([4,],[7,]),'INSTRUCTION':([6,19,20,29,30,],[10,24,25,31,32,]),'DECLARATION':([18,],[21,]),}
+_lr_goto_items = {'BOT':([0,],[1,]),'CREATE':([0,],[2,]),'EXECUTE':([2,],[4,]),'DEFINITION':([3,],[6,]),'empty':([3,5,52,53,54,81,82,],[7,10,10,10,73,10,10,]),'INSTRUCTION':([5,52,53,81,82,],[8,69,70,83,84,]),'SIMPLE_INSTRUCTION':([5,8,52,53,69,70,81,82,83,84,],[9,20,9,9,20,20,9,9,20,20,]),'TYPE':([6,],[16,]),'EXP_BINARIA':([11,14,15,22,23,35,36,37,38,39,40,41,42,43,44,45,46,47,],[21,31,32,48,49,55,56,57,58,59,60,61,62,63,64,65,66,67,]),'DECLARATION':([54,],[71,]),'EVENT':([54,71,],[72,78,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,18 +27,45 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> BOT","S'",1,None,None,None),
-  ('BOT -> CREATE EXECUTE','BOT',2,'p_bot','LexBot.py',187),
-  ('BOT -> empty','BOT',1,'p_bot_empty','LexBot.py',191),
-  ('CREATE -> TkCreate DEFINITION','CREATE',2,'p_create','LexBot.py',199),
-  ('CREATE -> empty','CREATE',1,'p_create_empty','LexBot.py',203),
-  ('DEFINITION -> TkInt TkBot TkIdent DECLARATION TkEnd','DEFINITION',5,'p_definition_int','LexBot.py',211),
-  ('DEFINITION -> empty','DEFINITION',1,'p_definition_empty','LexBot.py',215),
-  ('DECLARATION -> TkOn TkActivation TkDosPuntos INSTRUCTION TkEnd','DECLARATION',5,'p_declaration_activation','LexBot.py',224),
-  ('DECLARATION -> TkOn TkDefault TkDosPuntos INSTRUCTION TkEnd','DECLARATION',5,'p_declaration_default','LexBot.py',228),
-  ('DECLARATION -> empty','DECLARATION',1,'p_declaration_empty','LexBot.py',232),
-  ('INSTRUCTION -> TkStore TkNum TkPunto INSTRUCTION','INSTRUCTION',4,'p_instruction_store','LexBot.py',240),
-  ('INSTRUCTION -> TkActivate TkIdent TkPunto INSTRUCTION','INSTRUCTION',4,'p_instruction_activate','LexBot.py',244),
-  ('INSTRUCTION -> empty','INSTRUCTION',1,'p_instruction_empty','LexBot.py',248),
-  ('EXECUTE -> TkExecute INSTRUCTION TkEnd','EXECUTE',3,'p_execute','LexBot.py',255),
-  ('empty -> <empty>','empty',0,'p_empty','LexBot.py',263),
+  ('BOT -> CREATE EXECUTE','BOT',2,'p_bot','LexBot.py',337),
+  ('CREATE -> TkCreate DEFINITION','CREATE',2,'p_create','LexBot.py',347),
+  ('DEFINITION -> DEFINITION TYPE TkBot TkIdent DECLARATION TkEnd','DEFINITION',6,'p_definition_recursive','LexBot.py',356),
+  ('DEFINITION -> empty','DEFINITION',1,'p_definition_empty','LexBot.py',361),
+  ('TYPE -> TkInt','TYPE',1,'p_type','LexBot.py',365),
+  ('TYPE -> TkBool','TYPE',1,'p_type','LexBot.py',366),
+  ('DECLARATION -> DECLARATION EVENT','DECLARATION',2,'p_declaration_recursive','LexBot.py',373),
+  ('DECLARATION -> EVENT','DECLARATION',1,'p_declaration_event','LexBot.py',378),
+  ('DECLARATION -> empty','DECLARATION',1,'p_declaration_empty','LexBot.py',383),
+  ('EVENT -> TkOn TkActivation TkDosPuntos INSTRUCTION TkEnd','EVENT',5,'p_event_activation','LexBot.py',388),
+  ('EVENT -> TkOn TkDefault TkDosPuntos INSTRUCTION TkEnd','EVENT',5,'p_event_default','LexBot.py',393),
+  ('INSTRUCTION -> INSTRUCTION SIMPLE_INSTRUCTION','INSTRUCTION',2,'p_instruction_recursive','LexBot.py',401),
+  ('INSTRUCTION -> SIMPLE_INSTRUCTION','INSTRUCTION',1,'p_instruction_simple','LexBot.py',412),
+  ('INSTRUCTION -> empty','INSTRUCTION',1,'p_instruction_empty','LexBot.py',417),
+  ('SIMPLE_INSTRUCTION -> TkStore EXP_BINARIA TkPunto','SIMPLE_INSTRUCTION',3,'p_simple_instruction_store','LexBot.py',422),
+  ('SIMPLE_INSTRUCTION -> TkActivate TkIdent TkPunto','SIMPLE_INSTRUCTION',3,'p_simple_instruction_activate','LexBot.py',427),
+  ('SIMPLE_INSTRUCTION -> TkAdvance TkIdent TkPunto','SIMPLE_INSTRUCTION',3,'p_simple_instruction_advance','LexBot.py',432),
+  ('SIMPLE_INSTRUCTION -> TkIf EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd','SIMPLE_INSTRUCTION',5,'p_simple_instruction_if','LexBot.py',437),
+  ('SIMPLE_INSTRUCTION -> TkWhile EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd','SIMPLE_INSTRUCTION',5,'p_simple_instruction_while','LexBot.py',442),
+  ('EXECUTE -> TkExecute INSTRUCTION TkEnd','EXECUTE',3,'p_execute','LexBot.py',450),
+  ('EXP_BINARIA -> EXP_BINARIA TkSuma EXP_BINARIA','EXP_BINARIA',3,'p_exp_binaria_operador','LexBot.py',458),
+  ('EXP_BINARIA -> EXP_BINARIA TkResta EXP_BINARIA','EXP_BINARIA',3,'p_exp_binaria_operador','LexBot.py',459),
+  ('EXP_BINARIA -> EXP_BINARIA TkMult EXP_BINARIA','EXP_BINARIA',3,'p_exp_binaria_operador','LexBot.py',460),
+  ('EXP_BINARIA -> EXP_BINARIA TkDiv EXP_BINARIA','EXP_BINARIA',3,'p_exp_binaria_operador','LexBot.py',461),
+  ('EXP_BINARIA -> EXP_BINARIA TkMod EXP_BINARIA','EXP_BINARIA',3,'p_exp_binaria_operador','LexBot.py',462),
+  ('EXP_BINARIA -> EXP_BINARIA TkConjuncion EXP_BINARIA','EXP_BINARIA',3,'p_exp_binaria_operador','LexBot.py',463),
+  ('EXP_BINARIA -> EXP_BINARIA TkDisyuncion EXP_BINARIA','EXP_BINARIA',3,'p_exp_binaria_operador','LexBot.py',464),
+  ('EXP_BINARIA -> EXP_BINARIA TkIgual EXP_BINARIA','EXP_BINARIA',3,'p_exp_binaria_operador','LexBot.py',465),
+  ('EXP_BINARIA -> EXP_BINARIA TkNoIgual EXP_BINARIA','EXP_BINARIA',3,'p_exp_binaria_operador','LexBot.py',466),
+  ('EXP_BINARIA -> EXP_BINARIA TkMenorIgual EXP_BINARIA','EXP_BINARIA',3,'p_exp_binaria_operador','LexBot.py',467),
+  ('EXP_BINARIA -> EXP_BINARIA TkMayorIgual EXP_BINARIA','EXP_BINARIA',3,'p_exp_binaria_operador','LexBot.py',468),
+  ('EXP_BINARIA -> EXP_BINARIA TkMenor EXP_BINARIA','EXP_BINARIA',3,'p_exp_binaria_operador','LexBot.py',469),
+  ('EXP_BINARIA -> EXP_BINARIA TkMayor EXP_BINARIA','EXP_BINARIA',3,'p_exp_binaria_operador','LexBot.py',470),
+  ('EXP_BINARIA -> TkParAbre EXP_BINARIA TkParCierra','EXP_BINARIA',3,'p_exp_binaria_paren','LexBot.py',492),
+  ('EXP_BINARIA -> TkNegacion EXP_BINARIA','EXP_BINARIA',2,'p_exp_unaria','LexBot.py',497),
+  ('EXP_BINARIA -> TkNum','EXP_BINARIA',1,'p_exp_binaria_num','LexBot.py',502),
+  ('EXP_BINARIA -> TkTrue','EXP_BINARIA',1,'p_exp_binaria_boolt','LexBot.py',507),
+  ('EXP_BINARIA -> TkFalse','EXP_BINARIA',1,'p_exp_binaria_boolf','LexBot.py',512),
+  ('EXP_BINARIA -> TkIdent','EXP_BINARIA',1,'p_exp_binaria_var','LexBot.py',517),
+  ('EXP_BINARIA -> TkCaracter','EXP_BINARIA',1,'p_exp_binaria_char','LexBot.py',522),
+  ('empty -> <empty>','empty',0,'p_empty','LexBot.py',530),
 ]

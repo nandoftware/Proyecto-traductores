@@ -2,98 +2,108 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    TkBool
-    TkCaracter
     TkComa
-    TkConjuncion
-    TkDisyuncion
-    TkDiv
-    TkFalse
-    TkIf
-    TkIgual
-    TkMayor
-    TkMayorIgual
-    TkMenor
-    TkMenorIgual
-    TkMod
-    TkMult
-    TkNegacion
-    TkNoIgual
-    TkParAbre
-    TkParCierra
-    TkResta
-    TkSuma
-    TkTrue
-    TkWhile
 
 Grammar
 
 Rule 0     S' -> BOT
 Rule 1     BOT -> CREATE EXECUTE
-Rule 2     BOT -> empty
-Rule 3     CREATE -> TkCreate DEFINITION
-Rule 4     CREATE -> empty
-Rule 5     DEFINITION -> TkInt TkBot TkIdent DECLARATION TkEnd
-Rule 6     DEFINITION -> empty
-Rule 7     DECLARATION -> TkOn TkActivation TkDosPuntos INSTRUCTION TkEnd
-Rule 8     DECLARATION -> TkOn TkDefault TkDosPuntos INSTRUCTION TkEnd
+Rule 2     CREATE -> TkCreate DEFINITION
+Rule 3     DEFINITION -> DEFINITION TYPE TkBot TkIdent DECLARATION TkEnd
+Rule 4     DEFINITION -> empty
+Rule 5     TYPE -> TkInt
+Rule 6     TYPE -> TkBool
+Rule 7     DECLARATION -> DECLARATION EVENT
+Rule 8     DECLARATION -> EVENT
 Rule 9     DECLARATION -> empty
-Rule 10    INSTRUCTION -> TkStore TkNum TkPunto INSTRUCTION
-Rule 11    INSTRUCTION -> TkActivate TkIdent TkPunto INSTRUCTION
-Rule 12    INSTRUCTION -> empty
-Rule 13    EXECUTE -> TkExecute INSTRUCTION TkEnd
-Rule 14    empty -> <empty>
+Rule 10    EVENT -> TkOn TkActivation TkDosPuntos INSTRUCTION TkEnd
+Rule 11    EVENT -> TkOn TkDefault TkDosPuntos INSTRUCTION TkEnd
+Rule 12    INSTRUCTION -> INSTRUCTION SIMPLE_INSTRUCTION
+Rule 13    INSTRUCTION -> SIMPLE_INSTRUCTION
+Rule 14    INSTRUCTION -> empty
+Rule 15    SIMPLE_INSTRUCTION -> TkStore EXP_BINARIA TkPunto
+Rule 16    SIMPLE_INSTRUCTION -> TkActivate TkIdent TkPunto
+Rule 17    SIMPLE_INSTRUCTION -> TkAdvance TkIdent TkPunto
+Rule 18    SIMPLE_INSTRUCTION -> TkIf EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd
+Rule 19    SIMPLE_INSTRUCTION -> TkWhile EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd
+Rule 20    EXECUTE -> TkExecute INSTRUCTION TkEnd
+Rule 21    EXP_BINARIA -> EXP_BINARIA TkSuma EXP_BINARIA
+Rule 22    EXP_BINARIA -> EXP_BINARIA TkResta EXP_BINARIA
+Rule 23    EXP_BINARIA -> EXP_BINARIA TkMult EXP_BINARIA
+Rule 24    EXP_BINARIA -> EXP_BINARIA TkDiv EXP_BINARIA
+Rule 25    EXP_BINARIA -> EXP_BINARIA TkMod EXP_BINARIA
+Rule 26    EXP_BINARIA -> EXP_BINARIA TkConjuncion EXP_BINARIA
+Rule 27    EXP_BINARIA -> EXP_BINARIA TkDisyuncion EXP_BINARIA
+Rule 28    EXP_BINARIA -> EXP_BINARIA TkIgual EXP_BINARIA
+Rule 29    EXP_BINARIA -> EXP_BINARIA TkNoIgual EXP_BINARIA
+Rule 30    EXP_BINARIA -> EXP_BINARIA TkMenorIgual EXP_BINARIA
+Rule 31    EXP_BINARIA -> EXP_BINARIA TkMayorIgual EXP_BINARIA
+Rule 32    EXP_BINARIA -> EXP_BINARIA TkMenor EXP_BINARIA
+Rule 33    EXP_BINARIA -> EXP_BINARIA TkMayor EXP_BINARIA
+Rule 34    EXP_BINARIA -> TkParAbre EXP_BINARIA TkParCierra
+Rule 35    EXP_BINARIA -> TkNegacion EXP_BINARIA
+Rule 36    EXP_BINARIA -> TkNum
+Rule 37    EXP_BINARIA -> TkTrue
+Rule 38    EXP_BINARIA -> TkFalse
+Rule 39    EXP_BINARIA -> TkIdent
+Rule 40    EXP_BINARIA -> TkCaracter
+Rule 41    empty -> <empty>
 
 Terminals, with rules where they appear
 
-TkActivate           : 11
-TkActivation         : 7
-TkBool               : 
-TkBot                : 5
-TkCaracter           : 
+TkActivate           : 16
+TkActivation         : 10
+TkAdvance            : 17
+TkBool               : 6
+TkBot                : 3
+TkCaracter           : 40
 TkComa               : 
-TkConjuncion         : 
-TkCreate             : 3
-TkDefault            : 8
-TkDisyuncion         : 
-TkDiv                : 
-TkDosPuntos          : 7 8
-TkEnd                : 5 7 8 13
-TkExecute            : 13
-TkFalse              : 
-TkIdent              : 5 11
-TkIf                 : 
-TkIgual              : 
+TkConjuncion         : 26
+TkCreate             : 2
+TkDefault            : 11
+TkDisyuncion         : 27
+TkDiv                : 24
+TkDosPuntos          : 10 11 18 19
+TkEnd                : 3 10 11 18 19 20
+TkExecute            : 20
+TkFalse              : 38
+TkIdent              : 3 16 17 39
+TkIf                 : 18
+TkIgual              : 28
 TkInt                : 5
-TkMayor              : 
-TkMayorIgual         : 
-TkMenor              : 
-TkMenorIgual         : 
-TkMod                : 
-TkMult               : 
-TkNegacion           : 
-TkNoIgual            : 
-TkNum                : 10
-TkOn                 : 7 8
-TkParAbre            : 
-TkParCierra          : 
-TkPunto              : 10 11
-TkResta              : 
-TkStore              : 10
-TkSuma               : 
-TkTrue               : 
-TkWhile              : 
+TkMayor              : 33
+TkMayorIgual         : 31
+TkMenor              : 32
+TkMenorIgual         : 30
+TkMod                : 25
+TkMult               : 23
+TkNegacion           : 35
+TkNoIgual            : 29
+TkNum                : 36
+TkOn                 : 10 11
+TkParAbre            : 34
+TkParCierra          : 34
+TkPunto              : 15 16 17
+TkResta              : 22
+TkStore              : 15
+TkSuma               : 21
+TkTrue               : 37
+TkWhile              : 19
 error                : 
 
 Nonterminals, with rules where they appear
 
 BOT                  : 0
 CREATE               : 1
-DECLARATION          : 5
-DEFINITION           : 3
+DECLARATION          : 3 7
+DEFINITION           : 2 3
+EVENT                : 7 8
 EXECUTE              : 1
-INSTRUCTION          : 7 8 10 11 13
-empty                : 2 4 6 9 12
+EXP_BINARIA          : 15 18 19 21 21 22 22 23 23 24 24 25 25 26 26 27 27 28 28 29 29 30 30 31 31 32 32 33 33 34 35
+INSTRUCTION          : 10 11 12 18 19 20
+SIMPLE_INSTRUCTION   : 12 13
+TYPE                 : 3
+empty                : 4 9 14
 
 Parsing method: LALR
 
@@ -101,18 +111,12 @@ state 0
 
     (0) S' -> . BOT
     (1) BOT -> . CREATE EXECUTE
-    (2) BOT -> . empty
-    (3) CREATE -> . TkCreate DEFINITION
-    (4) CREATE -> . empty
-    (14) empty -> .
+    (2) CREATE -> . TkCreate DEFINITION
 
-    TkCreate        shift and go to state 4
-    $end            reduce using rule 14 (empty -> .)
-    TkExecute       reduce using rule 14 (empty -> .)
+    TkCreate        shift and go to state 3
 
     BOT                            shift and go to state 1
     CREATE                         shift and go to state 2
-    empty                          shift and go to state 3
 
 state 1
 
@@ -123,289 +127,2175 @@ state 1
 state 2
 
     (1) BOT -> CREATE . EXECUTE
-    (13) EXECUTE -> . TkExecute INSTRUCTION TkEnd
+    (20) EXECUTE -> . TkExecute INSTRUCTION TkEnd
 
-    TkExecute       shift and go to state 6
+    TkExecute       shift and go to state 5
 
-    EXECUTE                        shift and go to state 5
+    EXECUTE                        shift and go to state 4
 
 state 3
 
-    (2) BOT -> empty .
-    (4) CREATE -> empty .
+    (2) CREATE -> TkCreate . DEFINITION
+    (3) DEFINITION -> . DEFINITION TYPE TkBot TkIdent DECLARATION TkEnd
+    (4) DEFINITION -> . empty
+    (41) empty -> .
 
-    $end            reduce using rule 2 (BOT -> empty .)
-    TkExecute       reduce using rule 4 (CREATE -> empty .)
+    TkInt           reduce using rule 41 (empty -> .)
+    TkBool          reduce using rule 41 (empty -> .)
+    TkExecute       reduce using rule 41 (empty -> .)
 
+    DEFINITION                     shift and go to state 6
+    empty                          shift and go to state 7
 
 state 4
-
-    (3) CREATE -> TkCreate . DEFINITION
-    (5) DEFINITION -> . TkInt TkBot TkIdent DECLARATION TkEnd
-    (6) DEFINITION -> . empty
-    (14) empty -> .
-
-    TkInt           shift and go to state 8
-    TkExecute       reduce using rule 14 (empty -> .)
-
-    DEFINITION                     shift and go to state 7
-    empty                          shift and go to state 9
-
-state 5
 
     (1) BOT -> CREATE EXECUTE .
 
     $end            reduce using rule 1 (BOT -> CREATE EXECUTE .)
 
 
-state 6
+state 5
 
-    (13) EXECUTE -> TkExecute . INSTRUCTION TkEnd
-    (10) INSTRUCTION -> . TkStore TkNum TkPunto INSTRUCTION
-    (11) INSTRUCTION -> . TkActivate TkIdent TkPunto INSTRUCTION
-    (12) INSTRUCTION -> . empty
-    (14) empty -> .
+    (20) EXECUTE -> TkExecute . INSTRUCTION TkEnd
+    (12) INSTRUCTION -> . INSTRUCTION SIMPLE_INSTRUCTION
+    (13) INSTRUCTION -> . SIMPLE_INSTRUCTION
+    (14) INSTRUCTION -> . empty
+    (15) SIMPLE_INSTRUCTION -> . TkStore EXP_BINARIA TkPunto
+    (16) SIMPLE_INSTRUCTION -> . TkActivate TkIdent TkPunto
+    (17) SIMPLE_INSTRUCTION -> . TkAdvance TkIdent TkPunto
+    (18) SIMPLE_INSTRUCTION -> . TkIf EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd
+    (19) SIMPLE_INSTRUCTION -> . TkWhile EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd
+    (41) empty -> .
 
+  ! shift/reduce conflict for TkStore resolved as shift
+  ! shift/reduce conflict for TkActivate resolved as shift
+  ! shift/reduce conflict for TkAdvance resolved as shift
+  ! shift/reduce conflict for TkIf resolved as shift
+  ! shift/reduce conflict for TkWhile resolved as shift
     TkStore         shift and go to state 11
     TkActivate      shift and go to state 12
-    TkEnd           reduce using rule 14 (empty -> .)
+    TkAdvance       shift and go to state 13
+    TkIf            shift and go to state 14
+    TkWhile         shift and go to state 15
+    TkEnd           reduce using rule 41 (empty -> .)
 
-    INSTRUCTION                    shift and go to state 10
-    empty                          shift and go to state 13
+  ! TkStore         [ reduce using rule 41 (empty -> .) ]
+  ! TkActivate      [ reduce using rule 41 (empty -> .) ]
+  ! TkAdvance       [ reduce using rule 41 (empty -> .) ]
+  ! TkIf            [ reduce using rule 41 (empty -> .) ]
+  ! TkWhile         [ reduce using rule 41 (empty -> .) ]
+
+    INSTRUCTION                    shift and go to state 8
+    SIMPLE_INSTRUCTION             shift and go to state 9
+    empty                          shift and go to state 10
+
+state 6
+
+    (2) CREATE -> TkCreate DEFINITION .
+    (3) DEFINITION -> DEFINITION . TYPE TkBot TkIdent DECLARATION TkEnd
+    (5) TYPE -> . TkInt
+    (6) TYPE -> . TkBool
+
+    TkExecute       reduce using rule 2 (CREATE -> TkCreate DEFINITION .)
+    TkInt           shift and go to state 17
+    TkBool          shift and go to state 18
+
+    TYPE                           shift and go to state 16
 
 state 7
 
-    (3) CREATE -> TkCreate DEFINITION .
+    (4) DEFINITION -> empty .
 
-    TkExecute       reduce using rule 3 (CREATE -> TkCreate DEFINITION .)
+    TkInt           reduce using rule 4 (DEFINITION -> empty .)
+    TkBool          reduce using rule 4 (DEFINITION -> empty .)
+    TkExecute       reduce using rule 4 (DEFINITION -> empty .)
 
 
 state 8
 
-    (5) DEFINITION -> TkInt . TkBot TkIdent DECLARATION TkEnd
+    (20) EXECUTE -> TkExecute INSTRUCTION . TkEnd
+    (12) INSTRUCTION -> INSTRUCTION . SIMPLE_INSTRUCTION
+    (15) SIMPLE_INSTRUCTION -> . TkStore EXP_BINARIA TkPunto
+    (16) SIMPLE_INSTRUCTION -> . TkActivate TkIdent TkPunto
+    (17) SIMPLE_INSTRUCTION -> . TkAdvance TkIdent TkPunto
+    (18) SIMPLE_INSTRUCTION -> . TkIf EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd
+    (19) SIMPLE_INSTRUCTION -> . TkWhile EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd
 
-    TkBot           shift and go to state 14
+    TkEnd           shift and go to state 19
+    TkStore         shift and go to state 11
+    TkActivate      shift and go to state 12
+    TkAdvance       shift and go to state 13
+    TkIf            shift and go to state 14
+    TkWhile         shift and go to state 15
 
+    SIMPLE_INSTRUCTION             shift and go to state 20
 
 state 9
 
-    (6) DEFINITION -> empty .
+    (13) INSTRUCTION -> SIMPLE_INSTRUCTION .
 
-    TkExecute       reduce using rule 6 (DEFINITION -> empty .)
+    TkEnd           reduce using rule 13 (INSTRUCTION -> SIMPLE_INSTRUCTION .)
+    TkStore         reduce using rule 13 (INSTRUCTION -> SIMPLE_INSTRUCTION .)
+    TkActivate      reduce using rule 13 (INSTRUCTION -> SIMPLE_INSTRUCTION .)
+    TkAdvance       reduce using rule 13 (INSTRUCTION -> SIMPLE_INSTRUCTION .)
+    TkIf            reduce using rule 13 (INSTRUCTION -> SIMPLE_INSTRUCTION .)
+    TkWhile         reduce using rule 13 (INSTRUCTION -> SIMPLE_INSTRUCTION .)
 
 
 state 10
 
-    (13) EXECUTE -> TkExecute INSTRUCTION . TkEnd
+    (14) INSTRUCTION -> empty .
 
-    TkEnd           shift and go to state 15
+    TkEnd           reduce using rule 14 (INSTRUCTION -> empty .)
+    TkStore         reduce using rule 14 (INSTRUCTION -> empty .)
+    TkActivate      reduce using rule 14 (INSTRUCTION -> empty .)
+    TkAdvance       reduce using rule 14 (INSTRUCTION -> empty .)
+    TkIf            reduce using rule 14 (INSTRUCTION -> empty .)
+    TkWhile         reduce using rule 14 (INSTRUCTION -> empty .)
 
 
 state 11
 
-    (10) INSTRUCTION -> TkStore . TkNum TkPunto INSTRUCTION
+    (15) SIMPLE_INSTRUCTION -> TkStore . EXP_BINARIA TkPunto
+    (21) EXP_BINARIA -> . EXP_BINARIA TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> . EXP_BINARIA TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> . EXP_BINARIA TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> . EXP_BINARIA TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> . EXP_BINARIA TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> . EXP_BINARIA TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> . EXP_BINARIA TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> . EXP_BINARIA TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> . EXP_BINARIA TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> . EXP_BINARIA TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> . EXP_BINARIA TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> . EXP_BINARIA TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> . EXP_BINARIA TkMayor EXP_BINARIA
+    (34) EXP_BINARIA -> . TkParAbre EXP_BINARIA TkParCierra
+    (35) EXP_BINARIA -> . TkNegacion EXP_BINARIA
+    (36) EXP_BINARIA -> . TkNum
+    (37) EXP_BINARIA -> . TkTrue
+    (38) EXP_BINARIA -> . TkFalse
+    (39) EXP_BINARIA -> . TkIdent
+    (40) EXP_BINARIA -> . TkCaracter
 
-    TkNum           shift and go to state 16
+    TkParAbre       shift and go to state 22
+    TkNegacion      shift and go to state 23
+    TkNum           shift and go to state 24
+    TkTrue          shift and go to state 25
+    TkFalse         shift and go to state 26
+    TkIdent         shift and go to state 27
+    TkCaracter      shift and go to state 28
 
+    EXP_BINARIA                    shift and go to state 21
 
 state 12
 
-    (11) INSTRUCTION -> TkActivate . TkIdent TkPunto INSTRUCTION
+    (16) SIMPLE_INSTRUCTION -> TkActivate . TkIdent TkPunto
 
-    TkIdent         shift and go to state 17
+    TkIdent         shift and go to state 29
 
 
 state 13
 
-    (12) INSTRUCTION -> empty .
+    (17) SIMPLE_INSTRUCTION -> TkAdvance . TkIdent TkPunto
 
-    TkEnd           reduce using rule 12 (INSTRUCTION -> empty .)
+    TkIdent         shift and go to state 30
 
 
 state 14
 
-    (5) DEFINITION -> TkInt TkBot . TkIdent DECLARATION TkEnd
+    (18) SIMPLE_INSTRUCTION -> TkIf . EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd
+    (21) EXP_BINARIA -> . EXP_BINARIA TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> . EXP_BINARIA TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> . EXP_BINARIA TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> . EXP_BINARIA TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> . EXP_BINARIA TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> . EXP_BINARIA TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> . EXP_BINARIA TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> . EXP_BINARIA TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> . EXP_BINARIA TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> . EXP_BINARIA TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> . EXP_BINARIA TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> . EXP_BINARIA TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> . EXP_BINARIA TkMayor EXP_BINARIA
+    (34) EXP_BINARIA -> . TkParAbre EXP_BINARIA TkParCierra
+    (35) EXP_BINARIA -> . TkNegacion EXP_BINARIA
+    (36) EXP_BINARIA -> . TkNum
+    (37) EXP_BINARIA -> . TkTrue
+    (38) EXP_BINARIA -> . TkFalse
+    (39) EXP_BINARIA -> . TkIdent
+    (40) EXP_BINARIA -> . TkCaracter
 
-    TkIdent         shift and go to state 18
+    TkParAbre       shift and go to state 22
+    TkNegacion      shift and go to state 23
+    TkNum           shift and go to state 24
+    TkTrue          shift and go to state 25
+    TkFalse         shift and go to state 26
+    TkIdent         shift and go to state 27
+    TkCaracter      shift and go to state 28
 
+    EXP_BINARIA                    shift and go to state 31
 
 state 15
 
-    (13) EXECUTE -> TkExecute INSTRUCTION TkEnd .
+    (19) SIMPLE_INSTRUCTION -> TkWhile . EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd
+    (21) EXP_BINARIA -> . EXP_BINARIA TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> . EXP_BINARIA TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> . EXP_BINARIA TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> . EXP_BINARIA TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> . EXP_BINARIA TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> . EXP_BINARIA TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> . EXP_BINARIA TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> . EXP_BINARIA TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> . EXP_BINARIA TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> . EXP_BINARIA TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> . EXP_BINARIA TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> . EXP_BINARIA TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> . EXP_BINARIA TkMayor EXP_BINARIA
+    (34) EXP_BINARIA -> . TkParAbre EXP_BINARIA TkParCierra
+    (35) EXP_BINARIA -> . TkNegacion EXP_BINARIA
+    (36) EXP_BINARIA -> . TkNum
+    (37) EXP_BINARIA -> . TkTrue
+    (38) EXP_BINARIA -> . TkFalse
+    (39) EXP_BINARIA -> . TkIdent
+    (40) EXP_BINARIA -> . TkCaracter
 
-    $end            reduce using rule 13 (EXECUTE -> TkExecute INSTRUCTION TkEnd .)
+    TkParAbre       shift and go to state 22
+    TkNegacion      shift and go to state 23
+    TkNum           shift and go to state 24
+    TkTrue          shift and go to state 25
+    TkFalse         shift and go to state 26
+    TkIdent         shift and go to state 27
+    TkCaracter      shift and go to state 28
 
+    EXP_BINARIA                    shift and go to state 32
 
 state 16
 
-    (10) INSTRUCTION -> TkStore TkNum . TkPunto INSTRUCTION
+    (3) DEFINITION -> DEFINITION TYPE . TkBot TkIdent DECLARATION TkEnd
 
-    TkPunto         shift and go to state 19
+    TkBot           shift and go to state 33
 
 
 state 17
 
-    (11) INSTRUCTION -> TkActivate TkIdent . TkPunto INSTRUCTION
+    (5) TYPE -> TkInt .
 
-    TkPunto         shift and go to state 20
+    TkBot           reduce using rule 5 (TYPE -> TkInt .)
 
 
 state 18
 
-    (5) DEFINITION -> TkInt TkBot TkIdent . DECLARATION TkEnd
-    (7) DECLARATION -> . TkOn TkActivation TkDosPuntos INSTRUCTION TkEnd
-    (8) DECLARATION -> . TkOn TkDefault TkDosPuntos INSTRUCTION TkEnd
-    (9) DECLARATION -> . empty
-    (14) empty -> .
+    (6) TYPE -> TkBool .
 
-    TkOn            shift and go to state 22
-    TkEnd           reduce using rule 14 (empty -> .)
+    TkBot           reduce using rule 6 (TYPE -> TkBool .)
 
-    DECLARATION                    shift and go to state 21
-    empty                          shift and go to state 23
 
 state 19
 
-    (10) INSTRUCTION -> TkStore TkNum TkPunto . INSTRUCTION
-    (10) INSTRUCTION -> . TkStore TkNum TkPunto INSTRUCTION
-    (11) INSTRUCTION -> . TkActivate TkIdent TkPunto INSTRUCTION
-    (12) INSTRUCTION -> . empty
-    (14) empty -> .
+    (20) EXECUTE -> TkExecute INSTRUCTION TkEnd .
 
-    TkStore         shift and go to state 11
-    TkActivate      shift and go to state 12
-    TkEnd           reduce using rule 14 (empty -> .)
+    $end            reduce using rule 20 (EXECUTE -> TkExecute INSTRUCTION TkEnd .)
 
-    INSTRUCTION                    shift and go to state 24
-    empty                          shift and go to state 13
 
 state 20
 
-    (11) INSTRUCTION -> TkActivate TkIdent TkPunto . INSTRUCTION
-    (10) INSTRUCTION -> . TkStore TkNum TkPunto INSTRUCTION
-    (11) INSTRUCTION -> . TkActivate TkIdent TkPunto INSTRUCTION
-    (12) INSTRUCTION -> . empty
-    (14) empty -> .
+    (12) INSTRUCTION -> INSTRUCTION SIMPLE_INSTRUCTION .
 
-    TkStore         shift and go to state 11
-    TkActivate      shift and go to state 12
-    TkEnd           reduce using rule 14 (empty -> .)
+    TkEnd           reduce using rule 12 (INSTRUCTION -> INSTRUCTION SIMPLE_INSTRUCTION .)
+    TkStore         reduce using rule 12 (INSTRUCTION -> INSTRUCTION SIMPLE_INSTRUCTION .)
+    TkActivate      reduce using rule 12 (INSTRUCTION -> INSTRUCTION SIMPLE_INSTRUCTION .)
+    TkAdvance       reduce using rule 12 (INSTRUCTION -> INSTRUCTION SIMPLE_INSTRUCTION .)
+    TkIf            reduce using rule 12 (INSTRUCTION -> INSTRUCTION SIMPLE_INSTRUCTION .)
+    TkWhile         reduce using rule 12 (INSTRUCTION -> INSTRUCTION SIMPLE_INSTRUCTION .)
 
-    INSTRUCTION                    shift and go to state 25
-    empty                          shift and go to state 13
 
 state 21
 
-    (5) DEFINITION -> TkInt TkBot TkIdent DECLARATION . TkEnd
+    (15) SIMPLE_INSTRUCTION -> TkStore EXP_BINARIA . TkPunto
+    (21) EXP_BINARIA -> EXP_BINARIA . TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> EXP_BINARIA . TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> EXP_BINARIA . TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> EXP_BINARIA . TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> EXP_BINARIA . TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> EXP_BINARIA . TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> EXP_BINARIA . TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> EXP_BINARIA . TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> EXP_BINARIA . TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> EXP_BINARIA . TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> EXP_BINARIA . TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> EXP_BINARIA . TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> EXP_BINARIA . TkMayor EXP_BINARIA
 
-    TkEnd           shift and go to state 26
+    TkPunto         shift and go to state 34
+    TkSuma          shift and go to state 35
+    TkResta         shift and go to state 36
+    TkMult          shift and go to state 37
+    TkDiv           shift and go to state 38
+    TkMod           shift and go to state 39
+    TkConjuncion    shift and go to state 40
+    TkDisyuncion    shift and go to state 41
+    TkIgual         shift and go to state 42
+    TkNoIgual       shift and go to state 43
+    TkMenorIgual    shift and go to state 44
+    TkMayorIgual    shift and go to state 45
+    TkMenor         shift and go to state 46
+    TkMayor         shift and go to state 47
 
 
 state 22
 
-    (7) DECLARATION -> TkOn . TkActivation TkDosPuntos INSTRUCTION TkEnd
-    (8) DECLARATION -> TkOn . TkDefault TkDosPuntos INSTRUCTION TkEnd
+    (34) EXP_BINARIA -> TkParAbre . EXP_BINARIA TkParCierra
+    (21) EXP_BINARIA -> . EXP_BINARIA TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> . EXP_BINARIA TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> . EXP_BINARIA TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> . EXP_BINARIA TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> . EXP_BINARIA TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> . EXP_BINARIA TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> . EXP_BINARIA TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> . EXP_BINARIA TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> . EXP_BINARIA TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> . EXP_BINARIA TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> . EXP_BINARIA TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> . EXP_BINARIA TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> . EXP_BINARIA TkMayor EXP_BINARIA
+    (34) EXP_BINARIA -> . TkParAbre EXP_BINARIA TkParCierra
+    (35) EXP_BINARIA -> . TkNegacion EXP_BINARIA
+    (36) EXP_BINARIA -> . TkNum
+    (37) EXP_BINARIA -> . TkTrue
+    (38) EXP_BINARIA -> . TkFalse
+    (39) EXP_BINARIA -> . TkIdent
+    (40) EXP_BINARIA -> . TkCaracter
 
-    TkActivation    shift and go to state 27
-    TkDefault       shift and go to state 28
+    TkParAbre       shift and go to state 22
+    TkNegacion      shift and go to state 23
+    TkNum           shift and go to state 24
+    TkTrue          shift and go to state 25
+    TkFalse         shift and go to state 26
+    TkIdent         shift and go to state 27
+    TkCaracter      shift and go to state 28
 
+    EXP_BINARIA                    shift and go to state 48
 
 state 23
 
-    (9) DECLARATION -> empty .
+    (35) EXP_BINARIA -> TkNegacion . EXP_BINARIA
+    (21) EXP_BINARIA -> . EXP_BINARIA TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> . EXP_BINARIA TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> . EXP_BINARIA TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> . EXP_BINARIA TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> . EXP_BINARIA TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> . EXP_BINARIA TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> . EXP_BINARIA TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> . EXP_BINARIA TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> . EXP_BINARIA TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> . EXP_BINARIA TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> . EXP_BINARIA TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> . EXP_BINARIA TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> . EXP_BINARIA TkMayor EXP_BINARIA
+    (34) EXP_BINARIA -> . TkParAbre EXP_BINARIA TkParCierra
+    (35) EXP_BINARIA -> . TkNegacion EXP_BINARIA
+    (36) EXP_BINARIA -> . TkNum
+    (37) EXP_BINARIA -> . TkTrue
+    (38) EXP_BINARIA -> . TkFalse
+    (39) EXP_BINARIA -> . TkIdent
+    (40) EXP_BINARIA -> . TkCaracter
 
-    TkEnd           reduce using rule 9 (DECLARATION -> empty .)
+    TkParAbre       shift and go to state 22
+    TkNegacion      shift and go to state 23
+    TkNum           shift and go to state 24
+    TkTrue          shift and go to state 25
+    TkFalse         shift and go to state 26
+    TkIdent         shift and go to state 27
+    TkCaracter      shift and go to state 28
 
+    EXP_BINARIA                    shift and go to state 49
 
 state 24
 
-    (10) INSTRUCTION -> TkStore TkNum TkPunto INSTRUCTION .
+    (36) EXP_BINARIA -> TkNum .
 
-    TkEnd           reduce using rule 10 (INSTRUCTION -> TkStore TkNum TkPunto INSTRUCTION .)
+    TkPunto         reduce using rule 36 (EXP_BINARIA -> TkNum .)
+    TkSuma          reduce using rule 36 (EXP_BINARIA -> TkNum .)
+    TkResta         reduce using rule 36 (EXP_BINARIA -> TkNum .)
+    TkMult          reduce using rule 36 (EXP_BINARIA -> TkNum .)
+    TkDiv           reduce using rule 36 (EXP_BINARIA -> TkNum .)
+    TkMod           reduce using rule 36 (EXP_BINARIA -> TkNum .)
+    TkConjuncion    reduce using rule 36 (EXP_BINARIA -> TkNum .)
+    TkDisyuncion    reduce using rule 36 (EXP_BINARIA -> TkNum .)
+    TkIgual         reduce using rule 36 (EXP_BINARIA -> TkNum .)
+    TkNoIgual       reduce using rule 36 (EXP_BINARIA -> TkNum .)
+    TkMenorIgual    reduce using rule 36 (EXP_BINARIA -> TkNum .)
+    TkMayorIgual    reduce using rule 36 (EXP_BINARIA -> TkNum .)
+    TkMenor         reduce using rule 36 (EXP_BINARIA -> TkNum .)
+    TkMayor         reduce using rule 36 (EXP_BINARIA -> TkNum .)
+    TkDosPuntos     reduce using rule 36 (EXP_BINARIA -> TkNum .)
+    TkParCierra     reduce using rule 36 (EXP_BINARIA -> TkNum .)
 
 
 state 25
 
-    (11) INSTRUCTION -> TkActivate TkIdent TkPunto INSTRUCTION .
+    (37) EXP_BINARIA -> TkTrue .
 
-    TkEnd           reduce using rule 11 (INSTRUCTION -> TkActivate TkIdent TkPunto INSTRUCTION .)
+    TkPunto         reduce using rule 37 (EXP_BINARIA -> TkTrue .)
+    TkSuma          reduce using rule 37 (EXP_BINARIA -> TkTrue .)
+    TkResta         reduce using rule 37 (EXP_BINARIA -> TkTrue .)
+    TkMult          reduce using rule 37 (EXP_BINARIA -> TkTrue .)
+    TkDiv           reduce using rule 37 (EXP_BINARIA -> TkTrue .)
+    TkMod           reduce using rule 37 (EXP_BINARIA -> TkTrue .)
+    TkConjuncion    reduce using rule 37 (EXP_BINARIA -> TkTrue .)
+    TkDisyuncion    reduce using rule 37 (EXP_BINARIA -> TkTrue .)
+    TkIgual         reduce using rule 37 (EXP_BINARIA -> TkTrue .)
+    TkNoIgual       reduce using rule 37 (EXP_BINARIA -> TkTrue .)
+    TkMenorIgual    reduce using rule 37 (EXP_BINARIA -> TkTrue .)
+    TkMayorIgual    reduce using rule 37 (EXP_BINARIA -> TkTrue .)
+    TkMenor         reduce using rule 37 (EXP_BINARIA -> TkTrue .)
+    TkMayor         reduce using rule 37 (EXP_BINARIA -> TkTrue .)
+    TkDosPuntos     reduce using rule 37 (EXP_BINARIA -> TkTrue .)
+    TkParCierra     reduce using rule 37 (EXP_BINARIA -> TkTrue .)
 
 
 state 26
 
-    (5) DEFINITION -> TkInt TkBot TkIdent DECLARATION TkEnd .
+    (38) EXP_BINARIA -> TkFalse .
 
-    TkExecute       reduce using rule 5 (DEFINITION -> TkInt TkBot TkIdent DECLARATION TkEnd .)
+    TkPunto         reduce using rule 38 (EXP_BINARIA -> TkFalse .)
+    TkSuma          reduce using rule 38 (EXP_BINARIA -> TkFalse .)
+    TkResta         reduce using rule 38 (EXP_BINARIA -> TkFalse .)
+    TkMult          reduce using rule 38 (EXP_BINARIA -> TkFalse .)
+    TkDiv           reduce using rule 38 (EXP_BINARIA -> TkFalse .)
+    TkMod           reduce using rule 38 (EXP_BINARIA -> TkFalse .)
+    TkConjuncion    reduce using rule 38 (EXP_BINARIA -> TkFalse .)
+    TkDisyuncion    reduce using rule 38 (EXP_BINARIA -> TkFalse .)
+    TkIgual         reduce using rule 38 (EXP_BINARIA -> TkFalse .)
+    TkNoIgual       reduce using rule 38 (EXP_BINARIA -> TkFalse .)
+    TkMenorIgual    reduce using rule 38 (EXP_BINARIA -> TkFalse .)
+    TkMayorIgual    reduce using rule 38 (EXP_BINARIA -> TkFalse .)
+    TkMenor         reduce using rule 38 (EXP_BINARIA -> TkFalse .)
+    TkMayor         reduce using rule 38 (EXP_BINARIA -> TkFalse .)
+    TkDosPuntos     reduce using rule 38 (EXP_BINARIA -> TkFalse .)
+    TkParCierra     reduce using rule 38 (EXP_BINARIA -> TkFalse .)
 
 
 state 27
 
-    (7) DECLARATION -> TkOn TkActivation . TkDosPuntos INSTRUCTION TkEnd
+    (39) EXP_BINARIA -> TkIdent .
 
-    TkDosPuntos     shift and go to state 29
+    TkPunto         reduce using rule 39 (EXP_BINARIA -> TkIdent .)
+    TkSuma          reduce using rule 39 (EXP_BINARIA -> TkIdent .)
+    TkResta         reduce using rule 39 (EXP_BINARIA -> TkIdent .)
+    TkMult          reduce using rule 39 (EXP_BINARIA -> TkIdent .)
+    TkDiv           reduce using rule 39 (EXP_BINARIA -> TkIdent .)
+    TkMod           reduce using rule 39 (EXP_BINARIA -> TkIdent .)
+    TkConjuncion    reduce using rule 39 (EXP_BINARIA -> TkIdent .)
+    TkDisyuncion    reduce using rule 39 (EXP_BINARIA -> TkIdent .)
+    TkIgual         reduce using rule 39 (EXP_BINARIA -> TkIdent .)
+    TkNoIgual       reduce using rule 39 (EXP_BINARIA -> TkIdent .)
+    TkMenorIgual    reduce using rule 39 (EXP_BINARIA -> TkIdent .)
+    TkMayorIgual    reduce using rule 39 (EXP_BINARIA -> TkIdent .)
+    TkMenor         reduce using rule 39 (EXP_BINARIA -> TkIdent .)
+    TkMayor         reduce using rule 39 (EXP_BINARIA -> TkIdent .)
+    TkDosPuntos     reduce using rule 39 (EXP_BINARIA -> TkIdent .)
+    TkParCierra     reduce using rule 39 (EXP_BINARIA -> TkIdent .)
 
 
 state 28
 
-    (8) DECLARATION -> TkOn TkDefault . TkDosPuntos INSTRUCTION TkEnd
+    (40) EXP_BINARIA -> TkCaracter .
 
-    TkDosPuntos     shift and go to state 30
+    TkPunto         reduce using rule 40 (EXP_BINARIA -> TkCaracter .)
+    TkSuma          reduce using rule 40 (EXP_BINARIA -> TkCaracter .)
+    TkResta         reduce using rule 40 (EXP_BINARIA -> TkCaracter .)
+    TkMult          reduce using rule 40 (EXP_BINARIA -> TkCaracter .)
+    TkDiv           reduce using rule 40 (EXP_BINARIA -> TkCaracter .)
+    TkMod           reduce using rule 40 (EXP_BINARIA -> TkCaracter .)
+    TkConjuncion    reduce using rule 40 (EXP_BINARIA -> TkCaracter .)
+    TkDisyuncion    reduce using rule 40 (EXP_BINARIA -> TkCaracter .)
+    TkIgual         reduce using rule 40 (EXP_BINARIA -> TkCaracter .)
+    TkNoIgual       reduce using rule 40 (EXP_BINARIA -> TkCaracter .)
+    TkMenorIgual    reduce using rule 40 (EXP_BINARIA -> TkCaracter .)
+    TkMayorIgual    reduce using rule 40 (EXP_BINARIA -> TkCaracter .)
+    TkMenor         reduce using rule 40 (EXP_BINARIA -> TkCaracter .)
+    TkMayor         reduce using rule 40 (EXP_BINARIA -> TkCaracter .)
+    TkDosPuntos     reduce using rule 40 (EXP_BINARIA -> TkCaracter .)
+    TkParCierra     reduce using rule 40 (EXP_BINARIA -> TkCaracter .)
 
 
 state 29
 
-    (7) DECLARATION -> TkOn TkActivation TkDosPuntos . INSTRUCTION TkEnd
-    (10) INSTRUCTION -> . TkStore TkNum TkPunto INSTRUCTION
-    (11) INSTRUCTION -> . TkActivate TkIdent TkPunto INSTRUCTION
-    (12) INSTRUCTION -> . empty
-    (14) empty -> .
+    (16) SIMPLE_INSTRUCTION -> TkActivate TkIdent . TkPunto
 
-    TkStore         shift and go to state 11
-    TkActivate      shift and go to state 12
-    TkEnd           reduce using rule 14 (empty -> .)
+    TkPunto         shift and go to state 50
 
-    INSTRUCTION                    shift and go to state 31
-    empty                          shift and go to state 13
 
 state 30
 
-    (8) DECLARATION -> TkOn TkDefault TkDosPuntos . INSTRUCTION TkEnd
-    (10) INSTRUCTION -> . TkStore TkNum TkPunto INSTRUCTION
-    (11) INSTRUCTION -> . TkActivate TkIdent TkPunto INSTRUCTION
-    (12) INSTRUCTION -> . empty
-    (14) empty -> .
+    (17) SIMPLE_INSTRUCTION -> TkAdvance TkIdent . TkPunto
 
-    TkStore         shift and go to state 11
-    TkActivate      shift and go to state 12
-    TkEnd           reduce using rule 14 (empty -> .)
+    TkPunto         shift and go to state 51
 
-    INSTRUCTION                    shift and go to state 32
-    empty                          shift and go to state 13
 
 state 31
 
-    (7) DECLARATION -> TkOn TkActivation TkDosPuntos INSTRUCTION . TkEnd
+    (18) SIMPLE_INSTRUCTION -> TkIf EXP_BINARIA . TkDosPuntos INSTRUCTION TkEnd
+    (21) EXP_BINARIA -> EXP_BINARIA . TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> EXP_BINARIA . TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> EXP_BINARIA . TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> EXP_BINARIA . TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> EXP_BINARIA . TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> EXP_BINARIA . TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> EXP_BINARIA . TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> EXP_BINARIA . TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> EXP_BINARIA . TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> EXP_BINARIA . TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> EXP_BINARIA . TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> EXP_BINARIA . TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> EXP_BINARIA . TkMayor EXP_BINARIA
 
-    TkEnd           shift and go to state 33
+    TkDosPuntos     shift and go to state 52
+    TkSuma          shift and go to state 35
+    TkResta         shift and go to state 36
+    TkMult          shift and go to state 37
+    TkDiv           shift and go to state 38
+    TkMod           shift and go to state 39
+    TkConjuncion    shift and go to state 40
+    TkDisyuncion    shift and go to state 41
+    TkIgual         shift and go to state 42
+    TkNoIgual       shift and go to state 43
+    TkMenorIgual    shift and go to state 44
+    TkMayorIgual    shift and go to state 45
+    TkMenor         shift and go to state 46
+    TkMayor         shift and go to state 47
 
 
 state 32
 
-    (8) DECLARATION -> TkOn TkDefault TkDosPuntos INSTRUCTION . TkEnd
+    (19) SIMPLE_INSTRUCTION -> TkWhile EXP_BINARIA . TkDosPuntos INSTRUCTION TkEnd
+    (21) EXP_BINARIA -> EXP_BINARIA . TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> EXP_BINARIA . TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> EXP_BINARIA . TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> EXP_BINARIA . TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> EXP_BINARIA . TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> EXP_BINARIA . TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> EXP_BINARIA . TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> EXP_BINARIA . TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> EXP_BINARIA . TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> EXP_BINARIA . TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> EXP_BINARIA . TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> EXP_BINARIA . TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> EXP_BINARIA . TkMayor EXP_BINARIA
 
-    TkEnd           shift and go to state 34
+    TkDosPuntos     shift and go to state 53
+    TkSuma          shift and go to state 35
+    TkResta         shift and go to state 36
+    TkMult          shift and go to state 37
+    TkDiv           shift and go to state 38
+    TkMod           shift and go to state 39
+    TkConjuncion    shift and go to state 40
+    TkDisyuncion    shift and go to state 41
+    TkIgual         shift and go to state 42
+    TkNoIgual       shift and go to state 43
+    TkMenorIgual    shift and go to state 44
+    TkMayorIgual    shift and go to state 45
+    TkMenor         shift and go to state 46
+    TkMayor         shift and go to state 47
 
 
 state 33
 
-    (7) DECLARATION -> TkOn TkActivation TkDosPuntos INSTRUCTION TkEnd .
+    (3) DEFINITION -> DEFINITION TYPE TkBot . TkIdent DECLARATION TkEnd
 
-    TkEnd           reduce using rule 7 (DECLARATION -> TkOn TkActivation TkDosPuntos INSTRUCTION TkEnd .)
+    TkIdent         shift and go to state 54
 
 
 state 34
 
-    (8) DECLARATION -> TkOn TkDefault TkDosPuntos INSTRUCTION TkEnd .
+    (15) SIMPLE_INSTRUCTION -> TkStore EXP_BINARIA TkPunto .
 
-    TkEnd           reduce using rule 8 (DECLARATION -> TkOn TkDefault TkDosPuntos INSTRUCTION TkEnd .)
+    TkEnd           reduce using rule 15 (SIMPLE_INSTRUCTION -> TkStore EXP_BINARIA TkPunto .)
+    TkStore         reduce using rule 15 (SIMPLE_INSTRUCTION -> TkStore EXP_BINARIA TkPunto .)
+    TkActivate      reduce using rule 15 (SIMPLE_INSTRUCTION -> TkStore EXP_BINARIA TkPunto .)
+    TkAdvance       reduce using rule 15 (SIMPLE_INSTRUCTION -> TkStore EXP_BINARIA TkPunto .)
+    TkIf            reduce using rule 15 (SIMPLE_INSTRUCTION -> TkStore EXP_BINARIA TkPunto .)
+    TkWhile         reduce using rule 15 (SIMPLE_INSTRUCTION -> TkStore EXP_BINARIA TkPunto .)
 
+
+state 35
+
+    (21) EXP_BINARIA -> EXP_BINARIA TkSuma . EXP_BINARIA
+    (21) EXP_BINARIA -> . EXP_BINARIA TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> . EXP_BINARIA TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> . EXP_BINARIA TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> . EXP_BINARIA TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> . EXP_BINARIA TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> . EXP_BINARIA TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> . EXP_BINARIA TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> . EXP_BINARIA TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> . EXP_BINARIA TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> . EXP_BINARIA TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> . EXP_BINARIA TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> . EXP_BINARIA TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> . EXP_BINARIA TkMayor EXP_BINARIA
+    (34) EXP_BINARIA -> . TkParAbre EXP_BINARIA TkParCierra
+    (35) EXP_BINARIA -> . TkNegacion EXP_BINARIA
+    (36) EXP_BINARIA -> . TkNum
+    (37) EXP_BINARIA -> . TkTrue
+    (38) EXP_BINARIA -> . TkFalse
+    (39) EXP_BINARIA -> . TkIdent
+    (40) EXP_BINARIA -> . TkCaracter
+
+    TkParAbre       shift and go to state 22
+    TkNegacion      shift and go to state 23
+    TkNum           shift and go to state 24
+    TkTrue          shift and go to state 25
+    TkFalse         shift and go to state 26
+    TkIdent         shift and go to state 27
+    TkCaracter      shift and go to state 28
+
+    EXP_BINARIA                    shift and go to state 55
+
+state 36
+
+    (22) EXP_BINARIA -> EXP_BINARIA TkResta . EXP_BINARIA
+    (21) EXP_BINARIA -> . EXP_BINARIA TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> . EXP_BINARIA TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> . EXP_BINARIA TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> . EXP_BINARIA TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> . EXP_BINARIA TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> . EXP_BINARIA TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> . EXP_BINARIA TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> . EXP_BINARIA TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> . EXP_BINARIA TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> . EXP_BINARIA TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> . EXP_BINARIA TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> . EXP_BINARIA TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> . EXP_BINARIA TkMayor EXP_BINARIA
+    (34) EXP_BINARIA -> . TkParAbre EXP_BINARIA TkParCierra
+    (35) EXP_BINARIA -> . TkNegacion EXP_BINARIA
+    (36) EXP_BINARIA -> . TkNum
+    (37) EXP_BINARIA -> . TkTrue
+    (38) EXP_BINARIA -> . TkFalse
+    (39) EXP_BINARIA -> . TkIdent
+    (40) EXP_BINARIA -> . TkCaracter
+
+    TkParAbre       shift and go to state 22
+    TkNegacion      shift and go to state 23
+    TkNum           shift and go to state 24
+    TkTrue          shift and go to state 25
+    TkFalse         shift and go to state 26
+    TkIdent         shift and go to state 27
+    TkCaracter      shift and go to state 28
+
+    EXP_BINARIA                    shift and go to state 56
+
+state 37
+
+    (23) EXP_BINARIA -> EXP_BINARIA TkMult . EXP_BINARIA
+    (21) EXP_BINARIA -> . EXP_BINARIA TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> . EXP_BINARIA TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> . EXP_BINARIA TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> . EXP_BINARIA TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> . EXP_BINARIA TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> . EXP_BINARIA TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> . EXP_BINARIA TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> . EXP_BINARIA TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> . EXP_BINARIA TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> . EXP_BINARIA TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> . EXP_BINARIA TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> . EXP_BINARIA TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> . EXP_BINARIA TkMayor EXP_BINARIA
+    (34) EXP_BINARIA -> . TkParAbre EXP_BINARIA TkParCierra
+    (35) EXP_BINARIA -> . TkNegacion EXP_BINARIA
+    (36) EXP_BINARIA -> . TkNum
+    (37) EXP_BINARIA -> . TkTrue
+    (38) EXP_BINARIA -> . TkFalse
+    (39) EXP_BINARIA -> . TkIdent
+    (40) EXP_BINARIA -> . TkCaracter
+
+    TkParAbre       shift and go to state 22
+    TkNegacion      shift and go to state 23
+    TkNum           shift and go to state 24
+    TkTrue          shift and go to state 25
+    TkFalse         shift and go to state 26
+    TkIdent         shift and go to state 27
+    TkCaracter      shift and go to state 28
+
+    EXP_BINARIA                    shift and go to state 57
+
+state 38
+
+    (24) EXP_BINARIA -> EXP_BINARIA TkDiv . EXP_BINARIA
+    (21) EXP_BINARIA -> . EXP_BINARIA TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> . EXP_BINARIA TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> . EXP_BINARIA TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> . EXP_BINARIA TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> . EXP_BINARIA TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> . EXP_BINARIA TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> . EXP_BINARIA TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> . EXP_BINARIA TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> . EXP_BINARIA TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> . EXP_BINARIA TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> . EXP_BINARIA TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> . EXP_BINARIA TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> . EXP_BINARIA TkMayor EXP_BINARIA
+    (34) EXP_BINARIA -> . TkParAbre EXP_BINARIA TkParCierra
+    (35) EXP_BINARIA -> . TkNegacion EXP_BINARIA
+    (36) EXP_BINARIA -> . TkNum
+    (37) EXP_BINARIA -> . TkTrue
+    (38) EXP_BINARIA -> . TkFalse
+    (39) EXP_BINARIA -> . TkIdent
+    (40) EXP_BINARIA -> . TkCaracter
+
+    TkParAbre       shift and go to state 22
+    TkNegacion      shift and go to state 23
+    TkNum           shift and go to state 24
+    TkTrue          shift and go to state 25
+    TkFalse         shift and go to state 26
+    TkIdent         shift and go to state 27
+    TkCaracter      shift and go to state 28
+
+    EXP_BINARIA                    shift and go to state 58
+
+state 39
+
+    (25) EXP_BINARIA -> EXP_BINARIA TkMod . EXP_BINARIA
+    (21) EXP_BINARIA -> . EXP_BINARIA TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> . EXP_BINARIA TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> . EXP_BINARIA TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> . EXP_BINARIA TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> . EXP_BINARIA TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> . EXP_BINARIA TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> . EXP_BINARIA TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> . EXP_BINARIA TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> . EXP_BINARIA TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> . EXP_BINARIA TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> . EXP_BINARIA TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> . EXP_BINARIA TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> . EXP_BINARIA TkMayor EXP_BINARIA
+    (34) EXP_BINARIA -> . TkParAbre EXP_BINARIA TkParCierra
+    (35) EXP_BINARIA -> . TkNegacion EXP_BINARIA
+    (36) EXP_BINARIA -> . TkNum
+    (37) EXP_BINARIA -> . TkTrue
+    (38) EXP_BINARIA -> . TkFalse
+    (39) EXP_BINARIA -> . TkIdent
+    (40) EXP_BINARIA -> . TkCaracter
+
+    TkParAbre       shift and go to state 22
+    TkNegacion      shift and go to state 23
+    TkNum           shift and go to state 24
+    TkTrue          shift and go to state 25
+    TkFalse         shift and go to state 26
+    TkIdent         shift and go to state 27
+    TkCaracter      shift and go to state 28
+
+    EXP_BINARIA                    shift and go to state 59
+
+state 40
+
+    (26) EXP_BINARIA -> EXP_BINARIA TkConjuncion . EXP_BINARIA
+    (21) EXP_BINARIA -> . EXP_BINARIA TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> . EXP_BINARIA TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> . EXP_BINARIA TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> . EXP_BINARIA TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> . EXP_BINARIA TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> . EXP_BINARIA TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> . EXP_BINARIA TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> . EXP_BINARIA TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> . EXP_BINARIA TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> . EXP_BINARIA TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> . EXP_BINARIA TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> . EXP_BINARIA TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> . EXP_BINARIA TkMayor EXP_BINARIA
+    (34) EXP_BINARIA -> . TkParAbre EXP_BINARIA TkParCierra
+    (35) EXP_BINARIA -> . TkNegacion EXP_BINARIA
+    (36) EXP_BINARIA -> . TkNum
+    (37) EXP_BINARIA -> . TkTrue
+    (38) EXP_BINARIA -> . TkFalse
+    (39) EXP_BINARIA -> . TkIdent
+    (40) EXP_BINARIA -> . TkCaracter
+
+    TkParAbre       shift and go to state 22
+    TkNegacion      shift and go to state 23
+    TkNum           shift and go to state 24
+    TkTrue          shift and go to state 25
+    TkFalse         shift and go to state 26
+    TkIdent         shift and go to state 27
+    TkCaracter      shift and go to state 28
+
+    EXP_BINARIA                    shift and go to state 60
+
+state 41
+
+    (27) EXP_BINARIA -> EXP_BINARIA TkDisyuncion . EXP_BINARIA
+    (21) EXP_BINARIA -> . EXP_BINARIA TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> . EXP_BINARIA TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> . EXP_BINARIA TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> . EXP_BINARIA TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> . EXP_BINARIA TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> . EXP_BINARIA TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> . EXP_BINARIA TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> . EXP_BINARIA TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> . EXP_BINARIA TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> . EXP_BINARIA TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> . EXP_BINARIA TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> . EXP_BINARIA TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> . EXP_BINARIA TkMayor EXP_BINARIA
+    (34) EXP_BINARIA -> . TkParAbre EXP_BINARIA TkParCierra
+    (35) EXP_BINARIA -> . TkNegacion EXP_BINARIA
+    (36) EXP_BINARIA -> . TkNum
+    (37) EXP_BINARIA -> . TkTrue
+    (38) EXP_BINARIA -> . TkFalse
+    (39) EXP_BINARIA -> . TkIdent
+    (40) EXP_BINARIA -> . TkCaracter
+
+    TkParAbre       shift and go to state 22
+    TkNegacion      shift and go to state 23
+    TkNum           shift and go to state 24
+    TkTrue          shift and go to state 25
+    TkFalse         shift and go to state 26
+    TkIdent         shift and go to state 27
+    TkCaracter      shift and go to state 28
+
+    EXP_BINARIA                    shift and go to state 61
+
+state 42
+
+    (28) EXP_BINARIA -> EXP_BINARIA TkIgual . EXP_BINARIA
+    (21) EXP_BINARIA -> . EXP_BINARIA TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> . EXP_BINARIA TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> . EXP_BINARIA TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> . EXP_BINARIA TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> . EXP_BINARIA TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> . EXP_BINARIA TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> . EXP_BINARIA TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> . EXP_BINARIA TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> . EXP_BINARIA TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> . EXP_BINARIA TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> . EXP_BINARIA TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> . EXP_BINARIA TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> . EXP_BINARIA TkMayor EXP_BINARIA
+    (34) EXP_BINARIA -> . TkParAbre EXP_BINARIA TkParCierra
+    (35) EXP_BINARIA -> . TkNegacion EXP_BINARIA
+    (36) EXP_BINARIA -> . TkNum
+    (37) EXP_BINARIA -> . TkTrue
+    (38) EXP_BINARIA -> . TkFalse
+    (39) EXP_BINARIA -> . TkIdent
+    (40) EXP_BINARIA -> . TkCaracter
+
+    TkParAbre       shift and go to state 22
+    TkNegacion      shift and go to state 23
+    TkNum           shift and go to state 24
+    TkTrue          shift and go to state 25
+    TkFalse         shift and go to state 26
+    TkIdent         shift and go to state 27
+    TkCaracter      shift and go to state 28
+
+    EXP_BINARIA                    shift and go to state 62
+
+state 43
+
+    (29) EXP_BINARIA -> EXP_BINARIA TkNoIgual . EXP_BINARIA
+    (21) EXP_BINARIA -> . EXP_BINARIA TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> . EXP_BINARIA TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> . EXP_BINARIA TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> . EXP_BINARIA TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> . EXP_BINARIA TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> . EXP_BINARIA TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> . EXP_BINARIA TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> . EXP_BINARIA TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> . EXP_BINARIA TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> . EXP_BINARIA TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> . EXP_BINARIA TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> . EXP_BINARIA TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> . EXP_BINARIA TkMayor EXP_BINARIA
+    (34) EXP_BINARIA -> . TkParAbre EXP_BINARIA TkParCierra
+    (35) EXP_BINARIA -> . TkNegacion EXP_BINARIA
+    (36) EXP_BINARIA -> . TkNum
+    (37) EXP_BINARIA -> . TkTrue
+    (38) EXP_BINARIA -> . TkFalse
+    (39) EXP_BINARIA -> . TkIdent
+    (40) EXP_BINARIA -> . TkCaracter
+
+    TkParAbre       shift and go to state 22
+    TkNegacion      shift and go to state 23
+    TkNum           shift and go to state 24
+    TkTrue          shift and go to state 25
+    TkFalse         shift and go to state 26
+    TkIdent         shift and go to state 27
+    TkCaracter      shift and go to state 28
+
+    EXP_BINARIA                    shift and go to state 63
+
+state 44
+
+    (30) EXP_BINARIA -> EXP_BINARIA TkMenorIgual . EXP_BINARIA
+    (21) EXP_BINARIA -> . EXP_BINARIA TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> . EXP_BINARIA TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> . EXP_BINARIA TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> . EXP_BINARIA TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> . EXP_BINARIA TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> . EXP_BINARIA TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> . EXP_BINARIA TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> . EXP_BINARIA TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> . EXP_BINARIA TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> . EXP_BINARIA TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> . EXP_BINARIA TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> . EXP_BINARIA TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> . EXP_BINARIA TkMayor EXP_BINARIA
+    (34) EXP_BINARIA -> . TkParAbre EXP_BINARIA TkParCierra
+    (35) EXP_BINARIA -> . TkNegacion EXP_BINARIA
+    (36) EXP_BINARIA -> . TkNum
+    (37) EXP_BINARIA -> . TkTrue
+    (38) EXP_BINARIA -> . TkFalse
+    (39) EXP_BINARIA -> . TkIdent
+    (40) EXP_BINARIA -> . TkCaracter
+
+    TkParAbre       shift and go to state 22
+    TkNegacion      shift and go to state 23
+    TkNum           shift and go to state 24
+    TkTrue          shift and go to state 25
+    TkFalse         shift and go to state 26
+    TkIdent         shift and go to state 27
+    TkCaracter      shift and go to state 28
+
+    EXP_BINARIA                    shift and go to state 64
+
+state 45
+
+    (31) EXP_BINARIA -> EXP_BINARIA TkMayorIgual . EXP_BINARIA
+    (21) EXP_BINARIA -> . EXP_BINARIA TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> . EXP_BINARIA TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> . EXP_BINARIA TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> . EXP_BINARIA TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> . EXP_BINARIA TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> . EXP_BINARIA TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> . EXP_BINARIA TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> . EXP_BINARIA TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> . EXP_BINARIA TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> . EXP_BINARIA TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> . EXP_BINARIA TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> . EXP_BINARIA TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> . EXP_BINARIA TkMayor EXP_BINARIA
+    (34) EXP_BINARIA -> . TkParAbre EXP_BINARIA TkParCierra
+    (35) EXP_BINARIA -> . TkNegacion EXP_BINARIA
+    (36) EXP_BINARIA -> . TkNum
+    (37) EXP_BINARIA -> . TkTrue
+    (38) EXP_BINARIA -> . TkFalse
+    (39) EXP_BINARIA -> . TkIdent
+    (40) EXP_BINARIA -> . TkCaracter
+
+    TkParAbre       shift and go to state 22
+    TkNegacion      shift and go to state 23
+    TkNum           shift and go to state 24
+    TkTrue          shift and go to state 25
+    TkFalse         shift and go to state 26
+    TkIdent         shift and go to state 27
+    TkCaracter      shift and go to state 28
+
+    EXP_BINARIA                    shift and go to state 65
+
+state 46
+
+    (32) EXP_BINARIA -> EXP_BINARIA TkMenor . EXP_BINARIA
+    (21) EXP_BINARIA -> . EXP_BINARIA TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> . EXP_BINARIA TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> . EXP_BINARIA TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> . EXP_BINARIA TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> . EXP_BINARIA TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> . EXP_BINARIA TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> . EXP_BINARIA TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> . EXP_BINARIA TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> . EXP_BINARIA TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> . EXP_BINARIA TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> . EXP_BINARIA TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> . EXP_BINARIA TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> . EXP_BINARIA TkMayor EXP_BINARIA
+    (34) EXP_BINARIA -> . TkParAbre EXP_BINARIA TkParCierra
+    (35) EXP_BINARIA -> . TkNegacion EXP_BINARIA
+    (36) EXP_BINARIA -> . TkNum
+    (37) EXP_BINARIA -> . TkTrue
+    (38) EXP_BINARIA -> . TkFalse
+    (39) EXP_BINARIA -> . TkIdent
+    (40) EXP_BINARIA -> . TkCaracter
+
+    TkParAbre       shift and go to state 22
+    TkNegacion      shift and go to state 23
+    TkNum           shift and go to state 24
+    TkTrue          shift and go to state 25
+    TkFalse         shift and go to state 26
+    TkIdent         shift and go to state 27
+    TkCaracter      shift and go to state 28
+
+    EXP_BINARIA                    shift and go to state 66
+
+state 47
+
+    (33) EXP_BINARIA -> EXP_BINARIA TkMayor . EXP_BINARIA
+    (21) EXP_BINARIA -> . EXP_BINARIA TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> . EXP_BINARIA TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> . EXP_BINARIA TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> . EXP_BINARIA TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> . EXP_BINARIA TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> . EXP_BINARIA TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> . EXP_BINARIA TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> . EXP_BINARIA TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> . EXP_BINARIA TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> . EXP_BINARIA TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> . EXP_BINARIA TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> . EXP_BINARIA TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> . EXP_BINARIA TkMayor EXP_BINARIA
+    (34) EXP_BINARIA -> . TkParAbre EXP_BINARIA TkParCierra
+    (35) EXP_BINARIA -> . TkNegacion EXP_BINARIA
+    (36) EXP_BINARIA -> . TkNum
+    (37) EXP_BINARIA -> . TkTrue
+    (38) EXP_BINARIA -> . TkFalse
+    (39) EXP_BINARIA -> . TkIdent
+    (40) EXP_BINARIA -> . TkCaracter
+
+    TkParAbre       shift and go to state 22
+    TkNegacion      shift and go to state 23
+    TkNum           shift and go to state 24
+    TkTrue          shift and go to state 25
+    TkFalse         shift and go to state 26
+    TkIdent         shift and go to state 27
+    TkCaracter      shift and go to state 28
+
+    EXP_BINARIA                    shift and go to state 67
+
+state 48
+
+    (34) EXP_BINARIA -> TkParAbre EXP_BINARIA . TkParCierra
+    (21) EXP_BINARIA -> EXP_BINARIA . TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> EXP_BINARIA . TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> EXP_BINARIA . TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> EXP_BINARIA . TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> EXP_BINARIA . TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> EXP_BINARIA . TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> EXP_BINARIA . TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> EXP_BINARIA . TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> EXP_BINARIA . TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> EXP_BINARIA . TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> EXP_BINARIA . TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> EXP_BINARIA . TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> EXP_BINARIA . TkMayor EXP_BINARIA
+
+    TkParCierra     shift and go to state 68
+    TkSuma          shift and go to state 35
+    TkResta         shift and go to state 36
+    TkMult          shift and go to state 37
+    TkDiv           shift and go to state 38
+    TkMod           shift and go to state 39
+    TkConjuncion    shift and go to state 40
+    TkDisyuncion    shift and go to state 41
+    TkIgual         shift and go to state 42
+    TkNoIgual       shift and go to state 43
+    TkMenorIgual    shift and go to state 44
+    TkMayorIgual    shift and go to state 45
+    TkMenor         shift and go to state 46
+    TkMayor         shift and go to state 47
+
+
+state 49
+
+    (35) EXP_BINARIA -> TkNegacion EXP_BINARIA .
+    (21) EXP_BINARIA -> EXP_BINARIA . TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> EXP_BINARIA . TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> EXP_BINARIA . TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> EXP_BINARIA . TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> EXP_BINARIA . TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> EXP_BINARIA . TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> EXP_BINARIA . TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> EXP_BINARIA . TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> EXP_BINARIA . TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> EXP_BINARIA . TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> EXP_BINARIA . TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> EXP_BINARIA . TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> EXP_BINARIA . TkMayor EXP_BINARIA
+
+    TkPunto         reduce using rule 35 (EXP_BINARIA -> TkNegacion EXP_BINARIA .)
+    TkConjuncion    reduce using rule 35 (EXP_BINARIA -> TkNegacion EXP_BINARIA .)
+    TkDisyuncion    reduce using rule 35 (EXP_BINARIA -> TkNegacion EXP_BINARIA .)
+    TkDosPuntos     reduce using rule 35 (EXP_BINARIA -> TkNegacion EXP_BINARIA .)
+    TkParCierra     reduce using rule 35 (EXP_BINARIA -> TkNegacion EXP_BINARIA .)
+    TkSuma          shift and go to state 35
+    TkResta         shift and go to state 36
+    TkMult          shift and go to state 37
+    TkDiv           shift and go to state 38
+    TkMod           shift and go to state 39
+    TkIgual         shift and go to state 42
+    TkNoIgual       shift and go to state 43
+    TkMenorIgual    shift and go to state 44
+    TkMayorIgual    shift and go to state 45
+    TkMenor         shift and go to state 46
+    TkMayor         shift and go to state 47
+
+  ! TkSuma          [ reduce using rule 35 (EXP_BINARIA -> TkNegacion EXP_BINARIA .) ]
+  ! TkResta         [ reduce using rule 35 (EXP_BINARIA -> TkNegacion EXP_BINARIA .) ]
+  ! TkMult          [ reduce using rule 35 (EXP_BINARIA -> TkNegacion EXP_BINARIA .) ]
+  ! TkDiv           [ reduce using rule 35 (EXP_BINARIA -> TkNegacion EXP_BINARIA .) ]
+  ! TkMod           [ reduce using rule 35 (EXP_BINARIA -> TkNegacion EXP_BINARIA .) ]
+  ! TkIgual         [ reduce using rule 35 (EXP_BINARIA -> TkNegacion EXP_BINARIA .) ]
+  ! TkNoIgual       [ reduce using rule 35 (EXP_BINARIA -> TkNegacion EXP_BINARIA .) ]
+  ! TkMenorIgual    [ reduce using rule 35 (EXP_BINARIA -> TkNegacion EXP_BINARIA .) ]
+  ! TkMayorIgual    [ reduce using rule 35 (EXP_BINARIA -> TkNegacion EXP_BINARIA .) ]
+  ! TkMenor         [ reduce using rule 35 (EXP_BINARIA -> TkNegacion EXP_BINARIA .) ]
+  ! TkMayor         [ reduce using rule 35 (EXP_BINARIA -> TkNegacion EXP_BINARIA .) ]
+  ! TkConjuncion    [ shift and go to state 40 ]
+  ! TkDisyuncion    [ shift and go to state 41 ]
+
+
+state 50
+
+    (16) SIMPLE_INSTRUCTION -> TkActivate TkIdent TkPunto .
+
+    TkEnd           reduce using rule 16 (SIMPLE_INSTRUCTION -> TkActivate TkIdent TkPunto .)
+    TkStore         reduce using rule 16 (SIMPLE_INSTRUCTION -> TkActivate TkIdent TkPunto .)
+    TkActivate      reduce using rule 16 (SIMPLE_INSTRUCTION -> TkActivate TkIdent TkPunto .)
+    TkAdvance       reduce using rule 16 (SIMPLE_INSTRUCTION -> TkActivate TkIdent TkPunto .)
+    TkIf            reduce using rule 16 (SIMPLE_INSTRUCTION -> TkActivate TkIdent TkPunto .)
+    TkWhile         reduce using rule 16 (SIMPLE_INSTRUCTION -> TkActivate TkIdent TkPunto .)
+
+
+state 51
+
+    (17) SIMPLE_INSTRUCTION -> TkAdvance TkIdent TkPunto .
+
+    TkEnd           reduce using rule 17 (SIMPLE_INSTRUCTION -> TkAdvance TkIdent TkPunto .)
+    TkStore         reduce using rule 17 (SIMPLE_INSTRUCTION -> TkAdvance TkIdent TkPunto .)
+    TkActivate      reduce using rule 17 (SIMPLE_INSTRUCTION -> TkAdvance TkIdent TkPunto .)
+    TkAdvance       reduce using rule 17 (SIMPLE_INSTRUCTION -> TkAdvance TkIdent TkPunto .)
+    TkIf            reduce using rule 17 (SIMPLE_INSTRUCTION -> TkAdvance TkIdent TkPunto .)
+    TkWhile         reduce using rule 17 (SIMPLE_INSTRUCTION -> TkAdvance TkIdent TkPunto .)
+
+
+state 52
+
+    (18) SIMPLE_INSTRUCTION -> TkIf EXP_BINARIA TkDosPuntos . INSTRUCTION TkEnd
+    (12) INSTRUCTION -> . INSTRUCTION SIMPLE_INSTRUCTION
+    (13) INSTRUCTION -> . SIMPLE_INSTRUCTION
+    (14) INSTRUCTION -> . empty
+    (15) SIMPLE_INSTRUCTION -> . TkStore EXP_BINARIA TkPunto
+    (16) SIMPLE_INSTRUCTION -> . TkActivate TkIdent TkPunto
+    (17) SIMPLE_INSTRUCTION -> . TkAdvance TkIdent TkPunto
+    (18) SIMPLE_INSTRUCTION -> . TkIf EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd
+    (19) SIMPLE_INSTRUCTION -> . TkWhile EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd
+    (41) empty -> .
+
+  ! shift/reduce conflict for TkStore resolved as shift
+  ! shift/reduce conflict for TkActivate resolved as shift
+  ! shift/reduce conflict for TkAdvance resolved as shift
+  ! shift/reduce conflict for TkIf resolved as shift
+  ! shift/reduce conflict for TkWhile resolved as shift
+    TkStore         shift and go to state 11
+    TkActivate      shift and go to state 12
+    TkAdvance       shift and go to state 13
+    TkIf            shift and go to state 14
+    TkWhile         shift and go to state 15
+    TkEnd           reduce using rule 41 (empty -> .)
+
+  ! TkStore         [ reduce using rule 41 (empty -> .) ]
+  ! TkActivate      [ reduce using rule 41 (empty -> .) ]
+  ! TkAdvance       [ reduce using rule 41 (empty -> .) ]
+  ! TkIf            [ reduce using rule 41 (empty -> .) ]
+  ! TkWhile         [ reduce using rule 41 (empty -> .) ]
+
+    INSTRUCTION                    shift and go to state 69
+    SIMPLE_INSTRUCTION             shift and go to state 9
+    empty                          shift and go to state 10
+
+state 53
+
+    (19) SIMPLE_INSTRUCTION -> TkWhile EXP_BINARIA TkDosPuntos . INSTRUCTION TkEnd
+    (12) INSTRUCTION -> . INSTRUCTION SIMPLE_INSTRUCTION
+    (13) INSTRUCTION -> . SIMPLE_INSTRUCTION
+    (14) INSTRUCTION -> . empty
+    (15) SIMPLE_INSTRUCTION -> . TkStore EXP_BINARIA TkPunto
+    (16) SIMPLE_INSTRUCTION -> . TkActivate TkIdent TkPunto
+    (17) SIMPLE_INSTRUCTION -> . TkAdvance TkIdent TkPunto
+    (18) SIMPLE_INSTRUCTION -> . TkIf EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd
+    (19) SIMPLE_INSTRUCTION -> . TkWhile EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd
+    (41) empty -> .
+
+  ! shift/reduce conflict for TkStore resolved as shift
+  ! shift/reduce conflict for TkActivate resolved as shift
+  ! shift/reduce conflict for TkAdvance resolved as shift
+  ! shift/reduce conflict for TkIf resolved as shift
+  ! shift/reduce conflict for TkWhile resolved as shift
+    TkStore         shift and go to state 11
+    TkActivate      shift and go to state 12
+    TkAdvance       shift and go to state 13
+    TkIf            shift and go to state 14
+    TkWhile         shift and go to state 15
+    TkEnd           reduce using rule 41 (empty -> .)
+
+  ! TkStore         [ reduce using rule 41 (empty -> .) ]
+  ! TkActivate      [ reduce using rule 41 (empty -> .) ]
+  ! TkAdvance       [ reduce using rule 41 (empty -> .) ]
+  ! TkIf            [ reduce using rule 41 (empty -> .) ]
+  ! TkWhile         [ reduce using rule 41 (empty -> .) ]
+
+    INSTRUCTION                    shift and go to state 70
+    SIMPLE_INSTRUCTION             shift and go to state 9
+    empty                          shift and go to state 10
+
+state 54
+
+    (3) DEFINITION -> DEFINITION TYPE TkBot TkIdent . DECLARATION TkEnd
+    (7) DECLARATION -> . DECLARATION EVENT
+    (8) DECLARATION -> . EVENT
+    (9) DECLARATION -> . empty
+    (10) EVENT -> . TkOn TkActivation TkDosPuntos INSTRUCTION TkEnd
+    (11) EVENT -> . TkOn TkDefault TkDosPuntos INSTRUCTION TkEnd
+    (41) empty -> .
+
+  ! shift/reduce conflict for TkOn resolved as shift
+    TkOn            shift and go to state 74
+    TkEnd           reduce using rule 41 (empty -> .)
+
+  ! TkOn            [ reduce using rule 41 (empty -> .) ]
+
+    DECLARATION                    shift and go to state 71
+    EVENT                          shift and go to state 72
+    empty                          shift and go to state 73
+
+state 55
+
+    (21) EXP_BINARIA -> EXP_BINARIA TkSuma EXP_BINARIA .
+    (21) EXP_BINARIA -> EXP_BINARIA . TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> EXP_BINARIA . TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> EXP_BINARIA . TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> EXP_BINARIA . TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> EXP_BINARIA . TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> EXP_BINARIA . TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> EXP_BINARIA . TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> EXP_BINARIA . TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> EXP_BINARIA . TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> EXP_BINARIA . TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> EXP_BINARIA . TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> EXP_BINARIA . TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> EXP_BINARIA . TkMayor EXP_BINARIA
+
+    TkPunto         reduce using rule 21 (EXP_BINARIA -> EXP_BINARIA TkSuma EXP_BINARIA .)
+    TkSuma          reduce using rule 21 (EXP_BINARIA -> EXP_BINARIA TkSuma EXP_BINARIA .)
+    TkResta         reduce using rule 21 (EXP_BINARIA -> EXP_BINARIA TkSuma EXP_BINARIA .)
+    TkConjuncion    reduce using rule 21 (EXP_BINARIA -> EXP_BINARIA TkSuma EXP_BINARIA .)
+    TkDisyuncion    reduce using rule 21 (EXP_BINARIA -> EXP_BINARIA TkSuma EXP_BINARIA .)
+    TkIgual         reduce using rule 21 (EXP_BINARIA -> EXP_BINARIA TkSuma EXP_BINARIA .)
+    TkNoIgual       reduce using rule 21 (EXP_BINARIA -> EXP_BINARIA TkSuma EXP_BINARIA .)
+    TkMenorIgual    reduce using rule 21 (EXP_BINARIA -> EXP_BINARIA TkSuma EXP_BINARIA .)
+    TkMayorIgual    reduce using rule 21 (EXP_BINARIA -> EXP_BINARIA TkSuma EXP_BINARIA .)
+    TkMenor         reduce using rule 21 (EXP_BINARIA -> EXP_BINARIA TkSuma EXP_BINARIA .)
+    TkMayor         reduce using rule 21 (EXP_BINARIA -> EXP_BINARIA TkSuma EXP_BINARIA .)
+    TkDosPuntos     reduce using rule 21 (EXP_BINARIA -> EXP_BINARIA TkSuma EXP_BINARIA .)
+    TkParCierra     reduce using rule 21 (EXP_BINARIA -> EXP_BINARIA TkSuma EXP_BINARIA .)
+    TkMult          shift and go to state 37
+    TkDiv           shift and go to state 38
+    TkMod           shift and go to state 39
+
+  ! TkMult          [ reduce using rule 21 (EXP_BINARIA -> EXP_BINARIA TkSuma EXP_BINARIA .) ]
+  ! TkDiv           [ reduce using rule 21 (EXP_BINARIA -> EXP_BINARIA TkSuma EXP_BINARIA .) ]
+  ! TkMod           [ reduce using rule 21 (EXP_BINARIA -> EXP_BINARIA TkSuma EXP_BINARIA .) ]
+  ! TkSuma          [ shift and go to state 35 ]
+  ! TkResta         [ shift and go to state 36 ]
+  ! TkConjuncion    [ shift and go to state 40 ]
+  ! TkDisyuncion    [ shift and go to state 41 ]
+  ! TkIgual         [ shift and go to state 42 ]
+  ! TkNoIgual       [ shift and go to state 43 ]
+  ! TkMenorIgual    [ shift and go to state 44 ]
+  ! TkMayorIgual    [ shift and go to state 45 ]
+  ! TkMenor         [ shift and go to state 46 ]
+  ! TkMayor         [ shift and go to state 47 ]
+
+
+state 56
+
+    (22) EXP_BINARIA -> EXP_BINARIA TkResta EXP_BINARIA .
+    (21) EXP_BINARIA -> EXP_BINARIA . TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> EXP_BINARIA . TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> EXP_BINARIA . TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> EXP_BINARIA . TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> EXP_BINARIA . TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> EXP_BINARIA . TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> EXP_BINARIA . TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> EXP_BINARIA . TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> EXP_BINARIA . TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> EXP_BINARIA . TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> EXP_BINARIA . TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> EXP_BINARIA . TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> EXP_BINARIA . TkMayor EXP_BINARIA
+
+    TkPunto         reduce using rule 22 (EXP_BINARIA -> EXP_BINARIA TkResta EXP_BINARIA .)
+    TkSuma          reduce using rule 22 (EXP_BINARIA -> EXP_BINARIA TkResta EXP_BINARIA .)
+    TkResta         reduce using rule 22 (EXP_BINARIA -> EXP_BINARIA TkResta EXP_BINARIA .)
+    TkConjuncion    reduce using rule 22 (EXP_BINARIA -> EXP_BINARIA TkResta EXP_BINARIA .)
+    TkDisyuncion    reduce using rule 22 (EXP_BINARIA -> EXP_BINARIA TkResta EXP_BINARIA .)
+    TkIgual         reduce using rule 22 (EXP_BINARIA -> EXP_BINARIA TkResta EXP_BINARIA .)
+    TkNoIgual       reduce using rule 22 (EXP_BINARIA -> EXP_BINARIA TkResta EXP_BINARIA .)
+    TkMenorIgual    reduce using rule 22 (EXP_BINARIA -> EXP_BINARIA TkResta EXP_BINARIA .)
+    TkMayorIgual    reduce using rule 22 (EXP_BINARIA -> EXP_BINARIA TkResta EXP_BINARIA .)
+    TkMenor         reduce using rule 22 (EXP_BINARIA -> EXP_BINARIA TkResta EXP_BINARIA .)
+    TkMayor         reduce using rule 22 (EXP_BINARIA -> EXP_BINARIA TkResta EXP_BINARIA .)
+    TkDosPuntos     reduce using rule 22 (EXP_BINARIA -> EXP_BINARIA TkResta EXP_BINARIA .)
+    TkParCierra     reduce using rule 22 (EXP_BINARIA -> EXP_BINARIA TkResta EXP_BINARIA .)
+    TkMult          shift and go to state 37
+    TkDiv           shift and go to state 38
+    TkMod           shift and go to state 39
+
+  ! TkMult          [ reduce using rule 22 (EXP_BINARIA -> EXP_BINARIA TkResta EXP_BINARIA .) ]
+  ! TkDiv           [ reduce using rule 22 (EXP_BINARIA -> EXP_BINARIA TkResta EXP_BINARIA .) ]
+  ! TkMod           [ reduce using rule 22 (EXP_BINARIA -> EXP_BINARIA TkResta EXP_BINARIA .) ]
+  ! TkSuma          [ shift and go to state 35 ]
+  ! TkResta         [ shift and go to state 36 ]
+  ! TkConjuncion    [ shift and go to state 40 ]
+  ! TkDisyuncion    [ shift and go to state 41 ]
+  ! TkIgual         [ shift and go to state 42 ]
+  ! TkNoIgual       [ shift and go to state 43 ]
+  ! TkMenorIgual    [ shift and go to state 44 ]
+  ! TkMayorIgual    [ shift and go to state 45 ]
+  ! TkMenor         [ shift and go to state 46 ]
+  ! TkMayor         [ shift and go to state 47 ]
+
+
+state 57
+
+    (23) EXP_BINARIA -> EXP_BINARIA TkMult EXP_BINARIA .
+    (21) EXP_BINARIA -> EXP_BINARIA . TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> EXP_BINARIA . TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> EXP_BINARIA . TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> EXP_BINARIA . TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> EXP_BINARIA . TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> EXP_BINARIA . TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> EXP_BINARIA . TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> EXP_BINARIA . TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> EXP_BINARIA . TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> EXP_BINARIA . TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> EXP_BINARIA . TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> EXP_BINARIA . TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> EXP_BINARIA . TkMayor EXP_BINARIA
+
+    TkPunto         reduce using rule 23 (EXP_BINARIA -> EXP_BINARIA TkMult EXP_BINARIA .)
+    TkSuma          reduce using rule 23 (EXP_BINARIA -> EXP_BINARIA TkMult EXP_BINARIA .)
+    TkResta         reduce using rule 23 (EXP_BINARIA -> EXP_BINARIA TkMult EXP_BINARIA .)
+    TkMult          reduce using rule 23 (EXP_BINARIA -> EXP_BINARIA TkMult EXP_BINARIA .)
+    TkDiv           reduce using rule 23 (EXP_BINARIA -> EXP_BINARIA TkMult EXP_BINARIA .)
+    TkMod           reduce using rule 23 (EXP_BINARIA -> EXP_BINARIA TkMult EXP_BINARIA .)
+    TkConjuncion    reduce using rule 23 (EXP_BINARIA -> EXP_BINARIA TkMult EXP_BINARIA .)
+    TkDisyuncion    reduce using rule 23 (EXP_BINARIA -> EXP_BINARIA TkMult EXP_BINARIA .)
+    TkIgual         reduce using rule 23 (EXP_BINARIA -> EXP_BINARIA TkMult EXP_BINARIA .)
+    TkNoIgual       reduce using rule 23 (EXP_BINARIA -> EXP_BINARIA TkMult EXP_BINARIA .)
+    TkMenorIgual    reduce using rule 23 (EXP_BINARIA -> EXP_BINARIA TkMult EXP_BINARIA .)
+    TkMayorIgual    reduce using rule 23 (EXP_BINARIA -> EXP_BINARIA TkMult EXP_BINARIA .)
+    TkMenor         reduce using rule 23 (EXP_BINARIA -> EXP_BINARIA TkMult EXP_BINARIA .)
+    TkMayor         reduce using rule 23 (EXP_BINARIA -> EXP_BINARIA TkMult EXP_BINARIA .)
+    TkDosPuntos     reduce using rule 23 (EXP_BINARIA -> EXP_BINARIA TkMult EXP_BINARIA .)
+    TkParCierra     reduce using rule 23 (EXP_BINARIA -> EXP_BINARIA TkMult EXP_BINARIA .)
+
+  ! TkSuma          [ shift and go to state 35 ]
+  ! TkResta         [ shift and go to state 36 ]
+  ! TkMult          [ shift and go to state 37 ]
+  ! TkDiv           [ shift and go to state 38 ]
+  ! TkMod           [ shift and go to state 39 ]
+  ! TkConjuncion    [ shift and go to state 40 ]
+  ! TkDisyuncion    [ shift and go to state 41 ]
+  ! TkIgual         [ shift and go to state 42 ]
+  ! TkNoIgual       [ shift and go to state 43 ]
+  ! TkMenorIgual    [ shift and go to state 44 ]
+  ! TkMayorIgual    [ shift and go to state 45 ]
+  ! TkMenor         [ shift and go to state 46 ]
+  ! TkMayor         [ shift and go to state 47 ]
+
+
+state 58
+
+    (24) EXP_BINARIA -> EXP_BINARIA TkDiv EXP_BINARIA .
+    (21) EXP_BINARIA -> EXP_BINARIA . TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> EXP_BINARIA . TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> EXP_BINARIA . TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> EXP_BINARIA . TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> EXP_BINARIA . TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> EXP_BINARIA . TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> EXP_BINARIA . TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> EXP_BINARIA . TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> EXP_BINARIA . TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> EXP_BINARIA . TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> EXP_BINARIA . TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> EXP_BINARIA . TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> EXP_BINARIA . TkMayor EXP_BINARIA
+
+    TkPunto         reduce using rule 24 (EXP_BINARIA -> EXP_BINARIA TkDiv EXP_BINARIA .)
+    TkSuma          reduce using rule 24 (EXP_BINARIA -> EXP_BINARIA TkDiv EXP_BINARIA .)
+    TkResta         reduce using rule 24 (EXP_BINARIA -> EXP_BINARIA TkDiv EXP_BINARIA .)
+    TkMult          reduce using rule 24 (EXP_BINARIA -> EXP_BINARIA TkDiv EXP_BINARIA .)
+    TkDiv           reduce using rule 24 (EXP_BINARIA -> EXP_BINARIA TkDiv EXP_BINARIA .)
+    TkMod           reduce using rule 24 (EXP_BINARIA -> EXP_BINARIA TkDiv EXP_BINARIA .)
+    TkConjuncion    reduce using rule 24 (EXP_BINARIA -> EXP_BINARIA TkDiv EXP_BINARIA .)
+    TkDisyuncion    reduce using rule 24 (EXP_BINARIA -> EXP_BINARIA TkDiv EXP_BINARIA .)
+    TkIgual         reduce using rule 24 (EXP_BINARIA -> EXP_BINARIA TkDiv EXP_BINARIA .)
+    TkNoIgual       reduce using rule 24 (EXP_BINARIA -> EXP_BINARIA TkDiv EXP_BINARIA .)
+    TkMenorIgual    reduce using rule 24 (EXP_BINARIA -> EXP_BINARIA TkDiv EXP_BINARIA .)
+    TkMayorIgual    reduce using rule 24 (EXP_BINARIA -> EXP_BINARIA TkDiv EXP_BINARIA .)
+    TkMenor         reduce using rule 24 (EXP_BINARIA -> EXP_BINARIA TkDiv EXP_BINARIA .)
+    TkMayor         reduce using rule 24 (EXP_BINARIA -> EXP_BINARIA TkDiv EXP_BINARIA .)
+    TkDosPuntos     reduce using rule 24 (EXP_BINARIA -> EXP_BINARIA TkDiv EXP_BINARIA .)
+    TkParCierra     reduce using rule 24 (EXP_BINARIA -> EXP_BINARIA TkDiv EXP_BINARIA .)
+
+  ! TkSuma          [ shift and go to state 35 ]
+  ! TkResta         [ shift and go to state 36 ]
+  ! TkMult          [ shift and go to state 37 ]
+  ! TkDiv           [ shift and go to state 38 ]
+  ! TkMod           [ shift and go to state 39 ]
+  ! TkConjuncion    [ shift and go to state 40 ]
+  ! TkDisyuncion    [ shift and go to state 41 ]
+  ! TkIgual         [ shift and go to state 42 ]
+  ! TkNoIgual       [ shift and go to state 43 ]
+  ! TkMenorIgual    [ shift and go to state 44 ]
+  ! TkMayorIgual    [ shift and go to state 45 ]
+  ! TkMenor         [ shift and go to state 46 ]
+  ! TkMayor         [ shift and go to state 47 ]
+
+
+state 59
+
+    (25) EXP_BINARIA -> EXP_BINARIA TkMod EXP_BINARIA .
+    (21) EXP_BINARIA -> EXP_BINARIA . TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> EXP_BINARIA . TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> EXP_BINARIA . TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> EXP_BINARIA . TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> EXP_BINARIA . TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> EXP_BINARIA . TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> EXP_BINARIA . TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> EXP_BINARIA . TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> EXP_BINARIA . TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> EXP_BINARIA . TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> EXP_BINARIA . TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> EXP_BINARIA . TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> EXP_BINARIA . TkMayor EXP_BINARIA
+
+    TkPunto         reduce using rule 25 (EXP_BINARIA -> EXP_BINARIA TkMod EXP_BINARIA .)
+    TkSuma          reduce using rule 25 (EXP_BINARIA -> EXP_BINARIA TkMod EXP_BINARIA .)
+    TkResta         reduce using rule 25 (EXP_BINARIA -> EXP_BINARIA TkMod EXP_BINARIA .)
+    TkMult          reduce using rule 25 (EXP_BINARIA -> EXP_BINARIA TkMod EXP_BINARIA .)
+    TkDiv           reduce using rule 25 (EXP_BINARIA -> EXP_BINARIA TkMod EXP_BINARIA .)
+    TkMod           reduce using rule 25 (EXP_BINARIA -> EXP_BINARIA TkMod EXP_BINARIA .)
+    TkConjuncion    reduce using rule 25 (EXP_BINARIA -> EXP_BINARIA TkMod EXP_BINARIA .)
+    TkDisyuncion    reduce using rule 25 (EXP_BINARIA -> EXP_BINARIA TkMod EXP_BINARIA .)
+    TkIgual         reduce using rule 25 (EXP_BINARIA -> EXP_BINARIA TkMod EXP_BINARIA .)
+    TkNoIgual       reduce using rule 25 (EXP_BINARIA -> EXP_BINARIA TkMod EXP_BINARIA .)
+    TkMenorIgual    reduce using rule 25 (EXP_BINARIA -> EXP_BINARIA TkMod EXP_BINARIA .)
+    TkMayorIgual    reduce using rule 25 (EXP_BINARIA -> EXP_BINARIA TkMod EXP_BINARIA .)
+    TkMenor         reduce using rule 25 (EXP_BINARIA -> EXP_BINARIA TkMod EXP_BINARIA .)
+    TkMayor         reduce using rule 25 (EXP_BINARIA -> EXP_BINARIA TkMod EXP_BINARIA .)
+    TkDosPuntos     reduce using rule 25 (EXP_BINARIA -> EXP_BINARIA TkMod EXP_BINARIA .)
+    TkParCierra     reduce using rule 25 (EXP_BINARIA -> EXP_BINARIA TkMod EXP_BINARIA .)
+
+  ! TkSuma          [ shift and go to state 35 ]
+  ! TkResta         [ shift and go to state 36 ]
+  ! TkMult          [ shift and go to state 37 ]
+  ! TkDiv           [ shift and go to state 38 ]
+  ! TkMod           [ shift and go to state 39 ]
+  ! TkConjuncion    [ shift and go to state 40 ]
+  ! TkDisyuncion    [ shift and go to state 41 ]
+  ! TkIgual         [ shift and go to state 42 ]
+  ! TkNoIgual       [ shift and go to state 43 ]
+  ! TkMenorIgual    [ shift and go to state 44 ]
+  ! TkMayorIgual    [ shift and go to state 45 ]
+  ! TkMenor         [ shift and go to state 46 ]
+  ! TkMayor         [ shift and go to state 47 ]
+
+
+state 60
+
+    (26) EXP_BINARIA -> EXP_BINARIA TkConjuncion EXP_BINARIA .
+    (21) EXP_BINARIA -> EXP_BINARIA . TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> EXP_BINARIA . TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> EXP_BINARIA . TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> EXP_BINARIA . TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> EXP_BINARIA . TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> EXP_BINARIA . TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> EXP_BINARIA . TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> EXP_BINARIA . TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> EXP_BINARIA . TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> EXP_BINARIA . TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> EXP_BINARIA . TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> EXP_BINARIA . TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> EXP_BINARIA . TkMayor EXP_BINARIA
+
+    TkPunto         reduce using rule 26 (EXP_BINARIA -> EXP_BINARIA TkConjuncion EXP_BINARIA .)
+    TkConjuncion    reduce using rule 26 (EXP_BINARIA -> EXP_BINARIA TkConjuncion EXP_BINARIA .)
+    TkDisyuncion    reduce using rule 26 (EXP_BINARIA -> EXP_BINARIA TkConjuncion EXP_BINARIA .)
+    TkDosPuntos     reduce using rule 26 (EXP_BINARIA -> EXP_BINARIA TkConjuncion EXP_BINARIA .)
+    TkParCierra     reduce using rule 26 (EXP_BINARIA -> EXP_BINARIA TkConjuncion EXP_BINARIA .)
+    TkSuma          shift and go to state 35
+    TkResta         shift and go to state 36
+    TkMult          shift and go to state 37
+    TkDiv           shift and go to state 38
+    TkMod           shift and go to state 39
+    TkIgual         shift and go to state 42
+    TkNoIgual       shift and go to state 43
+    TkMenorIgual    shift and go to state 44
+    TkMayorIgual    shift and go to state 45
+    TkMenor         shift and go to state 46
+    TkMayor         shift and go to state 47
+
+  ! TkSuma          [ reduce using rule 26 (EXP_BINARIA -> EXP_BINARIA TkConjuncion EXP_BINARIA .) ]
+  ! TkResta         [ reduce using rule 26 (EXP_BINARIA -> EXP_BINARIA TkConjuncion EXP_BINARIA .) ]
+  ! TkMult          [ reduce using rule 26 (EXP_BINARIA -> EXP_BINARIA TkConjuncion EXP_BINARIA .) ]
+  ! TkDiv           [ reduce using rule 26 (EXP_BINARIA -> EXP_BINARIA TkConjuncion EXP_BINARIA .) ]
+  ! TkMod           [ reduce using rule 26 (EXP_BINARIA -> EXP_BINARIA TkConjuncion EXP_BINARIA .) ]
+  ! TkIgual         [ reduce using rule 26 (EXP_BINARIA -> EXP_BINARIA TkConjuncion EXP_BINARIA .) ]
+  ! TkNoIgual       [ reduce using rule 26 (EXP_BINARIA -> EXP_BINARIA TkConjuncion EXP_BINARIA .) ]
+  ! TkMenorIgual    [ reduce using rule 26 (EXP_BINARIA -> EXP_BINARIA TkConjuncion EXP_BINARIA .) ]
+  ! TkMayorIgual    [ reduce using rule 26 (EXP_BINARIA -> EXP_BINARIA TkConjuncion EXP_BINARIA .) ]
+  ! TkMenor         [ reduce using rule 26 (EXP_BINARIA -> EXP_BINARIA TkConjuncion EXP_BINARIA .) ]
+  ! TkMayor         [ reduce using rule 26 (EXP_BINARIA -> EXP_BINARIA TkConjuncion EXP_BINARIA .) ]
+  ! TkConjuncion    [ shift and go to state 40 ]
+  ! TkDisyuncion    [ shift and go to state 41 ]
+
+
+state 61
+
+    (27) EXP_BINARIA -> EXP_BINARIA TkDisyuncion EXP_BINARIA .
+    (21) EXP_BINARIA -> EXP_BINARIA . TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> EXP_BINARIA . TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> EXP_BINARIA . TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> EXP_BINARIA . TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> EXP_BINARIA . TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> EXP_BINARIA . TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> EXP_BINARIA . TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> EXP_BINARIA . TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> EXP_BINARIA . TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> EXP_BINARIA . TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> EXP_BINARIA . TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> EXP_BINARIA . TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> EXP_BINARIA . TkMayor EXP_BINARIA
+
+    TkPunto         reduce using rule 27 (EXP_BINARIA -> EXP_BINARIA TkDisyuncion EXP_BINARIA .)
+    TkDisyuncion    reduce using rule 27 (EXP_BINARIA -> EXP_BINARIA TkDisyuncion EXP_BINARIA .)
+    TkDosPuntos     reduce using rule 27 (EXP_BINARIA -> EXP_BINARIA TkDisyuncion EXP_BINARIA .)
+    TkParCierra     reduce using rule 27 (EXP_BINARIA -> EXP_BINARIA TkDisyuncion EXP_BINARIA .)
+    TkSuma          shift and go to state 35
+    TkResta         shift and go to state 36
+    TkMult          shift and go to state 37
+    TkDiv           shift and go to state 38
+    TkMod           shift and go to state 39
+    TkConjuncion    shift and go to state 40
+    TkIgual         shift and go to state 42
+    TkNoIgual       shift and go to state 43
+    TkMenorIgual    shift and go to state 44
+    TkMayorIgual    shift and go to state 45
+    TkMenor         shift and go to state 46
+    TkMayor         shift and go to state 47
+
+  ! TkSuma          [ reduce using rule 27 (EXP_BINARIA -> EXP_BINARIA TkDisyuncion EXP_BINARIA .) ]
+  ! TkResta         [ reduce using rule 27 (EXP_BINARIA -> EXP_BINARIA TkDisyuncion EXP_BINARIA .) ]
+  ! TkMult          [ reduce using rule 27 (EXP_BINARIA -> EXP_BINARIA TkDisyuncion EXP_BINARIA .) ]
+  ! TkDiv           [ reduce using rule 27 (EXP_BINARIA -> EXP_BINARIA TkDisyuncion EXP_BINARIA .) ]
+  ! TkMod           [ reduce using rule 27 (EXP_BINARIA -> EXP_BINARIA TkDisyuncion EXP_BINARIA .) ]
+  ! TkConjuncion    [ reduce using rule 27 (EXP_BINARIA -> EXP_BINARIA TkDisyuncion EXP_BINARIA .) ]
+  ! TkIgual         [ reduce using rule 27 (EXP_BINARIA -> EXP_BINARIA TkDisyuncion EXP_BINARIA .) ]
+  ! TkNoIgual       [ reduce using rule 27 (EXP_BINARIA -> EXP_BINARIA TkDisyuncion EXP_BINARIA .) ]
+  ! TkMenorIgual    [ reduce using rule 27 (EXP_BINARIA -> EXP_BINARIA TkDisyuncion EXP_BINARIA .) ]
+  ! TkMayorIgual    [ reduce using rule 27 (EXP_BINARIA -> EXP_BINARIA TkDisyuncion EXP_BINARIA .) ]
+  ! TkMenor         [ reduce using rule 27 (EXP_BINARIA -> EXP_BINARIA TkDisyuncion EXP_BINARIA .) ]
+  ! TkMayor         [ reduce using rule 27 (EXP_BINARIA -> EXP_BINARIA TkDisyuncion EXP_BINARIA .) ]
+  ! TkDisyuncion    [ shift and go to state 41 ]
+
+
+state 62
+
+    (28) EXP_BINARIA -> EXP_BINARIA TkIgual EXP_BINARIA .
+    (21) EXP_BINARIA -> EXP_BINARIA . TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> EXP_BINARIA . TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> EXP_BINARIA . TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> EXP_BINARIA . TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> EXP_BINARIA . TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> EXP_BINARIA . TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> EXP_BINARIA . TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> EXP_BINARIA . TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> EXP_BINARIA . TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> EXP_BINARIA . TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> EXP_BINARIA . TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> EXP_BINARIA . TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> EXP_BINARIA . TkMayor EXP_BINARIA
+
+    TkPunto         reduce using rule 28 (EXP_BINARIA -> EXP_BINARIA TkIgual EXP_BINARIA .)
+    TkConjuncion    reduce using rule 28 (EXP_BINARIA -> EXP_BINARIA TkIgual EXP_BINARIA .)
+    TkDisyuncion    reduce using rule 28 (EXP_BINARIA -> EXP_BINARIA TkIgual EXP_BINARIA .)
+    TkIgual         reduce using rule 28 (EXP_BINARIA -> EXP_BINARIA TkIgual EXP_BINARIA .)
+    TkNoIgual       reduce using rule 28 (EXP_BINARIA -> EXP_BINARIA TkIgual EXP_BINARIA .)
+    TkMenorIgual    reduce using rule 28 (EXP_BINARIA -> EXP_BINARIA TkIgual EXP_BINARIA .)
+    TkMayorIgual    reduce using rule 28 (EXP_BINARIA -> EXP_BINARIA TkIgual EXP_BINARIA .)
+    TkMenor         reduce using rule 28 (EXP_BINARIA -> EXP_BINARIA TkIgual EXP_BINARIA .)
+    TkMayor         reduce using rule 28 (EXP_BINARIA -> EXP_BINARIA TkIgual EXP_BINARIA .)
+    TkDosPuntos     reduce using rule 28 (EXP_BINARIA -> EXP_BINARIA TkIgual EXP_BINARIA .)
+    TkParCierra     reduce using rule 28 (EXP_BINARIA -> EXP_BINARIA TkIgual EXP_BINARIA .)
+    TkSuma          shift and go to state 35
+    TkResta         shift and go to state 36
+    TkMult          shift and go to state 37
+    TkDiv           shift and go to state 38
+    TkMod           shift and go to state 39
+
+  ! TkSuma          [ reduce using rule 28 (EXP_BINARIA -> EXP_BINARIA TkIgual EXP_BINARIA .) ]
+  ! TkResta         [ reduce using rule 28 (EXP_BINARIA -> EXP_BINARIA TkIgual EXP_BINARIA .) ]
+  ! TkMult          [ reduce using rule 28 (EXP_BINARIA -> EXP_BINARIA TkIgual EXP_BINARIA .) ]
+  ! TkDiv           [ reduce using rule 28 (EXP_BINARIA -> EXP_BINARIA TkIgual EXP_BINARIA .) ]
+  ! TkMod           [ reduce using rule 28 (EXP_BINARIA -> EXP_BINARIA TkIgual EXP_BINARIA .) ]
+  ! TkConjuncion    [ shift and go to state 40 ]
+  ! TkDisyuncion    [ shift and go to state 41 ]
+  ! TkIgual         [ shift and go to state 42 ]
+  ! TkNoIgual       [ shift and go to state 43 ]
+  ! TkMenorIgual    [ shift and go to state 44 ]
+  ! TkMayorIgual    [ shift and go to state 45 ]
+  ! TkMenor         [ shift and go to state 46 ]
+  ! TkMayor         [ shift and go to state 47 ]
+
+
+state 63
+
+    (29) EXP_BINARIA -> EXP_BINARIA TkNoIgual EXP_BINARIA .
+    (21) EXP_BINARIA -> EXP_BINARIA . TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> EXP_BINARIA . TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> EXP_BINARIA . TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> EXP_BINARIA . TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> EXP_BINARIA . TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> EXP_BINARIA . TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> EXP_BINARIA . TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> EXP_BINARIA . TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> EXP_BINARIA . TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> EXP_BINARIA . TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> EXP_BINARIA . TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> EXP_BINARIA . TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> EXP_BINARIA . TkMayor EXP_BINARIA
+
+    TkPunto         reduce using rule 29 (EXP_BINARIA -> EXP_BINARIA TkNoIgual EXP_BINARIA .)
+    TkConjuncion    reduce using rule 29 (EXP_BINARIA -> EXP_BINARIA TkNoIgual EXP_BINARIA .)
+    TkDisyuncion    reduce using rule 29 (EXP_BINARIA -> EXP_BINARIA TkNoIgual EXP_BINARIA .)
+    TkIgual         reduce using rule 29 (EXP_BINARIA -> EXP_BINARIA TkNoIgual EXP_BINARIA .)
+    TkNoIgual       reduce using rule 29 (EXP_BINARIA -> EXP_BINARIA TkNoIgual EXP_BINARIA .)
+    TkMenorIgual    reduce using rule 29 (EXP_BINARIA -> EXP_BINARIA TkNoIgual EXP_BINARIA .)
+    TkMayorIgual    reduce using rule 29 (EXP_BINARIA -> EXP_BINARIA TkNoIgual EXP_BINARIA .)
+    TkMenor         reduce using rule 29 (EXP_BINARIA -> EXP_BINARIA TkNoIgual EXP_BINARIA .)
+    TkMayor         reduce using rule 29 (EXP_BINARIA -> EXP_BINARIA TkNoIgual EXP_BINARIA .)
+    TkDosPuntos     reduce using rule 29 (EXP_BINARIA -> EXP_BINARIA TkNoIgual EXP_BINARIA .)
+    TkParCierra     reduce using rule 29 (EXP_BINARIA -> EXP_BINARIA TkNoIgual EXP_BINARIA .)
+    TkSuma          shift and go to state 35
+    TkResta         shift and go to state 36
+    TkMult          shift and go to state 37
+    TkDiv           shift and go to state 38
+    TkMod           shift and go to state 39
+
+  ! TkSuma          [ reduce using rule 29 (EXP_BINARIA -> EXP_BINARIA TkNoIgual EXP_BINARIA .) ]
+  ! TkResta         [ reduce using rule 29 (EXP_BINARIA -> EXP_BINARIA TkNoIgual EXP_BINARIA .) ]
+  ! TkMult          [ reduce using rule 29 (EXP_BINARIA -> EXP_BINARIA TkNoIgual EXP_BINARIA .) ]
+  ! TkDiv           [ reduce using rule 29 (EXP_BINARIA -> EXP_BINARIA TkNoIgual EXP_BINARIA .) ]
+  ! TkMod           [ reduce using rule 29 (EXP_BINARIA -> EXP_BINARIA TkNoIgual EXP_BINARIA .) ]
+  ! TkConjuncion    [ shift and go to state 40 ]
+  ! TkDisyuncion    [ shift and go to state 41 ]
+  ! TkIgual         [ shift and go to state 42 ]
+  ! TkNoIgual       [ shift and go to state 43 ]
+  ! TkMenorIgual    [ shift and go to state 44 ]
+  ! TkMayorIgual    [ shift and go to state 45 ]
+  ! TkMenor         [ shift and go to state 46 ]
+  ! TkMayor         [ shift and go to state 47 ]
+
+
+state 64
+
+    (30) EXP_BINARIA -> EXP_BINARIA TkMenorIgual EXP_BINARIA .
+    (21) EXP_BINARIA -> EXP_BINARIA . TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> EXP_BINARIA . TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> EXP_BINARIA . TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> EXP_BINARIA . TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> EXP_BINARIA . TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> EXP_BINARIA . TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> EXP_BINARIA . TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> EXP_BINARIA . TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> EXP_BINARIA . TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> EXP_BINARIA . TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> EXP_BINARIA . TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> EXP_BINARIA . TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> EXP_BINARIA . TkMayor EXP_BINARIA
+
+    TkPunto         reduce using rule 30 (EXP_BINARIA -> EXP_BINARIA TkMenorIgual EXP_BINARIA .)
+    TkConjuncion    reduce using rule 30 (EXP_BINARIA -> EXP_BINARIA TkMenorIgual EXP_BINARIA .)
+    TkDisyuncion    reduce using rule 30 (EXP_BINARIA -> EXP_BINARIA TkMenorIgual EXP_BINARIA .)
+    TkIgual         reduce using rule 30 (EXP_BINARIA -> EXP_BINARIA TkMenorIgual EXP_BINARIA .)
+    TkNoIgual       reduce using rule 30 (EXP_BINARIA -> EXP_BINARIA TkMenorIgual EXP_BINARIA .)
+    TkMenorIgual    reduce using rule 30 (EXP_BINARIA -> EXP_BINARIA TkMenorIgual EXP_BINARIA .)
+    TkMayorIgual    reduce using rule 30 (EXP_BINARIA -> EXP_BINARIA TkMenorIgual EXP_BINARIA .)
+    TkMenor         reduce using rule 30 (EXP_BINARIA -> EXP_BINARIA TkMenorIgual EXP_BINARIA .)
+    TkMayor         reduce using rule 30 (EXP_BINARIA -> EXP_BINARIA TkMenorIgual EXP_BINARIA .)
+    TkDosPuntos     reduce using rule 30 (EXP_BINARIA -> EXP_BINARIA TkMenorIgual EXP_BINARIA .)
+    TkParCierra     reduce using rule 30 (EXP_BINARIA -> EXP_BINARIA TkMenorIgual EXP_BINARIA .)
+    TkSuma          shift and go to state 35
+    TkResta         shift and go to state 36
+    TkMult          shift and go to state 37
+    TkDiv           shift and go to state 38
+    TkMod           shift and go to state 39
+
+  ! TkSuma          [ reduce using rule 30 (EXP_BINARIA -> EXP_BINARIA TkMenorIgual EXP_BINARIA .) ]
+  ! TkResta         [ reduce using rule 30 (EXP_BINARIA -> EXP_BINARIA TkMenorIgual EXP_BINARIA .) ]
+  ! TkMult          [ reduce using rule 30 (EXP_BINARIA -> EXP_BINARIA TkMenorIgual EXP_BINARIA .) ]
+  ! TkDiv           [ reduce using rule 30 (EXP_BINARIA -> EXP_BINARIA TkMenorIgual EXP_BINARIA .) ]
+  ! TkMod           [ reduce using rule 30 (EXP_BINARIA -> EXP_BINARIA TkMenorIgual EXP_BINARIA .) ]
+  ! TkConjuncion    [ shift and go to state 40 ]
+  ! TkDisyuncion    [ shift and go to state 41 ]
+  ! TkIgual         [ shift and go to state 42 ]
+  ! TkNoIgual       [ shift and go to state 43 ]
+  ! TkMenorIgual    [ shift and go to state 44 ]
+  ! TkMayorIgual    [ shift and go to state 45 ]
+  ! TkMenor         [ shift and go to state 46 ]
+  ! TkMayor         [ shift and go to state 47 ]
+
+
+state 65
+
+    (31) EXP_BINARIA -> EXP_BINARIA TkMayorIgual EXP_BINARIA .
+    (21) EXP_BINARIA -> EXP_BINARIA . TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> EXP_BINARIA . TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> EXP_BINARIA . TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> EXP_BINARIA . TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> EXP_BINARIA . TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> EXP_BINARIA . TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> EXP_BINARIA . TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> EXP_BINARIA . TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> EXP_BINARIA . TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> EXP_BINARIA . TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> EXP_BINARIA . TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> EXP_BINARIA . TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> EXP_BINARIA . TkMayor EXP_BINARIA
+
+    TkPunto         reduce using rule 31 (EXP_BINARIA -> EXP_BINARIA TkMayorIgual EXP_BINARIA .)
+    TkConjuncion    reduce using rule 31 (EXP_BINARIA -> EXP_BINARIA TkMayorIgual EXP_BINARIA .)
+    TkDisyuncion    reduce using rule 31 (EXP_BINARIA -> EXP_BINARIA TkMayorIgual EXP_BINARIA .)
+    TkIgual         reduce using rule 31 (EXP_BINARIA -> EXP_BINARIA TkMayorIgual EXP_BINARIA .)
+    TkNoIgual       reduce using rule 31 (EXP_BINARIA -> EXP_BINARIA TkMayorIgual EXP_BINARIA .)
+    TkMenorIgual    reduce using rule 31 (EXP_BINARIA -> EXP_BINARIA TkMayorIgual EXP_BINARIA .)
+    TkMayorIgual    reduce using rule 31 (EXP_BINARIA -> EXP_BINARIA TkMayorIgual EXP_BINARIA .)
+    TkMenor         reduce using rule 31 (EXP_BINARIA -> EXP_BINARIA TkMayorIgual EXP_BINARIA .)
+    TkMayor         reduce using rule 31 (EXP_BINARIA -> EXP_BINARIA TkMayorIgual EXP_BINARIA .)
+    TkDosPuntos     reduce using rule 31 (EXP_BINARIA -> EXP_BINARIA TkMayorIgual EXP_BINARIA .)
+    TkParCierra     reduce using rule 31 (EXP_BINARIA -> EXP_BINARIA TkMayorIgual EXP_BINARIA .)
+    TkSuma          shift and go to state 35
+    TkResta         shift and go to state 36
+    TkMult          shift and go to state 37
+    TkDiv           shift and go to state 38
+    TkMod           shift and go to state 39
+
+  ! TkSuma          [ reduce using rule 31 (EXP_BINARIA -> EXP_BINARIA TkMayorIgual EXP_BINARIA .) ]
+  ! TkResta         [ reduce using rule 31 (EXP_BINARIA -> EXP_BINARIA TkMayorIgual EXP_BINARIA .) ]
+  ! TkMult          [ reduce using rule 31 (EXP_BINARIA -> EXP_BINARIA TkMayorIgual EXP_BINARIA .) ]
+  ! TkDiv           [ reduce using rule 31 (EXP_BINARIA -> EXP_BINARIA TkMayorIgual EXP_BINARIA .) ]
+  ! TkMod           [ reduce using rule 31 (EXP_BINARIA -> EXP_BINARIA TkMayorIgual EXP_BINARIA .) ]
+  ! TkConjuncion    [ shift and go to state 40 ]
+  ! TkDisyuncion    [ shift and go to state 41 ]
+  ! TkIgual         [ shift and go to state 42 ]
+  ! TkNoIgual       [ shift and go to state 43 ]
+  ! TkMenorIgual    [ shift and go to state 44 ]
+  ! TkMayorIgual    [ shift and go to state 45 ]
+  ! TkMenor         [ shift and go to state 46 ]
+  ! TkMayor         [ shift and go to state 47 ]
+
+
+state 66
+
+    (32) EXP_BINARIA -> EXP_BINARIA TkMenor EXP_BINARIA .
+    (21) EXP_BINARIA -> EXP_BINARIA . TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> EXP_BINARIA . TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> EXP_BINARIA . TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> EXP_BINARIA . TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> EXP_BINARIA . TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> EXP_BINARIA . TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> EXP_BINARIA . TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> EXP_BINARIA . TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> EXP_BINARIA . TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> EXP_BINARIA . TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> EXP_BINARIA . TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> EXP_BINARIA . TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> EXP_BINARIA . TkMayor EXP_BINARIA
+
+    TkPunto         reduce using rule 32 (EXP_BINARIA -> EXP_BINARIA TkMenor EXP_BINARIA .)
+    TkConjuncion    reduce using rule 32 (EXP_BINARIA -> EXP_BINARIA TkMenor EXP_BINARIA .)
+    TkDisyuncion    reduce using rule 32 (EXP_BINARIA -> EXP_BINARIA TkMenor EXP_BINARIA .)
+    TkIgual         reduce using rule 32 (EXP_BINARIA -> EXP_BINARIA TkMenor EXP_BINARIA .)
+    TkNoIgual       reduce using rule 32 (EXP_BINARIA -> EXP_BINARIA TkMenor EXP_BINARIA .)
+    TkMenorIgual    reduce using rule 32 (EXP_BINARIA -> EXP_BINARIA TkMenor EXP_BINARIA .)
+    TkMayorIgual    reduce using rule 32 (EXP_BINARIA -> EXP_BINARIA TkMenor EXP_BINARIA .)
+    TkMenor         reduce using rule 32 (EXP_BINARIA -> EXP_BINARIA TkMenor EXP_BINARIA .)
+    TkMayor         reduce using rule 32 (EXP_BINARIA -> EXP_BINARIA TkMenor EXP_BINARIA .)
+    TkDosPuntos     reduce using rule 32 (EXP_BINARIA -> EXP_BINARIA TkMenor EXP_BINARIA .)
+    TkParCierra     reduce using rule 32 (EXP_BINARIA -> EXP_BINARIA TkMenor EXP_BINARIA .)
+    TkSuma          shift and go to state 35
+    TkResta         shift and go to state 36
+    TkMult          shift and go to state 37
+    TkDiv           shift and go to state 38
+    TkMod           shift and go to state 39
+
+  ! TkSuma          [ reduce using rule 32 (EXP_BINARIA -> EXP_BINARIA TkMenor EXP_BINARIA .) ]
+  ! TkResta         [ reduce using rule 32 (EXP_BINARIA -> EXP_BINARIA TkMenor EXP_BINARIA .) ]
+  ! TkMult          [ reduce using rule 32 (EXP_BINARIA -> EXP_BINARIA TkMenor EXP_BINARIA .) ]
+  ! TkDiv           [ reduce using rule 32 (EXP_BINARIA -> EXP_BINARIA TkMenor EXP_BINARIA .) ]
+  ! TkMod           [ reduce using rule 32 (EXP_BINARIA -> EXP_BINARIA TkMenor EXP_BINARIA .) ]
+  ! TkConjuncion    [ shift and go to state 40 ]
+  ! TkDisyuncion    [ shift and go to state 41 ]
+  ! TkIgual         [ shift and go to state 42 ]
+  ! TkNoIgual       [ shift and go to state 43 ]
+  ! TkMenorIgual    [ shift and go to state 44 ]
+  ! TkMayorIgual    [ shift and go to state 45 ]
+  ! TkMenor         [ shift and go to state 46 ]
+  ! TkMayor         [ shift and go to state 47 ]
+
+
+state 67
+
+    (33) EXP_BINARIA -> EXP_BINARIA TkMayor EXP_BINARIA .
+    (21) EXP_BINARIA -> EXP_BINARIA . TkSuma EXP_BINARIA
+    (22) EXP_BINARIA -> EXP_BINARIA . TkResta EXP_BINARIA
+    (23) EXP_BINARIA -> EXP_BINARIA . TkMult EXP_BINARIA
+    (24) EXP_BINARIA -> EXP_BINARIA . TkDiv EXP_BINARIA
+    (25) EXP_BINARIA -> EXP_BINARIA . TkMod EXP_BINARIA
+    (26) EXP_BINARIA -> EXP_BINARIA . TkConjuncion EXP_BINARIA
+    (27) EXP_BINARIA -> EXP_BINARIA . TkDisyuncion EXP_BINARIA
+    (28) EXP_BINARIA -> EXP_BINARIA . TkIgual EXP_BINARIA
+    (29) EXP_BINARIA -> EXP_BINARIA . TkNoIgual EXP_BINARIA
+    (30) EXP_BINARIA -> EXP_BINARIA . TkMenorIgual EXP_BINARIA
+    (31) EXP_BINARIA -> EXP_BINARIA . TkMayorIgual EXP_BINARIA
+    (32) EXP_BINARIA -> EXP_BINARIA . TkMenor EXP_BINARIA
+    (33) EXP_BINARIA -> EXP_BINARIA . TkMayor EXP_BINARIA
+
+    TkPunto         reduce using rule 33 (EXP_BINARIA -> EXP_BINARIA TkMayor EXP_BINARIA .)
+    TkConjuncion    reduce using rule 33 (EXP_BINARIA -> EXP_BINARIA TkMayor EXP_BINARIA .)
+    TkDisyuncion    reduce using rule 33 (EXP_BINARIA -> EXP_BINARIA TkMayor EXP_BINARIA .)
+    TkIgual         reduce using rule 33 (EXP_BINARIA -> EXP_BINARIA TkMayor EXP_BINARIA .)
+    TkNoIgual       reduce using rule 33 (EXP_BINARIA -> EXP_BINARIA TkMayor EXP_BINARIA .)
+    TkMenorIgual    reduce using rule 33 (EXP_BINARIA -> EXP_BINARIA TkMayor EXP_BINARIA .)
+    TkMayorIgual    reduce using rule 33 (EXP_BINARIA -> EXP_BINARIA TkMayor EXP_BINARIA .)
+    TkMenor         reduce using rule 33 (EXP_BINARIA -> EXP_BINARIA TkMayor EXP_BINARIA .)
+    TkMayor         reduce using rule 33 (EXP_BINARIA -> EXP_BINARIA TkMayor EXP_BINARIA .)
+    TkDosPuntos     reduce using rule 33 (EXP_BINARIA -> EXP_BINARIA TkMayor EXP_BINARIA .)
+    TkParCierra     reduce using rule 33 (EXP_BINARIA -> EXP_BINARIA TkMayor EXP_BINARIA .)
+    TkSuma          shift and go to state 35
+    TkResta         shift and go to state 36
+    TkMult          shift and go to state 37
+    TkDiv           shift and go to state 38
+    TkMod           shift and go to state 39
+
+  ! TkSuma          [ reduce using rule 33 (EXP_BINARIA -> EXP_BINARIA TkMayor EXP_BINARIA .) ]
+  ! TkResta         [ reduce using rule 33 (EXP_BINARIA -> EXP_BINARIA TkMayor EXP_BINARIA .) ]
+  ! TkMult          [ reduce using rule 33 (EXP_BINARIA -> EXP_BINARIA TkMayor EXP_BINARIA .) ]
+  ! TkDiv           [ reduce using rule 33 (EXP_BINARIA -> EXP_BINARIA TkMayor EXP_BINARIA .) ]
+  ! TkMod           [ reduce using rule 33 (EXP_BINARIA -> EXP_BINARIA TkMayor EXP_BINARIA .) ]
+  ! TkConjuncion    [ shift and go to state 40 ]
+  ! TkDisyuncion    [ shift and go to state 41 ]
+  ! TkIgual         [ shift and go to state 42 ]
+  ! TkNoIgual       [ shift and go to state 43 ]
+  ! TkMenorIgual    [ shift and go to state 44 ]
+  ! TkMayorIgual    [ shift and go to state 45 ]
+  ! TkMenor         [ shift and go to state 46 ]
+  ! TkMayor         [ shift and go to state 47 ]
+
+
+state 68
+
+    (34) EXP_BINARIA -> TkParAbre EXP_BINARIA TkParCierra .
+
+    TkPunto         reduce using rule 34 (EXP_BINARIA -> TkParAbre EXP_BINARIA TkParCierra .)
+    TkSuma          reduce using rule 34 (EXP_BINARIA -> TkParAbre EXP_BINARIA TkParCierra .)
+    TkResta         reduce using rule 34 (EXP_BINARIA -> TkParAbre EXP_BINARIA TkParCierra .)
+    TkMult          reduce using rule 34 (EXP_BINARIA -> TkParAbre EXP_BINARIA TkParCierra .)
+    TkDiv           reduce using rule 34 (EXP_BINARIA -> TkParAbre EXP_BINARIA TkParCierra .)
+    TkMod           reduce using rule 34 (EXP_BINARIA -> TkParAbre EXP_BINARIA TkParCierra .)
+    TkConjuncion    reduce using rule 34 (EXP_BINARIA -> TkParAbre EXP_BINARIA TkParCierra .)
+    TkDisyuncion    reduce using rule 34 (EXP_BINARIA -> TkParAbre EXP_BINARIA TkParCierra .)
+    TkIgual         reduce using rule 34 (EXP_BINARIA -> TkParAbre EXP_BINARIA TkParCierra .)
+    TkNoIgual       reduce using rule 34 (EXP_BINARIA -> TkParAbre EXP_BINARIA TkParCierra .)
+    TkMenorIgual    reduce using rule 34 (EXP_BINARIA -> TkParAbre EXP_BINARIA TkParCierra .)
+    TkMayorIgual    reduce using rule 34 (EXP_BINARIA -> TkParAbre EXP_BINARIA TkParCierra .)
+    TkMenor         reduce using rule 34 (EXP_BINARIA -> TkParAbre EXP_BINARIA TkParCierra .)
+    TkMayor         reduce using rule 34 (EXP_BINARIA -> TkParAbre EXP_BINARIA TkParCierra .)
+    TkDosPuntos     reduce using rule 34 (EXP_BINARIA -> TkParAbre EXP_BINARIA TkParCierra .)
+    TkParCierra     reduce using rule 34 (EXP_BINARIA -> TkParAbre EXP_BINARIA TkParCierra .)
+
+
+state 69
+
+    (18) SIMPLE_INSTRUCTION -> TkIf EXP_BINARIA TkDosPuntos INSTRUCTION . TkEnd
+    (12) INSTRUCTION -> INSTRUCTION . SIMPLE_INSTRUCTION
+    (15) SIMPLE_INSTRUCTION -> . TkStore EXP_BINARIA TkPunto
+    (16) SIMPLE_INSTRUCTION -> . TkActivate TkIdent TkPunto
+    (17) SIMPLE_INSTRUCTION -> . TkAdvance TkIdent TkPunto
+    (18) SIMPLE_INSTRUCTION -> . TkIf EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd
+    (19) SIMPLE_INSTRUCTION -> . TkWhile EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd
+
+    TkEnd           shift and go to state 75
+    TkStore         shift and go to state 11
+    TkActivate      shift and go to state 12
+    TkAdvance       shift and go to state 13
+    TkIf            shift and go to state 14
+    TkWhile         shift and go to state 15
+
+    SIMPLE_INSTRUCTION             shift and go to state 20
+
+state 70
+
+    (19) SIMPLE_INSTRUCTION -> TkWhile EXP_BINARIA TkDosPuntos INSTRUCTION . TkEnd
+    (12) INSTRUCTION -> INSTRUCTION . SIMPLE_INSTRUCTION
+    (15) SIMPLE_INSTRUCTION -> . TkStore EXP_BINARIA TkPunto
+    (16) SIMPLE_INSTRUCTION -> . TkActivate TkIdent TkPunto
+    (17) SIMPLE_INSTRUCTION -> . TkAdvance TkIdent TkPunto
+    (18) SIMPLE_INSTRUCTION -> . TkIf EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd
+    (19) SIMPLE_INSTRUCTION -> . TkWhile EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd
+
+    TkEnd           shift and go to state 76
+    TkStore         shift and go to state 11
+    TkActivate      shift and go to state 12
+    TkAdvance       shift and go to state 13
+    TkIf            shift and go to state 14
+    TkWhile         shift and go to state 15
+
+    SIMPLE_INSTRUCTION             shift and go to state 20
+
+state 71
+
+    (3) DEFINITION -> DEFINITION TYPE TkBot TkIdent DECLARATION . TkEnd
+    (7) DECLARATION -> DECLARATION . EVENT
+    (10) EVENT -> . TkOn TkActivation TkDosPuntos INSTRUCTION TkEnd
+    (11) EVENT -> . TkOn TkDefault TkDosPuntos INSTRUCTION TkEnd
+
+    TkEnd           shift and go to state 77
+    TkOn            shift and go to state 74
+
+    EVENT                          shift and go to state 78
+
+state 72
+
+    (8) DECLARATION -> EVENT .
+
+    TkEnd           reduce using rule 8 (DECLARATION -> EVENT .)
+    TkOn            reduce using rule 8 (DECLARATION -> EVENT .)
+
+
+state 73
+
+    (9) DECLARATION -> empty .
+
+    TkEnd           reduce using rule 9 (DECLARATION -> empty .)
+    TkOn            reduce using rule 9 (DECLARATION -> empty .)
+
+
+state 74
+
+    (10) EVENT -> TkOn . TkActivation TkDosPuntos INSTRUCTION TkEnd
+    (11) EVENT -> TkOn . TkDefault TkDosPuntos INSTRUCTION TkEnd
+
+    TkActivation    shift and go to state 79
+    TkDefault       shift and go to state 80
+
+
+state 75
+
+    (18) SIMPLE_INSTRUCTION -> TkIf EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd .
+
+    TkEnd           reduce using rule 18 (SIMPLE_INSTRUCTION -> TkIf EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd .)
+    TkStore         reduce using rule 18 (SIMPLE_INSTRUCTION -> TkIf EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd .)
+    TkActivate      reduce using rule 18 (SIMPLE_INSTRUCTION -> TkIf EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd .)
+    TkAdvance       reduce using rule 18 (SIMPLE_INSTRUCTION -> TkIf EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd .)
+    TkIf            reduce using rule 18 (SIMPLE_INSTRUCTION -> TkIf EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd .)
+    TkWhile         reduce using rule 18 (SIMPLE_INSTRUCTION -> TkIf EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd .)
+
+
+state 76
+
+    (19) SIMPLE_INSTRUCTION -> TkWhile EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd .
+
+    TkEnd           reduce using rule 19 (SIMPLE_INSTRUCTION -> TkWhile EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd .)
+    TkStore         reduce using rule 19 (SIMPLE_INSTRUCTION -> TkWhile EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd .)
+    TkActivate      reduce using rule 19 (SIMPLE_INSTRUCTION -> TkWhile EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd .)
+    TkAdvance       reduce using rule 19 (SIMPLE_INSTRUCTION -> TkWhile EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd .)
+    TkIf            reduce using rule 19 (SIMPLE_INSTRUCTION -> TkWhile EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd .)
+    TkWhile         reduce using rule 19 (SIMPLE_INSTRUCTION -> TkWhile EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd .)
+
+
+state 77
+
+    (3) DEFINITION -> DEFINITION TYPE TkBot TkIdent DECLARATION TkEnd .
+
+    TkInt           reduce using rule 3 (DEFINITION -> DEFINITION TYPE TkBot TkIdent DECLARATION TkEnd .)
+    TkBool          reduce using rule 3 (DEFINITION -> DEFINITION TYPE TkBot TkIdent DECLARATION TkEnd .)
+    TkExecute       reduce using rule 3 (DEFINITION -> DEFINITION TYPE TkBot TkIdent DECLARATION TkEnd .)
+
+
+state 78
+
+    (7) DECLARATION -> DECLARATION EVENT .
+
+    TkEnd           reduce using rule 7 (DECLARATION -> DECLARATION EVENT .)
+    TkOn            reduce using rule 7 (DECLARATION -> DECLARATION EVENT .)
+
+
+state 79
+
+    (10) EVENT -> TkOn TkActivation . TkDosPuntos INSTRUCTION TkEnd
+
+    TkDosPuntos     shift and go to state 81
+
+
+state 80
+
+    (11) EVENT -> TkOn TkDefault . TkDosPuntos INSTRUCTION TkEnd
+
+    TkDosPuntos     shift and go to state 82
+
+
+state 81
+
+    (10) EVENT -> TkOn TkActivation TkDosPuntos . INSTRUCTION TkEnd
+    (12) INSTRUCTION -> . INSTRUCTION SIMPLE_INSTRUCTION
+    (13) INSTRUCTION -> . SIMPLE_INSTRUCTION
+    (14) INSTRUCTION -> . empty
+    (15) SIMPLE_INSTRUCTION -> . TkStore EXP_BINARIA TkPunto
+    (16) SIMPLE_INSTRUCTION -> . TkActivate TkIdent TkPunto
+    (17) SIMPLE_INSTRUCTION -> . TkAdvance TkIdent TkPunto
+    (18) SIMPLE_INSTRUCTION -> . TkIf EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd
+    (19) SIMPLE_INSTRUCTION -> . TkWhile EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd
+    (41) empty -> .
+
+  ! shift/reduce conflict for TkStore resolved as shift
+  ! shift/reduce conflict for TkActivate resolved as shift
+  ! shift/reduce conflict for TkAdvance resolved as shift
+  ! shift/reduce conflict for TkIf resolved as shift
+  ! shift/reduce conflict for TkWhile resolved as shift
+    TkStore         shift and go to state 11
+    TkActivate      shift and go to state 12
+    TkAdvance       shift and go to state 13
+    TkIf            shift and go to state 14
+    TkWhile         shift and go to state 15
+    TkEnd           reduce using rule 41 (empty -> .)
+
+  ! TkStore         [ reduce using rule 41 (empty -> .) ]
+  ! TkActivate      [ reduce using rule 41 (empty -> .) ]
+  ! TkAdvance       [ reduce using rule 41 (empty -> .) ]
+  ! TkIf            [ reduce using rule 41 (empty -> .) ]
+  ! TkWhile         [ reduce using rule 41 (empty -> .) ]
+
+    INSTRUCTION                    shift and go to state 83
+    SIMPLE_INSTRUCTION             shift and go to state 9
+    empty                          shift and go to state 10
+
+state 82
+
+    (11) EVENT -> TkOn TkDefault TkDosPuntos . INSTRUCTION TkEnd
+    (12) INSTRUCTION -> . INSTRUCTION SIMPLE_INSTRUCTION
+    (13) INSTRUCTION -> . SIMPLE_INSTRUCTION
+    (14) INSTRUCTION -> . empty
+    (15) SIMPLE_INSTRUCTION -> . TkStore EXP_BINARIA TkPunto
+    (16) SIMPLE_INSTRUCTION -> . TkActivate TkIdent TkPunto
+    (17) SIMPLE_INSTRUCTION -> . TkAdvance TkIdent TkPunto
+    (18) SIMPLE_INSTRUCTION -> . TkIf EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd
+    (19) SIMPLE_INSTRUCTION -> . TkWhile EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd
+    (41) empty -> .
+
+  ! shift/reduce conflict for TkStore resolved as shift
+  ! shift/reduce conflict for TkActivate resolved as shift
+  ! shift/reduce conflict for TkAdvance resolved as shift
+  ! shift/reduce conflict for TkIf resolved as shift
+  ! shift/reduce conflict for TkWhile resolved as shift
+    TkStore         shift and go to state 11
+    TkActivate      shift and go to state 12
+    TkAdvance       shift and go to state 13
+    TkIf            shift and go to state 14
+    TkWhile         shift and go to state 15
+    TkEnd           reduce using rule 41 (empty -> .)
+
+  ! TkStore         [ reduce using rule 41 (empty -> .) ]
+  ! TkActivate      [ reduce using rule 41 (empty -> .) ]
+  ! TkAdvance       [ reduce using rule 41 (empty -> .) ]
+  ! TkIf            [ reduce using rule 41 (empty -> .) ]
+  ! TkWhile         [ reduce using rule 41 (empty -> .) ]
+
+    INSTRUCTION                    shift and go to state 84
+    SIMPLE_INSTRUCTION             shift and go to state 9
+    empty                          shift and go to state 10
+
+state 83
+
+    (10) EVENT -> TkOn TkActivation TkDosPuntos INSTRUCTION . TkEnd
+    (12) INSTRUCTION -> INSTRUCTION . SIMPLE_INSTRUCTION
+    (15) SIMPLE_INSTRUCTION -> . TkStore EXP_BINARIA TkPunto
+    (16) SIMPLE_INSTRUCTION -> . TkActivate TkIdent TkPunto
+    (17) SIMPLE_INSTRUCTION -> . TkAdvance TkIdent TkPunto
+    (18) SIMPLE_INSTRUCTION -> . TkIf EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd
+    (19) SIMPLE_INSTRUCTION -> . TkWhile EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd
+
+    TkEnd           shift and go to state 85
+    TkStore         shift and go to state 11
+    TkActivate      shift and go to state 12
+    TkAdvance       shift and go to state 13
+    TkIf            shift and go to state 14
+    TkWhile         shift and go to state 15
+
+    SIMPLE_INSTRUCTION             shift and go to state 20
+
+state 84
+
+    (11) EVENT -> TkOn TkDefault TkDosPuntos INSTRUCTION . TkEnd
+    (12) INSTRUCTION -> INSTRUCTION . SIMPLE_INSTRUCTION
+    (15) SIMPLE_INSTRUCTION -> . TkStore EXP_BINARIA TkPunto
+    (16) SIMPLE_INSTRUCTION -> . TkActivate TkIdent TkPunto
+    (17) SIMPLE_INSTRUCTION -> . TkAdvance TkIdent TkPunto
+    (18) SIMPLE_INSTRUCTION -> . TkIf EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd
+    (19) SIMPLE_INSTRUCTION -> . TkWhile EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd
+
+    TkEnd           shift and go to state 86
+    TkStore         shift and go to state 11
+    TkActivate      shift and go to state 12
+    TkAdvance       shift and go to state 13
+    TkIf            shift and go to state 14
+    TkWhile         shift and go to state 15
+
+    SIMPLE_INSTRUCTION             shift and go to state 20
+
+state 85
+
+    (10) EVENT -> TkOn TkActivation TkDosPuntos INSTRUCTION TkEnd .
+
+    TkEnd           reduce using rule 10 (EVENT -> TkOn TkActivation TkDosPuntos INSTRUCTION TkEnd .)
+    TkOn            reduce using rule 10 (EVENT -> TkOn TkActivation TkDosPuntos INSTRUCTION TkEnd .)
+
+
+state 86
+
+    (11) EVENT -> TkOn TkDefault TkDosPuntos INSTRUCTION TkEnd .
+
+    TkEnd           reduce using rule 11 (EVENT -> TkOn TkDefault TkDosPuntos INSTRUCTION TkEnd .)
+    TkOn            reduce using rule 11 (EVENT -> TkOn TkDefault TkDosPuntos INSTRUCTION TkEnd .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for TkStore in state 5 resolved as shift
+WARNING: shift/reduce conflict for TkActivate in state 5 resolved as shift
+WARNING: shift/reduce conflict for TkAdvance in state 5 resolved as shift
+WARNING: shift/reduce conflict for TkIf in state 5 resolved as shift
+WARNING: shift/reduce conflict for TkWhile in state 5 resolved as shift
+WARNING: shift/reduce conflict for TkStore in state 52 resolved as shift
+WARNING: shift/reduce conflict for TkActivate in state 52 resolved as shift
+WARNING: shift/reduce conflict for TkAdvance in state 52 resolved as shift
+WARNING: shift/reduce conflict for TkIf in state 52 resolved as shift
+WARNING: shift/reduce conflict for TkWhile in state 52 resolved as shift
+WARNING: shift/reduce conflict for TkStore in state 53 resolved as shift
+WARNING: shift/reduce conflict for TkActivate in state 53 resolved as shift
+WARNING: shift/reduce conflict for TkAdvance in state 53 resolved as shift
+WARNING: shift/reduce conflict for TkIf in state 53 resolved as shift
+WARNING: shift/reduce conflict for TkWhile in state 53 resolved as shift
+WARNING: shift/reduce conflict for TkOn in state 54 resolved as shift
+WARNING: shift/reduce conflict for TkStore in state 81 resolved as shift
+WARNING: shift/reduce conflict for TkActivate in state 81 resolved as shift
+WARNING: shift/reduce conflict for TkAdvance in state 81 resolved as shift
+WARNING: shift/reduce conflict for TkIf in state 81 resolved as shift
+WARNING: shift/reduce conflict for TkWhile in state 81 resolved as shift
+WARNING: shift/reduce conflict for TkStore in state 82 resolved as shift
+WARNING: shift/reduce conflict for TkActivate in state 82 resolved as shift
+WARNING: shift/reduce conflict for TkAdvance in state 82 resolved as shift
+WARNING: shift/reduce conflict for TkIf in state 82 resolved as shift
+WARNING: shift/reduce conflict for TkWhile in state 82 resolved as shift

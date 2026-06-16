@@ -1,12 +1,19 @@
 create
-    int bot contador
-        on activation:
-            store 35.
-        end
-    end
-
+int bot bar
+on activation:
+store 3.
+end
+end
+int bot contador
+on default:
+store 35.
+end
+end
 execute
-    $- Asignar al contador
-    el valor 35 -$
-    activate contador.
+activate contador.
+$- Asignar al contador
+el valor 35, si bar > 2-$
+if bar > 2:
+advance contador.
+end
 end

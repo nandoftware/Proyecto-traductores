@@ -1,0 +1,9 @@
+create
+int bot contador!
+on activation:
+store 35.
+end
+end
+execute
+activate contador.
+end
