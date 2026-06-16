@@ -23,7 +23,7 @@ tokens = [
     'TkSuma', 'TkResta', 'TkMult', 'TkDiv', 'TkMod',
     'TkConjuncion', 'TkDisyuncion', 'TkNegacion',
     'TkMenorIgual', 'TkMayorIgual',
-    'TkMenor', 'TkMayor', 'TkIgual'
+    'TkMenor', 'TkMayor', 'TkIgual', 'TkNoIgual'
 ]
 
 reserved = {
