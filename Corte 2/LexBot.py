@@ -33,9 +33,11 @@ def ReadBotFile(file_name: str):
 errors = []
 syntax_error = None
 tokens = [
-    'TkCreate', 'TkWhile', 'TkBool', 'TkIf', 'TkInt', 'TkBot',
-    'TkOn', 'TkActivation', 'TkDefault', 'TkStore', 'TkEnd', 'TkExecute',
-    'TkActivate', 'TkTrue', 'TkFalse',
+    'TkCreate', 'TkWhile', 'TkBool', 'TkIf', 'TkInt', 'TkChar', 'TkBot',
+    'TkOn', 'TkActivation', 'TkDeactivation', 'TkDefault', 'TkStore', 'TkEnd', 'TkExecute',
+    'TkActivate', 'TkDeactivate', 'TkTrue', 'TkFalse', 'TkElse',
+    'TkAdvance', 'TkCollect', 'TkAs', 'TkDrop', 'TkRead', 'TkReceive', 'TkSend',
+    'TkLeft', 'TkRight', 'TkUp', 'TkDown',
 
     'TkIdent', 'TkNum', 'TkCaracter',
 
@@ -45,7 +47,7 @@ tokens = [
     'TkSuma', 'TkResta', 'TkMult', 'TkDiv', 'TkMod',
     'TkConjuncion', 'TkDisyuncion', 'TkNegacion',
     'TkMenorIgual', 'TkMayorIgual',
-    'TkMenor', 'TkMayor', 'TkIgual', 'TkNoIgual', 'TkAdvance'
+    'TkMenor', 'TkMayor', 'TkIgual', 'TkNoIgual'
 ]
 
 reserved = {
@@ -53,18 +55,32 @@ reserved = {
     'while': 'TkWhile',
     'bool': 'TkBool',
     'if': 'TkIf',
+    'else': 'TkElse',
     'int': 'TkInt',
+    'char': 'TkChar',
     'bot': 'TkBot',
     'on': 'TkOn',
     'activation': 'TkActivation',
+    'deactivation': 'TkDeactivation',
     'default' : 'TkDefault',
     'store': 'TkStore',
     'end': 'TkEnd',
     'execute': 'TkExecute',
     'activate': 'TkActivate',
+    'deactivate': 'TkDeactivate',
     'true': 'TkTrue',
     'false': 'TkFalse',
     'advance':'TkAdvance',
+    'collect': 'TkCollect',
+    'as': 'TkAs',
+    'drop': 'TkDrop',
+    'read': 'TkRead',
+    'receive': 'TkReceive',
+    'send': 'TkSend',
+    'left': 'TkLeft',
+    'right': 'TkRight',
+    'up': 'TkUp',
+    'down': 'TkDown',
 }
 
 t_TkComa = r'\,'
@@ -102,13 +118,17 @@ def find_column(content, token):
 # todas las funciones con el prefijo t_ sirven para que el lexer entienda:
 # los comentarios, los caracteres solitos, las palabras redervadas y los numeros
 
+def t_COMMENT_LINE(t):
+    r'\$\$[^\n]*'
+    pass
+
 def t_COMMENT(t):
     r'\$-(.|\n)*?-\$'
     t.lexer.lineno += t.value.count('\n')
     pass
 
 def t_TkCaracter(t):
-    r"'[^'\n]'"
+    r"'(\\n|\\t|\\'|[^'\n])'"
     t.value = t.value[1:-1]
     return t
 
@@ -156,6 +176,7 @@ def Tokenaizer():
     minitokens = []
 
     for tok in lexer:
+        mini = ""
         colum = find_column(content, tok)
         if tok.type == 'TkIdent':
             mini += f'{str(tok.type)}("{tok.value}") {str(tok.lineno)} {str(colum)}'
@@ -234,6 +255,17 @@ class Almacenamiento(node):
             tab(nivel) + "- valor:\n" +
             self.valor.imprimir(nivel + 1)
         )
+    
+
+class InstruccionRobot(node):
+    # Estas instrucciones se construyen para el AST, pero no se muestran como salida.
+    def __init__(self, nombre, valor=None):
+        super().__init__(nombre, [] if valor is None else [valor])
+        self.nombre = nombre
+        self.valor = valor
+
+    def imprimir(self, nivel=0):
+        return ""
     
 
 class Condicional(node):
@@ -347,6 +379,10 @@ def p_bot(p):
 def p_create(p):
     'CREATE : TkCreate DEFINITION'
     p[0] = (p[1],p[2])
+
+def p_create_empty(p):
+    'CREATE : empty'
+    p[0] = None
     
 
 ############################################################
@@ -357,6 +393,9 @@ def p_definition_recursive(p):
     'DEFINITION : DEFINITION TYPE TkBot TkIdent DECLARATION TkEnd'
     p[0] = (p[1], p[2], p[4], p[5])
     
+def p_definition_one(p):
+    'DEFINITION : TYPE TkBot ID_LIST DECLARATION TkEnd'
+    p[0] = (p[1], p[3], p[4])
 
 def p_definition_empty(p):
     'DEFINITION : empty'
@@ -365,6 +404,16 @@ def p_definition_empty(p):
 def p_type(p):
     '''TYPE : TkInt
             | TkBool'''
+    p[0] = p[1]
+
+def p_id_list_one(p):
+    'ID_LIST : TkIdent'
+    p[0] = [p[1]]
+
+
+def p_id_list_recursive(p):
+    'ID_LIST : ID_LIST TkComa TkIdent'
+    p[1].append(p[3])
     p[0] = p[1]
     
 #######################################################################
@@ -389,9 +438,16 @@ def p_event_activation(p):
     'EVENT : TkOn TkActivation TkDosPuntos INSTRUCTION TkEnd'
     p[0] = p[4]
 
+def p_event_deactivation(p):
+    'EVENT : TkOn TkDeactivation TkDosPuntos INSTRUCTION TkEnd'
+    p[0] = p[4]
 
 def p_event_default(p):
     'EVENT : TkOn TkDefault TkDosPuntos INSTRUCTION TkEnd'
+    p[0] = p[4]
+
+def p_event_expr(p):
+    'EVENT : TkOn EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd'
     p[0] = p[4]
 
 
@@ -423,6 +479,40 @@ def p_simple_instruction_store(p):
     'SIMPLE_INSTRUCTION : TkStore EXP_BINARIA TkPunto'
     p[0] = Almacenamiento(p[2])
 
+def p_simple_instruction_collect(p):
+    '''SIMPLE_INSTRUCTION : TkCollect TkPunto
+                          | TkCollect TkAs TkIdent TkPunto'''
+    p[0] = InstruccionRobot('COLECCION')
+
+def p_simple_instruction_drop(p):
+    'SIMPLE_INSTRUCTION : TkDrop EXP_BINARIA TkPunto'
+    p[0] = InstruccionRobot('SOLTADO', p[2])
+
+def p_direction(p):
+    '''DIRECTION : TkLeft
+                 | TkRight
+                 | TkUp
+                 | TkDown'''
+    p[0] = p[1]
+
+def p_simple_instruction_read(p):
+    '''SIMPLE_INSTRUCTION : TkRead TkPunto
+                          | TkRead TkAs TkIdent TkPunto
+                          | TkReceive TkPunto
+                          | TkReceive TkAs TkIdent TkPunto'''
+    p[0] = InstruccionRobot('ENTRADA')
+
+
+def p_simple_instruction_send(p):
+    'SIMPLE_INSTRUCTION : TkSend TkPunto'
+    p[0] = InstruccionRobot('SALIDA')
+
+
+def p_simple_instruction_move(p):
+    '''SIMPLE_INSTRUCTION : DIRECTION TkPunto
+                          | DIRECTION EXP_BINARIA TkPunto'''
+    p[0] = InstruccionRobot('MOVIMIENTO')
+
 
 def p_simple_instruction_activate(p):
     'SIMPLE_INSTRUCTION : TkActivate TkIdent TkPunto'
@@ -437,6 +527,10 @@ def p_simple_instruction_advance(p):
 def p_simple_instruction_if(p):
     'SIMPLE_INSTRUCTION : TkIf EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd'
     p[0] = Condicional(p[2], p[4])
+
+def p_simple_instruction_if_else(p):
+    'SIMPLE_INSTRUCTION : TkIf EXP_BINARIA TkDosPuntos INSTRUCTION TkElse TkDosPuntos INSTRUCTION TkEnd'
+    p[0] = Condicional(p[2], Secuenciacion([p[4], p[7]]))
 
 
 def p_simple_instruction_while(p):
@@ -478,7 +572,7 @@ def p_exp_binaria_operador(p):
         '/\\': ('BIN_BOOLEANA', 'Conjuncion'),
         '\\/': ('BIN_BOOLEANA', 'Disyuncion'),
         '=': ('BIN_RELACIONAL', 'Igual que'),
-        '!=': ('BIN_RELACIONAL', 'Distinto que'),
+        '/=': ('BIN_RELACIONAL', 'Distinto que'),
         '<=': ('BIN_RELACIONAL', 'Menor o igual que'),
         '>=': ('BIN_RELACIONAL', 'Mayor o igual que'),
         '<': ('BIN_RELACIONAL', 'Menor que'),
@@ -494,9 +588,14 @@ def p_exp_binaria_paren(p):
     p[0] = p[2]
 
 
-def p_exp_unaria(p):
+def p_exp_unaria_negacion(p):
     'EXP_BINARIA : TkNegacion EXP_BINARIA'
     p[0] = Unaria('Negacion', p[2])
+
+
+def p_exp_unaria_resta(p):
+    'EXP_BINARIA : TkResta EXP_BINARIA %prec TkNegacion'
+    p[0] = Unaria('Menos unario', p[2])
 
 
 def p_exp_binaria_num(p):
@@ -522,7 +621,6 @@ def p_exp_binaria_var(p):
 def p_exp_binaria_char(p):
     'EXP_BINARIA : TkCaracter'
     p[0] = Valor("'" + p[1] + "'")
-
 
 #######################
 ##  empty production ##

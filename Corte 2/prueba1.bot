@@ -1,0 +1,10 @@
+create
+int bot x
+on activation:
+store 5.
+end
+end
+
+execute
+activate x.
+end
