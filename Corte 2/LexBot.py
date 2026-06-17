@@ -403,7 +403,8 @@ def p_definition_empty(p):
 
 def p_type(p):
     '''TYPE : TkInt
-            | TkBool'''
+            | TkBool
+            | TkChar'''
     p[0] = p[1]
 
 def p_id_list_one(p):
