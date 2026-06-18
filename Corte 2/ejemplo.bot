@@ -1,19 +1,26 @@
 create
-int bot bar
-on activation:
-store 3.
-end
-end
-int bot contador
+int bot n
 on default:
-store 35.
+store me - 1.
+end
+end
+int bot f
+on activation:
+store 0.
+send.
+drop 0.
+store 1.
+end
+on default:
+send.
+collect as x.
+drop me.
+store me + x.
 end
 end
 execute
-activate contador.
-$- Asignar al contador
-el valor 35, si bar > 2-$
-if bar > 2:
-advance contador.
+activate n, f.
+while n > 0:
+advance n, f.
 end
 end

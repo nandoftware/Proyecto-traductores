@@ -33,10 +33,10 @@ def ReadBotFile(file_name: str):
 errors = []
 syntax_error = None
 tokens = [
-    'TkCreate', 'TkWhile', 'TkBool', 'TkIf', 'TkInt', 'TkChar', 'TkBot',
+    'TkCreate', 'TkWhile', 'TkBool', 'TkIf', 'TkInt', 'TkBot',
     'TkOn', 'TkActivation', 'TkDeactivation', 'TkDefault', 'TkStore', 'TkEnd', 'TkExecute',
     'TkActivate', 'TkDeactivate', 'TkTrue', 'TkFalse', 'TkElse',
-    'TkAdvance', 'TkCollect', 'TkAs', 'TkDrop', 'TkRead', 'TkReceive', 'TkSend',
+    'TkAdvance', 'TkCollect', 'TkAs', 'TkDrop', 'TkRead', 'TkSend',
     'TkLeft', 'TkRight', 'TkUp', 'TkDown',
 
     'TkIdent', 'TkNum', 'TkCaracter',
@@ -75,7 +75,6 @@ reserved = {
     'as': 'TkAs',
     'drop': 'TkDrop',
     'read': 'TkRead',
-    'receive': 'TkReceive',
     'send': 'TkSend',
     'left': 'TkLeft',
     'right': 'TkRight',
