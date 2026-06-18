@@ -57,7 +57,7 @@ reserved = {
     'if': 'TkIf',
     'else': 'TkElse',
     'int': 'TkInt',
-    'char': 'TkChar',
+    'char': 'TkCaracter',
     'bot': 'TkBot',
     'on': 'TkOn',
     'activation': 'TkActivation',
@@ -363,21 +363,24 @@ precedence = (
 
 
 ##############################
-##  BOT -> CREATE EXECUTE   ##
+##  BOT -> [CREATE] EXECUTE   ##
 ##       | lambda           ##
 ##############################
 def p_bot(p):
     'BOT : CREATE EXECUTE'
     p[0] = p[2]
-    
-    
+
+
+# def p_bot_nc(p):
+#     'BOT : EXECUTE'
+#     p[0] = p[2]
     
 ######################################
 ##  CREATE -> TkCreate DEFINITION   ##
 ##          | lambda                ##
 ######################################
 def p_create(p):
-    'CREATE : TkCreate DEFINITION'
+    'CREATE : TkCreate DECLARATIONS'
     p[0] = (p[1],p[2])
 
 def p_create_empty(p):
@@ -386,70 +389,86 @@ def p_create_empty(p):
     
 
 ############################################################
-##  DEFINITION -> TkInt TkBot TkIdent DECLARATION TkEnd   ##
+##  DECLARATIONS -> TkInt TkBot TkIdent ACTIONS TkEnd   ##
 ##              | lambda                                  ##
 ############################################################
 def p_definition_recursive(p):
-    'DEFINITION : DEFINITION TYPE TkBot TkIdent DECLARATION TkEnd'
+    'DECLARATIONS : DECLARATIONS TYPE TkBot IDENT_LIST ACTIONS TkEnd'
     p[0] = (p[1], p[2], p[4], p[5])
     
 def p_definition_one(p):
-    'DEFINITION : TYPE TkBot ID_LIST DECLARATION TkEnd'
+    'DECLARATIONS : TYPE TkBot IDENT_LIST ACTIONS TkEnd'
     p[0] = (p[1], p[3], p[4])
 
 def p_definition_empty(p):
-    'DEFINITION : empty'
+    'DECLARATIONS : empty'
     p[0] = None
 
 def p_type(p):
     '''TYPE : TkInt
             | TkBool
-            | TkChar'''
+            | TkCaracter'''
     p[0] = p[1]
 
 def p_id_list_one(p):
-    'ID_LIST : TkIdent'
+    'IDENT_LIST : TkIdent'
     p[0] = [p[1]]
 
 
 def p_id_list_recursive(p):
-    'ID_LIST : ID_LIST TkComa TkIdent'
+    'IDENT_LIST : IDENT_LIST TkComa TkIdent'
     p[1].append(p[3])
     p[0] = p[1]
     
 #######################################################################
-##  DECLARATION -> DECLARATION EVENT | EVENT | lambda                ##
+##  ACTIONS -> ACTIONS EVENT | EVENT | lambda                ##
 #######################################################################
-def p_declaration_recursive(p):
-    'DECLARATION : DECLARATION EVENT'
+def p_action(p):
+    'ACTIONS : ACTIONS TkOn CONDITION TkDosPuntos INSTRUCTION TkEnd'
     p[0] = None
 
 
-def p_declaration_event(p):
-    'DECLARATION : EVENT'
+# def p_action(p):
+#     'ACTIONS : EVENT'
+#     p[0] = None
+
+
+def p_action_empty(p):
+    'ACTIONS : empty'
+    p[0] = None
+
+def p_condition_activation(p):
+    'CONDITION : TkActivation'
+    p[0] = None
+    
+def p_condition_deactivation(p):
+    'CONDITION : TkDeactivation'
+    p[0] = None
+    
+def p_condition_deafault(p):
+    'CONDITION : EXP_BINARIA'
+    p[0] = None
+    
+def p_condition_exp(p):
+    'CONDITION : TkDefault'
     p[0] = None
 
 
-def p_declaration_empty(p):
-    'DECLARATION : empty'
-    p[0] = None
+# def p_event_activation(p):
+#     'EVENT : TkOn TkActivation TkDosPuntos INSTRUCTION TkEnd'
+#     p[0] = p[4]
 
+# def p_event_deactivation(p):
+#     'EVENT : TkOn TkDeactivation TkDosPuntos INSTRUCTION TkEnd'
+#     p[0] = p[4]
 
-def p_event_activation(p):
-    'EVENT : TkOn TkActivation TkDosPuntos INSTRUCTION TkEnd'
-    p[0] = p[4]
+# def p_event_default(p):
+#     'EVENT : TkOn TkDefault TkDosPuntos INSTRUCTION TkEnd'
+#     p[0] = p[4]
 
-def p_event_deactivation(p):
-    'EVENT : TkOn TkDeactivation TkDosPuntos INSTRUCTION TkEnd'
-    p[0] = p[4]
-
-def p_event_default(p):
-    'EVENT : TkOn TkDefault TkDosPuntos INSTRUCTION TkEnd'
-    p[0] = p[4]
-
-def p_event_expr(p):
-    'EVENT : TkOn EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd'
-    p[0] = p[4]
+# def p_event_expr(p):
+#     'EVENT : TkOn EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd'
+#     p[0] = p[4]
 
 
 #####################################################
@@ -498,9 +517,7 @@ def p_direction(p):
 
 def p_simple_instruction_read(p):
     '''SIMPLE_INSTRUCTION : TkRead TkPunto
-                          | TkRead TkAs TkIdent TkPunto
-                          | TkReceive TkPunto
-                          | TkReceive TkAs TkIdent TkPunto'''
+                          | TkRead TkAs TkIdent TkPunto'''
     p[0] = InstruccionRobot('ENTRADA')
 
 
@@ -516,12 +533,15 @@ def p_simple_instruction_move(p):
 
 
 def p_simple_instruction_activate(p):
-    'SIMPLE_INSTRUCTION : TkActivate TkIdent TkPunto'
+    'SIMPLE_INSTRUCTION : TkActivate IDENT_LIST TkPunto'
     p[0] = instrutions('ACTIVACION', [], 'ACTIVACION', p[2])
 
+def p_simple_instruction_deactivate(p):
+    'SIMPLE_INSTRUCTION : TkDeactivate IDENT_LIST TkPunto'
+    p[0] = instrutions('DEACTIVACION', [], 'DEACTIVACION', p[2])
 
 def p_simple_instruction_advance(p):
-    'SIMPLE_INSTRUCTION : TkAdvance TkIdent TkPunto'
+    'SIMPLE_INSTRUCTION : TkAdvance IDENT_LIST TkPunto'
     p[0] = instrutions('AVANCE', [], 'AVANCE', p[2])
 
 
@@ -537,6 +557,11 @@ def p_simple_instruction_if_else(p):
 def p_simple_instruction_while(p):
     'SIMPLE_INSTRUCTION : TkWhile EXP_BINARIA TkDosPuntos INSTRUCTION TkEnd'
     p[0] = RepeticionIndeterminada(p[2], p[4])
+
+def p_simple_instruction_scope(p):
+    'SIMPLE_INSTRUCTION : CREATE EXECUTE'
+    p[0] = p[2]
+
 
 
 ##############################################
