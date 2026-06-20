@@ -1,12 +1,18 @@
 create
     int bot contador
         on activation:
+            store 35.
+        end
+    end
+    int bot b
+        on activation:
             store 35 + me.
         end
     end
     
 execute
-    $- Asignar al contador
+    $- Asignar al con_4tador
     el valor 35 -$
     activate contador.
+    activate b.
 end

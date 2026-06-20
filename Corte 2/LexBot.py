@@ -5,7 +5,7 @@ import ply.yacc as yacc
 
 
 if len(sys.argv) < 2:
-    print("uso: ./LexBot <ruta del archivo>")
+    print("uso: ./SintBot <ruta del archivo>")
     sys.exit(1)
 
 # Encapsulamiento de la lectura del archivo .bot
