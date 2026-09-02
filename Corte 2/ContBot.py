@@ -3,9 +3,8 @@ import sys
 import ply.lex as lex
 import ply.yacc as yacc
 
-
 if len(sys.argv) < 2:
-    print("uso: ./SintBot <ruta del archivo>")
+    print("uso: ./ContBot <ruta del archivo>")
     sys.exit(1)
 
 # Encapsulamiento de la lectura del archivo .bot
@@ -32,6 +31,9 @@ def ReadBotFile(file_name: str):
 
 errors = []
 syntax_error = None
+context_errors = []
+current_robot_type = None
+inside_behavior = 0
 tokens = [
     'TkCreate', 'TkWhile', 'TkBool', 'TkMe', 'TkIf', 'TkInt', 'TkBot',
     'TkOn', 'TkActivation', 'TkDeactivation', 'TkDefault', 'TkStore', 'TkEnd', 'TkExecute',
@@ -226,6 +228,8 @@ class TS_item:
 
  # false si el simbolo no exite, true si si existe
 def ExistsSimbol(key, T, limit = 0):
+    if T is None:
+        return False if limit == 1 else (False, None)
     if(limit == 1):
         if(T.simbolos[key] == None):
             # no existe el simbolo en el consteto actual
@@ -243,21 +247,60 @@ def ExistsSimbol(key, T, limit = 0):
         else:
             return True, T
 
+def FindSlot(name, table, for_insert=False):
+    """Resuelve colisiones mediante sondeo lineal dentro de una tabla."""
+    start = hash_function(name)
+    for offset in range(tam):
+        key = (start + offset) % tam
+        item = table.simbolos[key]
+        if item is None:
+            return key if for_insert else None
+        if item.name == name:
+            return key
+    return None
+
 def InsertSimbol(k, ty, table):
 
     # va a verificar si hay otro simbolo igual declarado en elmismo alcance
-    key = hash_function(k)
-    isThere = ExistsSimbol(key, TS_program, 1)
+    key = FindSlot(k, table, True)
+    isThere = key is not None and table.simbolos[key] is not None
 
     if(isThere):
-        # lanzar un error, pues no puedes volver a declarar la variable en este contexto
-        print("error: nombre de variable repetida")
-        return
+        context_errors.append(
+            f'Error de contexto: redeclaracion de la variable "{k}" en el mismo alcance'
+        )
+        return False
 
         
+    if key is None:
+        ContextError("la tabla de simbolos esta llena")
+        return False
+
     item = TS_item(k, "TkIdent", ty, None)
 
     table.simbolos[key] = item
+    return True
+
+def LookupSimbol(name, table):
+    """Busca un nombre visible y evita aceptar por error una colision del hash."""
+    current = table
+    while current is not None:
+        key = FindSlot(name, current)
+        if key is not None:
+            return current.simbolos[key]
+        current = current.padre
+    return None
+
+def ContextError(message):
+    context_errors.append(f"Error de contexto: {message}")
+
+def RequireType(expression, expected, where):
+    if expression.tipo != 'error' and expression.tipo != expected:
+        ContextError(
+            f'{where} requiere tipo {expected}, pero recibio {expression.tipo}'
+        )
+        return False
+    return expression.tipo == expected
 
             
 # una tabla de simbolos esta compuesta de los simbolos y del padre
@@ -269,7 +312,7 @@ class TS: # (Tabla de Simbolos)
 
     def Insert(self, key, token, tipo):
         k = hash_function(key)
-        self.simbolos[k] = TS_item(key, token, tipo)
+        self.simbolos[k] = TS_item(key, token, tipo, None)
 
     def __str__(self):
         sim = "[("
@@ -404,164 +447,166 @@ class Binaria(node):
         super().__init__(bina, [left, right])
         if(op == 'Suma'): #                                    SUMA
             if(left.tipo == 'int' and right.tipo == 'int'):
-                self.valor = left.valor + right.valor
+                # En esta etapa solo se comprueban tipos. Una variable declarada
+                # todavia no tiene un valor disponible durante el analisis estatico.
+                self.valor = None
                 self.tipo = 'int'
             elif (left.tipo == 'error' or right.tipo == 'error'):
                 # aqui no tiras error pero si llevas el error
                 self.valor = None
                 self.tipo = 'error'
             else:
-                # TODO aqui tiras error
+                ContextError("el operador + requiere dos operandos int")
                 self.valor = None
                 self.tipo = 'error'
         elif(op == 'Resta'): #                                    RSTA
             if(left.tipo == 'int' and right.tipo == 'int'):
-                self.valor = left.valor - right.valor
+                self.valor = None
                 self.tipo = 'int'
             elif (left.tipo == 'error' or right.tipo == 'error'):
                 # aqui no tiras error pero si llevas el error
                 self.valor = None
                 self.tipo = 'error'
             else:
-                # TODO aqui tiras error
+                ContextError("el operador - requiere dos operandos int")
                 self.valor = None
                 self.tipo = 'error'
         elif(op == 'Multiplicacion'): #                                    MULTIPLICACION
             if(left.tipo == 'int' and right.tipo == 'int'):
-                self.valor = left.valor * right.valor
+                self.valor = None
                 self.tipo = 'int'
             elif (left.tipo == 'error' or right.tipo == 'error'):
                 # aqui no tiras error pero si llevas el error
                 self.valor = None
                 self.tipo = 'error'
             else:
-                # TODO aqui tiras error
+                ContextError("el operador * requiere dos operandos int")
                 self.valor = None
                 self.tipo = 'error'
         elif(op == 'Division'): #                                    DIVISION
             if(left.tipo == 'int' and right.tipo == 'int'):
-                self.valor = left.valor / right.valor
+                self.valor = None
                 self.tipo = 'int'
             elif (left.tipo == 'error' or right.tipo == 'error'):
                 # aqui no tiras error pero si llevas el error
                 self.valor = None
                 self.tipo = 'error'
             else:
-                # TODO aqui tiras error
+                ContextError("el operador / requiere dos operandos int")
                 self.valor = None
                 self.tipo = 'error'
         elif(op == 'Modulo'): #                                    MODULO
             if(left.tipo == 'int' and right.tipo == 'int'):
-                self.valor = left.valor % right.valor
+                self.valor = None
                 self.tipo = 'int'
             elif (left.tipo == 'error' or right.tipo == 'error'):
                 # aqui no tiras error pero si llevas el error
                 self.valor = None
                 self.tipo = 'error'
             else:
-                # TODO aqui tiras error
+                ContextError("el operador % requiere dos operandos int")
                 self.valor = None
                 self.tipo = 'error'
         elif(op == 'Conjuncion'): #                                    CONJUNCION
             if(left.tipo == 'bool' and right.tipo == 'bool'):
-                self.valor = left.valor and right.valor
+                self.valor = None
                 self.tipo = 'bool'
             elif (left.tipo == 'error' or right.tipo == 'error'):
                 # aqui no tiras error pero si llevas el error
                 self.valor = None
                 self.tipo = 'error'
             else:
-                # TODO aqui tiras error
+                ContextError("el operador /\\ requiere dos operandos bool")
                 self.valor = None
                 self.tipo = 'error'
         elif(op == 'Disyuncion'): #                                    DISYUNCION
             if(left.tipo == 'bool' and right.tipo == 'bool'):
-                self.valor = left.valor or right.valor
+                self.valor = None
                 self.tipo = 'bool'
             elif (left.tipo == 'error' or right.tipo == 'error'):
                 # aqui no tiras error pero si llevas el error
                 self.valor = None
                 self.tipo = 'error'
             else:
-                # TODO aqui tiras error
+                ContextError("el operador \\/ requiere dos operandos bool")
                 self.valor = None
                 self.tipo = 'error'
         elif(op == 'Igual que'): #                                    IGUALDAD
             if(left.tipo == 'bool' and right.tipo == 'bool'):
-                self.valor = left.valor == right.valor
+                self.valor = None
                 self.tipo = 'bool'
             elif(left.tipo == 'int' and right.tipo == 'int'):
-                self.valor = left.valor == right.valor
+                self.valor = None
                 self.tipo = 'bool'
             elif (left.tipo == 'error' or right.tipo == 'error'):
                 # aqui no tiras error pero si llevas el error
                 self.valor = None
                 self.tipo = 'error'
             else:
-                # TODO aqui tiras error
+                ContextError("el operador = requiere operandos del mismo tipo")
                 self.valor = None
                 self.tipo = 'error'
         elif(op == 'Distinto que'): #                                    DESIGUALDAD
             if(left.tipo == 'bool' and right.tipo == 'bool'):
-                self.valor = left.valor != right.valor
+                self.valor = None
                 self.tipo = 'bool'
             elif(left.tipo == 'int' and right.tipo == 'int'):
-                self.valor = left.valor != right.valor
+                self.valor = None
                 self.tipo = 'bool'
             elif (left.tipo == 'error' or right.tipo == 'error'):
                 # aqui no tiras error pero si llevas el error
                 self.valor = None
                 self.tipo = 'error'
             else:
-                # TODO aqui tiras error
+                ContextError("el operador /= requiere operandos del mismo tipo")
                 self.valor = None
                 self.tipo = 'error'
         elif(op == 'Menor o igual que'): #                                    MENOR O IGUAL
             if(left.tipo == 'int' and right.tipo == 'int'):
-                self.valor = left.valor <= right.valor
+                self.valor = None
                 self.tipo = 'bool'
             elif (left.tipo == 'error' or right.tipo == 'error'):
                 # aqui no tiras error pero si llevas el error
                 self.valor = None
                 self.tipo = 'error'
             else:
-                # TODO aqui tiras error
+                ContextError("el operador <= requiere dos operandos int")
                 self.valor = None
                 self.tipo = 'error'
         elif(op == 'Mayor o igual que'): #                                    MAYOR O IGUAL
             if(left.tipo == 'int' and right.tipo == 'int'):
-                self.valor = left.valor >= right.valor
+                self.valor = None
                 self.tipo = 'bool'
             elif (left.tipo == 'error' or right.tipo == 'error'):
                 # aqui no tiras error pero si llevas el error
                 self.valor = None
                 self.tipo = 'error'
             else:
-                # TODO aqui tiras error
+                ContextError("el operador >= requiere dos operandos int")
                 self.valor = None
                 self.tipo = 'error'
         elif(op == 'Menor que'): #                                    MENOR
             if(left.tipo == 'int' and right.tipo == 'int'):
-                self.valor = left.valor < right.valor
+                self.valor = None
                 self.tipo = 'bool'
             elif (left.tipo == 'error' or right.tipo == 'error'):
                 # aqui no tiras error pero si llevas el error
                 self.valor = None
                 self.tipo = 'error'
             else:
-                # TODO aqui tiras error
+                ContextError("el operador < requiere dos operandos int")
                 self.valor = None
                 self.tipo = 'error'
         elif(op == 'Mayor que'): #                                    MAYOR
             if(left.tipo == 'int' and right.tipo == 'int'):
-                self.valor = left.valor > right.valor
+                self.valor = None
                 self.tipo = 'bool'
             elif (left.tipo == 'error' or right.tipo == 'error'):
                 # aqui no tiras error pero si llevas el error
                 self.valor = None
                 self.tipo = 'error'
             else:
-                # TODO aqui tiras error
+                ContextError("el operador > requiere dos operandos int")
                 self.valor = None
                 self.tipo = 'error'
 
@@ -589,11 +634,19 @@ class Unaria(node):
         super().__init__('EXP_UNARIA', [expresion])
 
         if(expresion.tipo == 'int' and operacion == 'Menos unario'):
-            self.valor = -expresion.valor
+            self.valor = None
             self.tipo = 'int'
         elif(expresion.tipo == 'bool' and operacion == 'Negacion'):
-            self.valor = not expresion.valor
+            self.valor = None
             self.tipo = 'bool'
+        elif expresion.tipo == 'error':
+            self.valor = None
+            self.tipo = 'error'
+        else:
+            expected = 'int' if operacion == 'Menos unario' else 'bool'
+            ContextError(f"{operacion} requiere un operando {expected}")
+            self.valor = None
+            self.tipo = 'error'
         self.operacion = operacion
         self.expresion = expresion 
         
@@ -651,7 +704,7 @@ def p_create(p):
     
 
 def p_create_empty(p):
-    'CREATE : empty'
+    'CREATE : OPEN_SCOPE'
     p[0] = None
 
 def p_abrir_alcance(p):
@@ -672,13 +725,15 @@ def p_cerrar_alcance(p):
 ##              | lambda                                  ##
 ############################################################
 def p_definition_recursive(p):
-    'DECLARATIONS : DECLARATIONS TYPE TkBot IDENT_LIST ACTIONS TkEnd'
-    p[0] = (p[1], p[2], p[4], p[5])
+    'DECLARATIONS : DECLARATIONS TYPE TkBot IDENT_LIST REGISTER_ROBOTS ACTIONS TkEnd'
+    p[0] = (p[1], p[2], p[4], p[6])
 
-    
-    global TS_program
-    for y in range(len(p[4])):
-        InsertSimbol(p[4][y], p[2], TS_program)
+def p_register_robots(p):
+    'REGISTER_ROBOTS : empty'
+    global current_robot_type
+    current_robot_type = p[-3]
+    for identifier in p[-1]:
+        InsertSimbol(identifier, current_robot_type, TS_program)
 
     
 
@@ -708,8 +763,18 @@ def p_id_list_recursive(p):
 ##  ACTIONS -> ACTIONS EVENT | EVENT | lambda                ##
 #######################################################################
 def p_action(p):
-    'ACTIONS : ACTIONS TkOn CONDITION TkDosPuntos OPEN_SCOPE INSTRUCTION_C TkEnd CLOSE_SCOPE'
+    'ACTIONS : ACTIONS TkOn ENTER_BEHAVIOR CONDITION TkDosPuntos OPEN_SCOPE INSTRUCTION_C TkEnd CLOSE_SCOPE EXIT_BEHAVIOR'
     p[0] = None
+
+def p_enter_behavior(p):
+    'ENTER_BEHAVIOR : empty'
+    global inside_behavior
+    inside_behavior += 1
+
+def p_exit_behavior(p):
+    'EXIT_BEHAVIOR : empty'
+    global inside_behavior
+    inside_behavior -= 1
 
 
 # def p_action(p):
@@ -733,8 +798,7 @@ def p_condition_deafault(p):
     'CONDITION : EXP_BINARIA'
     p[0] = None
     if(p[1].tipo != 'bool'):
-        # TODO aqui tiras error
-        print("error: la exp debe ser booleana")
+        RequireType(p[1], 'bool', 'la condicion del comportamiento')
     
 def p_condition_exp(p):
     'CONDITION : TkDefault'
@@ -803,6 +867,8 @@ def p_instruction_simple_e(p):
 def p_simple_instruction_store(p):
     'SIMPLE_INSTRUCTION_C : TkStore EXP_BINARIA TkPunto'
     p[0] = Almacenamiento(p[2])
+    if current_robot_type is not None:
+        RequireType(p[2], current_robot_type, 'store')
 
 def p_simple_instruction_collect(p):
     '''SIMPLE_INSTRUCTION_C : TkCollect TkPunto
@@ -853,8 +919,8 @@ def p_simple_instruction_move(p):
     '''SIMPLE_INSTRUCTION_C : DIRECTION TkPunto
                           | DIRECTION EXP_BINARIA TkPunto'''
     p[0] = InstruccionRobot('MOVIMIENTO')
-    # TODO aqui debemos verificar tipos
-    if(p[1] )
+    if len(p) == 4:
+        RequireType(p[2], 'int', 'el desplazamiento')
 
 
 def p_simple_instruction_activate(p):
@@ -864,50 +930,50 @@ def p_simple_instruction_activate(p):
     global TS_program
     for y in range(len(p[2])):
         key = hash_function(p[2][y])
-        isDeclarated = ExistsSimbol(key, TS_program)
+        isDeclarated = LookupSimbol(p[2][y], TS_program) is not None
         # si npo ta declarada (isdeclarated = false) tiramos un error
-        if(isDeclarated == False):
-            #tiramos el error
-            print(f"no ta declarada la variabe {p[2][y]}")
+        if not isDeclarated:
+            ContextError(f'la variable "{p[2][y]}" no ha sido declarada')
 
 
 def p_simple_instruction_deactivate(p):
     'SIMPLE_INSTRUCTION_E : TkDeactivate IDENT_LIST TkPunto'
     p[0] = instrutions('DEACTIVACION', [], 'DEACTIVACION', p[2])
     global TS_program
-    for y in range(y):
+    for y in range(len(p[2])):
         key = hash_function(p[2][y])
-        isDeclarated = ExistsSimbol(key, TS_program)
+        isDeclarated = LookupSimbol(p[2][y], TS_program) is not None
         # si npo ta declarada (isdeclarated = false) tiramos un error
-        if(isDeclarated == False):
-            #tiramos el error
-            print(f"no ta declarada la variabe {p[2][y]}")
+        if not isDeclarated:
+            ContextError(f'la variable "{p[2][y]}" no ha sido declarada')
 
 def p_simple_instruction_advance(p):
     'SIMPLE_INSTRUCTION_E : TkAdvance IDENT_LIST TkPunto'
     p[0] = instrutions('AVANCE', [], 'AVANCE', p[2])
     global TS_program
-    for y in range(y):
+    for y in range(len(p[2])):
         key = hash_function(p[2][y])
-        isDeclarated = ExistsSimbol(key, TS_program)
+        isDeclarated = LookupSimbol(p[2][y], TS_program) is not None
         # si npo ta declarada (isdeclarated = false) tiramos un error
-        if(isDeclarated == False):
-            #tiramos el error
-            print(f"no ta declarada la variabe {p[2][y]}")
+        if not isDeclarated:
+            ContextError(f'la variable "{p[2][y]}" no ha sido declarada')
 
 
 def p_simple_instruction_if(p):
     'SIMPLE_INSTRUCTION_E : TkIf EXP_BINARIA TkDosPuntos INSTRUCTION_E TkEnd'
     p[0] = Condicional( p[2], p[4])
+    RequireType(p[2], 'bool', 'la guardia de if')
 
 def p_simple_instruction_if_else(p):
     'SIMPLE_INSTRUCTION_E : TkIf EXP_BINARIA TkDosPuntos INSTRUCTION_E TkElse TkDosPuntos INSTRUCTION_E TkEnd'
     p[0] = Condicional(p[2], Secuenciacion([p[4], p[7]]))
+    RequireType(p[2], 'bool', 'la guardia de if')
 
 
 def p_simple_instruction_while(p):
     'SIMPLE_INSTRUCTION_E : TkWhile EXP_BINARIA TkDosPuntos INSTRUCTION_E TkEnd'
     p[0] = RepeticionIndeterminada(p[2], p[4])
+    RequireType(p[2], 'bool', 'la guardia de while')
 
 def p_simple_instruction_scope(p):
     'SIMPLE_INSTRUCTION_E : CREATE EXECUTE CLOSE_SCOPE'
@@ -969,13 +1035,11 @@ def p_exp_binaria_paren(p):
 def p_exp_unaria_negacion(p):
     'EXP_BINARIA : TkNegacion EXP_BINARIA'
     p[0] = Unaria('Negacion', p[2])
-    # TODO aqui hay que hacer verificacion de tipo  bool, o tal vez abajo ?
 
 
 def p_exp_unaria_resta(p):
     'EXP_BINARIA : TkResta EXP_BINARIA %prec TkNegacion'
     p[0] = Unaria('Menos unario', p[2])
-    # TODO aqui hay que hacer verificacion de tipo  int
 
 
 def p_exp_binaria_num(p):
@@ -986,7 +1050,11 @@ def p_exp_binaria_num(p):
 
 def p_exp_binaria_me(p):
     'EXP_BINARIA : TkMe'
-    p[0] = Valor(p[1], None) # ************************temporal************************
+    if inside_behavior == 0:
+        ContextError('la palabra reservada "me" solo puede usarse dentro de un comportamiento')
+        p[0] = Valor(p[1], 'error')
+    else:
+        p[0] = Valor(p[1], current_robot_type)
     
 
 
@@ -1003,17 +1071,12 @@ def p_exp_binaria_boolf(p):
 
 def p_exp_binaria_var(p):
     'EXP_BINARIA : TkIdent'
-    p[0] = Valor(p[1], None)
-
-    global TS_program
-    key = hash_function(p[1])
-
-    isDeclarated, T = ExistsSimbol(key, TS_program)
-    # print(T)
-    # si npo ta declarada (isdeclarated = false) tiramos un error
-    if(isDeclarated == False):
-        # TODO tiramos el error
-        print(f"no ta declarada la variabe {p[1]}")
+    item = LookupSimbol(p[1], TS_program)
+    if item is None:
+        ContextError(f'la variable "{p[1]}" no ha sido declarada')
+        p[0] = Valor(p[1], 'error')
+    else:
+        p[0] = Valor(p[1], item.type)
 
 
 
@@ -1077,8 +1140,11 @@ if __name__ == '__main__':
         print(syntax_error)
         sys.exit(1)
 
+    if context_errors:
+        for error in context_errors:
+            print(error)
+        sys.exit(1)
+
 
     if AST:
         print(AST.imprimir(), end='')
-
-    

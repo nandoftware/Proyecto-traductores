@@ -1,0 +1,12 @@
+create
+    int bot repetido
+    end
+
+    bool bot repetido
+    end
+execute
+    activate inexistente.
+    if 3 + true:
+        advance repetido.
+    end
+end

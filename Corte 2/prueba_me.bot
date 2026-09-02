@@ -1,0 +1,8 @@
+create
+  int bot unidad
+  end
+execute
+  if me > 0:
+    activate unidad.
+  end
+end
