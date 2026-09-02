@@ -6,13 +6,20 @@ create
     end
     int bot b
         on activation:
-            store 35 + me.
+            collect as x.
+            store 35 + 4.
+            store true /\ false.
+            store false /= true.
+            store x = 4.
+            store 35 < 4.
         end
     end
     
 execute
     $- Asignar al con_4tador
     el valor 35 -$
-    activate contador.
+    if b = 4:
+        activate contador.
+    end
     activate b.
 end

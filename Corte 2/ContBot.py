@@ -195,6 +195,93 @@ def Tokenaizer():
 
     return minitokens
 
+
+
+
+
+###################################################################################################
+## ------------------------------- cosas de la tabla de simbolos ------------------------------- ##
+###################################################################################################
+tam = 97
+c_a = 3
+c_b = 2
+
+def hash_function(value):
+    sum_chars = 0
+    for char in value:
+        sum_chars += ord(char)
+
+    return (c_a * sum_chars + c_b) % tam 
+    
+
+class TS_item:
+    def __init__(self, strin, tk, tp, v):
+        self.name = strin
+        self.token = tk
+        self.type = tp
+        self.value = v
+
+    def __str__(self):
+        return f"[\"{self.name}\", {self.token}, {self.type}, {self.value}]"
+
+ # false si el simbolo no exite, true si si existe
+def ExistsSimbol(key, T, limit = 0):
+    if(limit == 1):
+        if(T.simbolos[key] == None):
+            # no existe el simbolo en el consteto actual
+            return False
+        else:
+            # si existe en el contexto actual
+            return True
+    else:
+        if(T.simbolos[key] == None):
+            if (T.padre == None):
+                # no existe el simbolo en el contexto visible
+                return False, None
+            else:
+                return ExistsSimbol(key, T.padre, limit)
+        else:
+            return True, T
+
+def InsertSimbol(k, ty, table):
+
+    # va a verificar si hay otro simbolo igual declarado en elmismo alcance
+    key = hash_function(k)
+    isThere = ExistsSimbol(key, TS_program, 1)
+
+    if(isThere):
+        # lanzar un error, pues no puedes volver a declarar la variable en este contexto
+        print("error: nombre de variable repetida")
+        return
+
+        
+    item = TS_item(k, "TkIdent", ty, None)
+
+    table.simbolos[key] = item
+
+            
+# una tabla de simbolos esta compuesta de los simbolos y del padre
+# los simbolos son son tabla de hash donde el nombre del simbolo es la key y el value es una tripleta del nombre, el token y el tipo
+class TS: # (Tabla de Simbolos)
+    def __init__(self, p):
+        self.simbolos = [None] * tam
+        self.padre = p
+
+    def Insert(self, key, token, tipo):
+        k = hash_function(key)
+        self.simbolos[k] = TS_item(key, token, tipo)
+
+    def __str__(self):
+        sim = "[("
+        for i in range(tam):
+            sim += str(self.simbolos[i]) + ", "
+        sim += f"); p:{self.padre}]"
+        return sim
+        
+
+
+TS_program: TS = TS(None)
+
 ###################################################################################################
 ## ------------------------------- clases del arbol sintactico -------------------------------- ##
 ###################################################################################################
@@ -302,25 +389,193 @@ class RepeticionIndeterminada(node):
     
 
 class Valor(node):
-    def __init__(self, valor):
+    def __init__(self, valor, tp):
         super().__init__('VALOR', [])
-        self.valor = valor
+        self.valor = valor # pues valor
+        self.tipo = tp
+        # p[0] = ['int', p[1]]
 
     def imprimir(self, nivel=0):
         return tab(nivel) + str(self.valor) + "\n"
     
 
 class Binaria(node):
-    def __init__(self, tipo, operacion, izquierda, derecha):
-        super().__init__(tipo, [izquierda, derecha])
-        self.tipo = tipo
-        self.operacion = operacion
-        self.izquierda = izquierda
-        self.derecha = derecha
+    def __init__(self, bina, op, left, right):
+        super().__init__(bina, [left, right])
+        if(op == 'Suma'): #                                    SUMA
+            if(left.tipo == 'int' and right.tipo == 'int'):
+                self.valor = left.valor + right.valor
+                self.tipo = 'int'
+            elif (left.tipo == 'error' or right.tipo == 'error'):
+                # aqui no tiras error pero si llevas el error
+                self.valor = None
+                self.tipo = 'error'
+            else:
+                # TODO aqui tiras error
+                self.valor = None
+                self.tipo = 'error'
+        elif(op == 'Resta'): #                                    RSTA
+            if(left.tipo == 'int' and right.tipo == 'int'):
+                self.valor = left.valor - right.valor
+                self.tipo = 'int'
+            elif (left.tipo == 'error' or right.tipo == 'error'):
+                # aqui no tiras error pero si llevas el error
+                self.valor = None
+                self.tipo = 'error'
+            else:
+                # TODO aqui tiras error
+                self.valor = None
+                self.tipo = 'error'
+        elif(op == 'Multiplicacion'): #                                    MULTIPLICACION
+            if(left.tipo == 'int' and right.tipo == 'int'):
+                self.valor = left.valor * right.valor
+                self.tipo = 'int'
+            elif (left.tipo == 'error' or right.tipo == 'error'):
+                # aqui no tiras error pero si llevas el error
+                self.valor = None
+                self.tipo = 'error'
+            else:
+                # TODO aqui tiras error
+                self.valor = None
+                self.tipo = 'error'
+        elif(op == 'Division'): #                                    DIVISION
+            if(left.tipo == 'int' and right.tipo == 'int'):
+                self.valor = left.valor / right.valor
+                self.tipo = 'int'
+            elif (left.tipo == 'error' or right.tipo == 'error'):
+                # aqui no tiras error pero si llevas el error
+                self.valor = None
+                self.tipo = 'error'
+            else:
+                # TODO aqui tiras error
+                self.valor = None
+                self.tipo = 'error'
+        elif(op == 'Modulo'): #                                    MODULO
+            if(left.tipo == 'int' and right.tipo == 'int'):
+                self.valor = left.valor % right.valor
+                self.tipo = 'int'
+            elif (left.tipo == 'error' or right.tipo == 'error'):
+                # aqui no tiras error pero si llevas el error
+                self.valor = None
+                self.tipo = 'error'
+            else:
+                # TODO aqui tiras error
+                self.valor = None
+                self.tipo = 'error'
+        elif(op == 'Conjuncion'): #                                    CONJUNCION
+            if(left.tipo == 'bool' and right.tipo == 'bool'):
+                self.valor = left.valor and right.valor
+                self.tipo = 'bool'
+            elif (left.tipo == 'error' or right.tipo == 'error'):
+                # aqui no tiras error pero si llevas el error
+                self.valor = None
+                self.tipo = 'error'
+            else:
+                # TODO aqui tiras error
+                self.valor = None
+                self.tipo = 'error'
+        elif(op == 'Disyuncion'): #                                    DISYUNCION
+            if(left.tipo == 'bool' and right.tipo == 'bool'):
+                self.valor = left.valor or right.valor
+                self.tipo = 'bool'
+            elif (left.tipo == 'error' or right.tipo == 'error'):
+                # aqui no tiras error pero si llevas el error
+                self.valor = None
+                self.tipo = 'error'
+            else:
+                # TODO aqui tiras error
+                self.valor = None
+                self.tipo = 'error'
+        elif(op == 'Igual que'): #                                    IGUALDAD
+            if(left.tipo == 'bool' and right.tipo == 'bool'):
+                self.valor = left.valor == right.valor
+                self.tipo = 'bool'
+            elif(left.tipo == 'int' and right.tipo == 'int'):
+                self.valor = left.valor == right.valor
+                self.tipo = 'bool'
+            elif (left.tipo == 'error' or right.tipo == 'error'):
+                # aqui no tiras error pero si llevas el error
+                self.valor = None
+                self.tipo = 'error'
+            else:
+                # TODO aqui tiras error
+                self.valor = None
+                self.tipo = 'error'
+        elif(op == 'Distinto que'): #                                    DESIGUALDAD
+            if(left.tipo == 'bool' and right.tipo == 'bool'):
+                self.valor = left.valor != right.valor
+                self.tipo = 'bool'
+            elif(left.tipo == 'int' and right.tipo == 'int'):
+                self.valor = left.valor != right.valor
+                self.tipo = 'bool'
+            elif (left.tipo == 'error' or right.tipo == 'error'):
+                # aqui no tiras error pero si llevas el error
+                self.valor = None
+                self.tipo = 'error'
+            else:
+                # TODO aqui tiras error
+                self.valor = None
+                self.tipo = 'error'
+        elif(op == 'Menor o igual que'): #                                    MENOR O IGUAL
+            if(left.tipo == 'int' and right.tipo == 'int'):
+                self.valor = left.valor <= right.valor
+                self.tipo = 'bool'
+            elif (left.tipo == 'error' or right.tipo == 'error'):
+                # aqui no tiras error pero si llevas el error
+                self.valor = None
+                self.tipo = 'error'
+            else:
+                # TODO aqui tiras error
+                self.valor = None
+                self.tipo = 'error'
+        elif(op == 'Mayor o igual que'): #                                    MAYOR O IGUAL
+            if(left.tipo == 'int' and right.tipo == 'int'):
+                self.valor = left.valor >= right.valor
+                self.tipo = 'bool'
+            elif (left.tipo == 'error' or right.tipo == 'error'):
+                # aqui no tiras error pero si llevas el error
+                self.valor = None
+                self.tipo = 'error'
+            else:
+                # TODO aqui tiras error
+                self.valor = None
+                self.tipo = 'error'
+        elif(op == 'Menor que'): #                                    MENOR
+            if(left.tipo == 'int' and right.tipo == 'int'):
+                self.valor = left.valor < right.valor
+                self.tipo = 'bool'
+            elif (left.tipo == 'error' or right.tipo == 'error'):
+                # aqui no tiras error pero si llevas el error
+                self.valor = None
+                self.tipo = 'error'
+            else:
+                # TODO aqui tiras error
+                self.valor = None
+                self.tipo = 'error'
+        elif(op == 'Mayor que'): #                                    MAYOR
+            if(left.tipo == 'int' and right.tipo == 'int'):
+                self.valor = left.valor > right.valor
+                self.tipo = 'bool'
+            elif (left.tipo == 'error' or right.tipo == 'error'):
+                # aqui no tiras error pero si llevas el error
+                self.valor = None
+                self.tipo = 'error'
+            else:
+                # TODO aqui tiras error
+                self.valor = None
+                self.tipo = 'error'
+
+
+        self.bina = bina
+        self.operacion = op
+        self.izquierda = left
+        self.derecha = right
+        
+        
 
     def imprimir(self, nivel=0):
         return (
-            tab(nivel) + self.tipo + "\n" +
+            tab(nivel) + self.bina + "\n" +
             tab(nivel) + f"- operacion: '{self.operacion}'\n" +
             tab(nivel) + "- operador izquierdo:\n" +
             self.izquierda.imprimir(nivel + 1) +
@@ -332,8 +587,21 @@ class Binaria(node):
 class Unaria(node):
     def __init__(self, operacion, expresion):
         super().__init__('EXP_UNARIA', [expresion])
+
+        if(expresion.tipo == 'int' and operacion == 'Menos unario'):
+            self.valor = -expresion.valor
+            self.tipo = 'int'
+        elif(expresion.tipo == 'bool' and operacion == 'Negacion'):
+            self.valor = not expresion.valor
+            self.tipo = 'bool'
         self.operacion = operacion
-        self.expresion = expresion
+        self.expresion = expresion 
+        
+         
+
+
+
+
 
     def imprimir(self, nivel=0):
         return (
@@ -363,26 +631,41 @@ precedence = (
 
 
 ##############################
-##  BOT -> [CREATE] EXECUTE   ##
+##  BOT -> [CREATE] EXECUTE CLOSE_SCOPE  ##
 ##       | lambda           ##
 ##############################
 def p_bot(p):
-    'BOT : CREATE EXECUTE'
+    'BOT : CREATE EXECUTE CLOSE_SCOPE'
     p[0] = p[2]
-
     
+
+
+
 ######################################
-##  CREATE -> TkCreate DEFINITION   ##
+##  CREATE -> TkCreate OPEN_SCOPE DEFINITION   ##
 ##          | lambda                ##
 ######################################
 def p_create(p):
-    'CREATE : TkCreate DECLARATIONS'
+    'CREATE : TkCreate OPEN_SCOPE DECLARATIONS'
     p[0] = (p[1],p[2])
+    
 
 def p_create_empty(p):
     'CREATE : empty'
     p[0] = None
-    
+
+def p_abrir_alcance(p):
+    'OPEN_SCOPE : empty'
+    global TS_program 
+
+    TS_program = TS(TS_program)
+  
+
+def p_cerrar_alcance(p):
+    'CLOSE_SCOPE : empty'
+    global TS_program 
+    TS_program = TS_program.padre
+
 
 ############################################################
 ##  DECLARATIONS -> TkInt TkBot TkIdent ACTIONS TkEnd   ##
@@ -391,6 +674,13 @@ def p_create_empty(p):
 def p_definition_recursive(p):
     'DECLARATIONS : DECLARATIONS TYPE TkBot IDENT_LIST ACTIONS TkEnd'
     p[0] = (p[1], p[2], p[4], p[5])
+
+    
+    global TS_program
+    for y in range(len(p[4])):
+        InsertSimbol(p[4][y], p[2], TS_program)
+
+    
 
 def p_definition_empty(p):
     'DECLARATIONS : empty'
@@ -401,10 +691,12 @@ def p_type(p):
             | TkBool
             | TkCaracter'''
     p[0] = p[1]
+    
 
 def p_id_list_one(p):
     'IDENT_LIST : TkIdent'
     p[0] = [p[1]]
+    
 
 
 def p_id_list_recursive(p):
@@ -416,7 +708,7 @@ def p_id_list_recursive(p):
 ##  ACTIONS -> ACTIONS EVENT | EVENT | lambda                ##
 #######################################################################
 def p_action(p):
-    'ACTIONS : ACTIONS TkOn CONDITION TkDosPuntos INSTRUCTION_C TkEnd'
+    'ACTIONS : ACTIONS TkOn CONDITION TkDosPuntos OPEN_SCOPE INSTRUCTION_C TkEnd CLOSE_SCOPE'
     p[0] = None
 
 
@@ -440,6 +732,9 @@ def p_condition_deactivation(p):
 def p_condition_deafault(p):
     'CONDITION : EXP_BINARIA'
     p[0] = None
+    if(p[1].tipo != 'bool'):
+        # TODO aqui tiras error
+        print("error: la exp debe ser booleana")
     
 def p_condition_exp(p):
     'CONDITION : TkDefault'
@@ -513,6 +808,17 @@ def p_simple_instruction_collect(p):
     '''SIMPLE_INSTRUCTION_C : TkCollect TkPunto
                           | TkCollect TkAs TkIdent TkPunto'''
     p[0] = InstruccionRobot('COLECCION')
+    if(p[2] == 'as'):
+        # debemos insertar la nueva variable a la tabla
+        global TS_program
+        
+        InsertSimbol(p[3], 'error', TS_program)
+
+    # elif(p[0] == '.'):
+        # debemos darle a "me/el ident del robot" el valor de la matriz
+
+        
+
 
 def p_simple_instruction_drop(p):
     'SIMPLE_INSTRUCTION_C : TkDrop EXP_BINARIA TkPunto'
@@ -529,6 +835,13 @@ def p_simple_instruction_read(p):
     '''SIMPLE_INSTRUCTION_C : TkRead TkPunto
                           | TkRead TkAs TkIdent TkPunto'''
     p[0] = InstruccionRobot('ENTRADA')
+    if(p[2] == 'as'):
+        # debemos insertar la nueva variable a la tabla
+        global TS_program
+        InsertSimbol(p[3], None, TS_program)
+            
+    # elif(p[0] == '.'):
+        # debemos darle a "me/el ident del robot" el valor de la matriz
 
 
 def p_simple_instruction_send(p):
@@ -540,24 +853,52 @@ def p_simple_instruction_move(p):
     '''SIMPLE_INSTRUCTION_C : DIRECTION TkPunto
                           | DIRECTION EXP_BINARIA TkPunto'''
     p[0] = InstruccionRobot('MOVIMIENTO')
+    # TODO aqui debemos verificar tipos
+    if(p[1] )
 
 
 def p_simple_instruction_activate(p):
     'SIMPLE_INSTRUCTION_E : TkActivate IDENT_LIST TkPunto'
     p[0] = instrutions('ACTIVACION', [], 'ACTIVACION', p[2])
+    # debemos ver todos los alcances visibles pa ver si los ident existen
+    global TS_program
+    for y in range(len(p[2])):
+        key = hash_function(p[2][y])
+        isDeclarated = ExistsSimbol(key, TS_program)
+        # si npo ta declarada (isdeclarated = false) tiramos un error
+        if(isDeclarated == False):
+            #tiramos el error
+            print(f"no ta declarada la variabe {p[2][y]}")
+
 
 def p_simple_instruction_deactivate(p):
     'SIMPLE_INSTRUCTION_E : TkDeactivate IDENT_LIST TkPunto'
     p[0] = instrutions('DEACTIVACION', [], 'DEACTIVACION', p[2])
+    global TS_program
+    for y in range(y):
+        key = hash_function(p[2][y])
+        isDeclarated = ExistsSimbol(key, TS_program)
+        # si npo ta declarada (isdeclarated = false) tiramos un error
+        if(isDeclarated == False):
+            #tiramos el error
+            print(f"no ta declarada la variabe {p[2][y]}")
 
 def p_simple_instruction_advance(p):
     'SIMPLE_INSTRUCTION_E : TkAdvance IDENT_LIST TkPunto'
     p[0] = instrutions('AVANCE', [], 'AVANCE', p[2])
+    global TS_program
+    for y in range(y):
+        key = hash_function(p[2][y])
+        isDeclarated = ExistsSimbol(key, TS_program)
+        # si npo ta declarada (isdeclarated = false) tiramos un error
+        if(isDeclarated == False):
+            #tiramos el error
+            print(f"no ta declarada la variabe {p[2][y]}")
 
 
 def p_simple_instruction_if(p):
     'SIMPLE_INSTRUCTION_E : TkIf EXP_BINARIA TkDosPuntos INSTRUCTION_E TkEnd'
-    p[0] = Condicional(p[2], p[4])
+    p[0] = Condicional( p[2], p[4])
 
 def p_simple_instruction_if_else(p):
     'SIMPLE_INSTRUCTION_E : TkIf EXP_BINARIA TkDosPuntos INSTRUCTION_E TkElse TkDosPuntos INSTRUCTION_E TkEnd'
@@ -569,7 +910,7 @@ def p_simple_instruction_while(p):
     p[0] = RepeticionIndeterminada(p[2], p[4])
 
 def p_simple_instruction_scope(p):
-    'SIMPLE_INSTRUCTION_E : CREATE EXECUTE'
+    'SIMPLE_INSTRUCTION_E : CREATE EXECUTE CLOSE_SCOPE'
     p[0] = p[2]
 
 
@@ -580,6 +921,7 @@ def p_simple_instruction_scope(p):
 def p_execute(p):
     'EXECUTE : TkExecute INSTRUCTION_E TkEnd'
     p[0] = p[2]
+    
 
 
 ################################################
@@ -627,40 +969,58 @@ def p_exp_binaria_paren(p):
 def p_exp_unaria_negacion(p):
     'EXP_BINARIA : TkNegacion EXP_BINARIA'
     p[0] = Unaria('Negacion', p[2])
+    # TODO aqui hay que hacer verificacion de tipo  bool, o tal vez abajo ?
 
 
 def p_exp_unaria_resta(p):
     'EXP_BINARIA : TkResta EXP_BINARIA %prec TkNegacion'
     p[0] = Unaria('Menos unario', p[2])
+    # TODO aqui hay que hacer verificacion de tipo  int
 
 
 def p_exp_binaria_num(p):
     'EXP_BINARIA : TkNum'
-    p[0] = Valor(p[1])
+    p[0] = Valor(p[1], 'int')
+    # p[0] = ['int', p[1]]
+
 
 def p_exp_binaria_me(p):
     'EXP_BINARIA : TkMe'
-    p[0] = Valor(p[1]) # ************************temporal************************
+    p[0] = Valor(p[1], None) # ************************temporal************************
+    
 
 
 def p_exp_binaria_boolt(p):
     'EXP_BINARIA : TkTrue'
-    p[0] = Valor('true')
-
+    # p[0] = ['bool', True]
+    p[0] = Valor(True, 'bool')
 
 def p_exp_binaria_boolf(p):
     'EXP_BINARIA : TkFalse'
-    p[0] = Valor('false')
+    # p[0] = ['bool', False]
+    p[0] = Valor(False, 'bool')
 
 
 def p_exp_binaria_var(p):
     'EXP_BINARIA : TkIdent'
-    p[0] = Valor(p[1])
+    p[0] = Valor(p[1], None)
+
+    global TS_program
+    key = hash_function(p[1])
+
+    isDeclarated, T = ExistsSimbol(key, TS_program)
+    # print(T)
+    # si npo ta declarada (isdeclarated = false) tiramos un error
+    if(isDeclarated == False):
+        # TODO tiramos el error
+        print(f"no ta declarada la variabe {p[1]}")
+
+
 
 
 def p_exp_binaria_char(p):
     'EXP_BINARIA : TkCaracter'
-    p[0] = Valor("'" + p[1] + "'")
+    p[0] = Valor("'" + p[1] + "'", 'char')
 
 #######################
 ##  empty production ##
@@ -684,59 +1044,6 @@ def p_error(p):
         syntax_error = 'Error sintactico: fin inesperado del archivo'
 
 
-# cosas de la tabla ed simbolos
-
-# FUNCION HASH INOCENTE: primero, la duncion es muy simple (lo que puede generar coliciones)
-#  segundo, solo pueden haver como maximo 20 simbolos en una tabla 
-def hash_function(value):
-  sum_chars = 0
-  for char in value:
-    sum_chars += ord(char)
-
-  return sum_chars % 20
-
-class TS_item:
-    def __init__(self, strin, tk, tp):
-        nombre = strin
-        token = tk
-        tipo = tp
-
-    def __str__(self):
-        return f"[\"{self.nombre}\", {self.token}, {self.tipo}]"
-
- # 0 si el no simbolo exite, 1 si si existe
-def ExistsSimbol(key, T, limit):
-    if(limit == 1):
-        if(T.simbolos[key] == None):
-            # no existe el simbolo en el consteto actual
-            return 0
-        else:
-            # si existe en el contexto actual
-            return 1
-    else:
-        if(T.simbolos[key] == None):
-            if (T.padre == None):
-                # no existe el simbolo en el contexto visible
-                return 0
-            else:
-                return ExistsSimbol(key, T.padre, limit)
-        else:
-            return 1
-
-            
-# una tabla de simbolos esta compuesta de los simbolos y del padre
-# los simbolos son son tabla de hash donde el nombre del simbolo es la key y el value es una tripleta del nombre, el token y el tipo
-class TS: # (Tabla de Simbolos)
-    def __init__(self, p):
-        self.simbolos = [None] * 20
-        self.padre = p
-
-    def Insert(self, key, token, tipo):
-        k = hash_function(key)
-        self.simbolos[k] = TS_item(key, token, tipo)
-
-    def __str__(self):
-        return f"({self.simbolos}, {self.padre})"
         
 
 
@@ -750,6 +1057,7 @@ parser = yacc.yacc()
 if __name__ == '__main__':
     content = ReadBotFile(sys.argv[1])
 
+    
     # Primera pasada: detectar todos los errores lexicos.
     lexer.lineno = 1
     lexer.input(content)
@@ -769,5 +1077,8 @@ if __name__ == '__main__':
         print(syntax_error)
         sys.exit(1)
 
+
     if AST:
         print(AST.imprimir(), end='')
+
+    
