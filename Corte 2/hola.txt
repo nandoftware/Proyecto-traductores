@@ -4,13 +4,9 @@ create
             store 35.
         end
     end
-    int bot b
+    bool bot b
         on activation:
             collect as x.
-            store 35 + 4.
-            store true /\ false.
-            store false /= true.
-            store x = 4.
             store 35 < 4.
         end
     end

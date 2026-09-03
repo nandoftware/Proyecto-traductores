@@ -266,9 +266,10 @@ def InsertSimbol(k, ty, table):
     isThere = key is not None and table.simbolos[key] is not None
 
     if(isThere):
-        context_errors.append(
-            f'Error de contexto: redeclaracion de la variable "{k}" en el mismo alcance'
-        )
+        # context_errors.append(
+        #     f'Error de contexto: redeclaracion de la variable "{k}" en el mismo alcance'
+        # )
+        ContextError(f'Error de contexto: redeclaracion de la variable "{k}" en el mismo alcance')
         return False
 
         
@@ -292,7 +293,7 @@ def LookupSimbol(name, table):
     return None
 
 def ContextError(message):
-    context_errors.append(f"Error de contexto: {message}")
+    context_errors.append(f"Error de contexto: {message}, linea: {lexer.lineno}")
 
 def RequireType(expression, expected, where):
     if expression.tipo != 'error' and expression.tipo != expected:
