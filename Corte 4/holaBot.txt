@@ -1,0 +1,9 @@
+create
+    char bot b
+        on activation:
+            read. send.
+        end
+    end
+execute
+    activate b.
+end
